@@ -12,6 +12,8 @@
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"
         defer></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+
     <link rel="stylesheet" href="./css/styles.css">
 
     <title>Home</title>
@@ -23,18 +25,24 @@
             <a class="navbar-brand" href="#">&Icirc;nvață POO</a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false"
-                aria-label="Toggle navigation">
+                data-bs-target="#navbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
                     <li class="nav-item mx-xl-2">
-                        <a class="nav-link active" aria-current="page" href="./index.html">Acasă</a>
+                        <a class="nav-link active" href="./index.html">Acasă</a>
                     </li>
-                    <li class="nav-item mx-xl-2">
-                        <a class="nav-link" href="#categorii">Categorii probleme</a>
+                    <li class="nav-item dropdown mx-xl-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorii probleme</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="#">Usor</a></li>
+                            <li><a class="dropdown-item" href="#">Mediu</a></li>
+                            <li><a class="dropdown-item" href="#">Greu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Random</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item mx-xl-2">
                         <a class="nav-link" href="#tips">Tips</a>
@@ -59,42 +67,41 @@
     <!-- Categorii -->
      
     <section id="categorii" class="bg-dark">
-
-        <div class="container py-5 px-xll-5 px-lg-3 px-sm-2">
+        <div class="container py-5 ">
             <h1 class="display-2 text-center py-5 text-light">Categorii</h1>
 
-            <div class="row g-lg-5 g-3">
+            <div class="row g-lg-5 g-3 ">
 
                 <!-- card easy -->
                 <div class="col-sm-12 col-xl-3">
                     <div class="card bg-card-easy text-light h-100 text-xl-start text-center">
                         <div class="card-body">
-                          <h3 class="card-title">Usor</h3>
+                          <h3 class="card-title p-2">Usor</h3>
                           <hr>
-                          <ul class="list-group">
+                          <ul class="list-group ps-3">
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Constructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Destructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Supraincarcare operatori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto mb-3">Rezolva</a>
+                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
                 <!-- card medium -->
                 <div class="col-sm-12 col-xl-3">
                     <div class="card bg-card-medium text-light h-100 text-xl-start text-center" >
                         <div class="card-body">
-                          <h3 class="card-title">Mediu</h3>
+                          <h3 class="card-title p-2">Mediu</h3>
                           <hr>
-                          <ul class="list-group">
+                          <ul class="list-group ps-3">
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Constructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Destructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Supraincarcare operatori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto mb-3">Rezolva</a>
+                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
 
@@ -102,9 +109,9 @@
                 <div class="col-sm-12 col-xl-3">
                     <div class="card bg-card-hard text-light h-100 text-xl-start text-center">
                         <div class="card-body">
-                          <h3 class="card-title">Greu</h3>
+                          <h3 class="card-title p-2">Greu</h3>
                           <hr>
-                          <ul class="list-group">
+                          <ul class="list-group ps-3">
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Constructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Destructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Destructori</li>
@@ -114,7 +121,7 @@
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto mb-3">Rezolva</a>
+                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
 
@@ -122,16 +129,16 @@
                 <div class="col-sm-12 col-xl-3">
                     <div class="card bg-card-random text-light h-100 text-xl-start text-center">
                         <div class="card-body">
-                          <h3 class="card-title">Random</h3>
+                          <h3 class="card-title p-2">Random</h3>
                           <hr>
-                          <ul class="list-group">
+                          <ul class="list-group ps-3">
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Constructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Destructori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Supraincarcare operatori</li>
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto mb-3">Rezolva</a>
+                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
             </div>
@@ -142,14 +149,17 @@
     <!-- Tips page -->
     <section id='tips' class="bg-light">
         <div class="container p-5">
-
-            <h1 class="text-center display-2 my-5">Tips</h1>
-
-            <div class="row g-4">
-                <div class="col-12 col-md-6 lead">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Id incidunt dignissimos dolor iste unde eos quasi aliquam pariatur animi minima vero optio in sapiente, culpa praesentium adipisci quibusdam harum earum deserunt consequatur, qui officia. Unde nihil deserunt vitae eaque vel possimus optio sunt eligendi, reiciendis voluptates veniam debitis accusamus quia!
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md">
+                    <h1 class="text-center display-2 my-5">Tips</h1>
+                    <p class="lead">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Id incidunt dignissimos dolor iste unde eos quasi aliquam pariatur animi minima vero optio in sapiente, culpa praesentium adipisci quibusdam harum earum deserunt consequatur, qui officia. Unde nihil deserunt vitae eaque vel possimus optio sunt eligendi, reiciendis voluptates veniam debitis accusamus quia!
+                    </p>
+                    <a href="#" class="btn btn-lg btn-outline-dark mt-3">
+                       <i class="bi bi-chevron-right"></i> Continua
+                    </a>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-md">
                     <img src="./imgs/tips.png" alt="..." class="img-fluid">
                 </div>
         </div>
