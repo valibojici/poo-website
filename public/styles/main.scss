@@ -1,5 +1,10 @@
 // custom variables
-$warning : rgb(214, 173, 38);
+$primary : #279ACC;
+$secondary : #385C6B;
+$success : #6fa03b;
+$info : #ebe976;
+$danger : #CE4257;
+$warning : #FF7F51;
 
 // import
 @import "../../assets/node_modules/bootstrap/scss/functions";
@@ -8,7 +13,9 @@ $warning : rgb(214, 173, 38);
 $custom-theme-colors : (
     "cardeasy" : #33673B,
     "cardmedium" : #9A6D38,
-    "cardhard" : #AE360A
+    "cardhard" : #AE360A,
+    'altlight' : #FDF0D5,
+    'altdark' : #383D3B,
     );
 
 $theme-colors : map-merge($custom-theme-colors, $theme-colors);
