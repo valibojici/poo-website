@@ -19,33 +19,43 @@
 </head>
 
 <body>
+    <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
         <div class="container">
+
+            <!-- logo -->
             <a class="navbar-brand" href="#">&Icirc;nvață POO</a>
             
+            <!-- toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
+                <!-- aici sunt linkurile -->
                 <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
+
                     <li class="nav-item mx-xl-2">
                         <a class="nav-link active" href="./index.html">Acasă</a>
                     </li>
+
+                    <!-- dropdown pt categorii probleme -->
                     <li class="nav-item dropdown mx-xl-2">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorii probleme</a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Usor</a></li>
-                            <li><a class="dropdown-item" href="#">Mediu</a></li>
-                            <li><a class="dropdown-item" href="#">Greu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=easy">Usor</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=medium">Mediu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=hard">Greu</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Random</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=random">Random</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item mx-xl-2">
                         <a class="nav-link" href="#tips">Tips</a>
                     </li>
+
                     <li class="nav-item mx-xl-2">
                         <a class="nav-link" href="#contact" >Contact</a>
                     </li>
@@ -84,7 +94,7 @@
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
+                        <a href="./problem.html?t=easy" class="btn btn-outline-altlight w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
                 <!-- card medium -->
@@ -100,7 +110,7 @@
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
+                        <a href="./problem.html?t=medium" class="btn btn-outline-altlight w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
 
@@ -120,7 +130,7 @@
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
+                        <a href="./problem.html?t=hard" class="btn btn-outline-altlight w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
 
@@ -137,7 +147,7 @@
                             <li class="text-light list-group-item bg-transparent border-0 p-0 p-md-1" >Functii</li>
                           </ul>
                         </div>
-                        <a href="#" class="btn btn-outline-warning w-50 d-block mx-auto my-3">Rezolva</a>
+                        <a href="./problem.html?t=random" class="btn btn-outline-altlight w-50 d-block mx-auto my-3">Rezolva</a>
                       </div>
                 </div>
             </div>

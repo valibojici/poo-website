@@ -14,6 +14,100 @@
     <title>Probleme</title>
 </head>
 <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">&Icirc;nvață POO</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-xl-2">
+                        <a class="nav-link" href="./index.html">Acasă</a>
+                    </li>
+                    <li class="nav-item dropdown mx-xl-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorii probleme</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="#">Usor</a></li>
+                            <li><a class="dropdown-item" href="#">Mediu</a></li>
+                            <li><a class="dropdown-item" href="#">Greu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Random</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item mx-xl-2">
+                        <a class="nav-link" href="./index.html#tips">Tips</a>
+                    </li>
+                    <li class="nav-item mx-xl-2">
+                        <a class="nav-link" href="./index.html#contact" >Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row h-100">
+
+            <!-- coloana stanga -->
+            <div class="col col-md-6 bg-altdark main-content-col">
+
+                <!-- Id problema -->
+                <div class="row py-5">
+                    <h3 class="text-center text-light display-5">Problema #<span id="id-problema">1</span></h3>
+                </div>
+
+                <!-- Cod problema -->
+                <div class="row px-5">
+                    <pre id='problem' class="bg-light"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+class myClass{
+    int x;
+    int y;
+public:
+
+    myClass(int x){
+        cout &lt;&lt; &quot;C&quot;;
+        this.x = x;
+    }
+};
+
+int main(){
+    cout &lt;&lt; &quot;Hello world!&quot;;
+}</code></pre>
+                </div>
+
+                <!-- Butoane control probleme -->
+                <div class="row">
+                    <div class="button-container d-flex justify-content-evenly align-items-center mt-3 mt-lg-5">
+                        <span class="btn btn-outline-warning  text-nowrap"> <i class="bi bi-chevron-left"></i> Problema anterioara</span>
+                        <span class="btn btn-outline-light  text-nowrap"> <i class="bi bi-clipboard"></i> Copiaza textul problemei</span>
+                        <span class="btn btn-outline-success  text-nowrap">  Problema urmatoare <i class="bi bi-chevron-right"></i></span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- coloana dreapta -->
+            <div class="col col-md-6 bg-light h-100 overflow-scroll">
+                    <!-- <div id="choice-buttons-container" class="button-container d-flex justify-content-evenly align-items-center border-1 border h-100 bg-altdark">
+                    <span class="btn btn-lg btn-secondary px-5 py-2"> DA </span>
+                    <span class="btn btn-lg btn-secondary px-5 py-2"> NU </span>
+                </div> -->
+                <div id="solution">
+                    <p class="p-3 lead overflow-hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores asperiores modi odit sunt quam libero officia repellendus in eligendi. Fugiat rem pariatur dolore voluptate id a. Quae, assumenda nemo. Perspiciatis quisquam ullam voluptatum commodi porro in repellendus adipisci, ea non ratione similique expedita omnis atque? Asperiores explicabo quae hic accusamus. Animi minus fugit ducimus qui exercitationem. Sapiente quaerat vitae vero maxime incidunt, quod similique quisquam blanditiis recusandae magni ad eos sunt. Enim vero quis minus, inventore amet quam nam nulla ratione veritatis odio illo aperiam architecto porro impedit ad officia, sit at ullam. Suscipit illo esse labore alias. Impedit, accusamus! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem beatae debitis repellendus maiores dolorum excepturi earum similique modi delectus deserunt? Debitis, corporis sunt! Repudiandae dolorum impedit vero corrupti eos facilis incidunt? Maxime fuga rerum quo? Sed dolorem voluptates debitis doloremque mollitia veritatis a laudantium saepe voluptatum fuga nobis, consectetur placeat, aut animi, quae corrupti molestiae eos! Culpa quidem asperiores rem unde assumenda quasi, aspernatur qui? Ipsam labore repudiandae tempora consequatur deleniti culpa nihil, maiores quisquam magni iure modi porro voluptates exercitationem reprehenderit quas quibusdam, numquam harum facilis placeat mollitia? Dolor repellendus, cumque ullam mollitia in exercitationem obcaecati reiciendis fugiat dignissimos sapiente. Voluptatem nobis reprehenderit illum doloribus sequi aperiam qui repellat, minus eos fugit ipsam maiores dolore exercitationem facilis magni! Enim placeat excepturi molestiae, optio asperiores doloribus ratione vitae est nulla. Iste optio error, veniam ratione aliquam inventore totam obcaecati quasi facere, quibusdam at fuga unde, nemo libero tempore soluta aspernatur ut. Laboriosam numquam esse, beatae distinctio delectus vel nisi nulla, repudiandae eveniet modi autem ea facilis accusamus magni veniam dolore sit quisquam tenetur. Iusto exercitationem perspiciatis, enim, nulla neque sed recusandae rerum atque ea cupiditate, numquam sit aliquam labore eius. Accusantium minus dolorum quam excepturi iusto quae, iure soluta nemo exercitationem porro ratione non nam asperiores aliquam sit distinctio amet ut delectus qui totam! Quod ratione placeat qui minima nemo laudantium veniam odio nihil dignissimos libero atque ea, culpa eius exercitationem at blanditiis, debitis ipsa! Quasi velit vitae voluptatum similique voluptates, quos non eligendi nobis quis ducimus repellendus quod rem quibusdam excepturi. Fugit reiciendis saepe sint blanditiis atque. Nesciunt voluptatibus quaerat beatae ducimus odit unde praesentium voluptatum sint adipisci quisquam! Nihil distinctio vero impedit natus nostrum labore consequatur dolor fugiat libero reprehenderit, repellat accusamus maiores doloremque asperiores voluptatibus magni voluptas eligendi suscipit deserunt aliquid similique odio repudiandae. Ullam velit atque totam saepe at commodi repellendus eaque voluptatum iure, animi sapiente, similique id, dolorem libero. Recusandae deserunt similique repellat harum at, consectetur, perspiciatis totam quidem sunt, esse consequatur quia nulla distinctio inventore? A quas rem perspiciatis odio corrupti. Doloribus ipsum ab neque cupiditate, placeat asperiores quis blanditiis non assumenda atque sapiente aliquam qui numquam laudantium? At facilis ipsam cum eum reprehenderit cupiditate ullam ipsum pariatur repellat quis. Dignissimos eum facilis ab laudantium voluptatum, accusantium voluptate, placeat doloremque, laborum animi officiis suscipit. Consectetur, provident. Explicabo reprehenderit, laboriosam minima, omnis optio, error quae facere labore amet quam eveniet quidem aut vel. Esse ut ad pariatur neque a ea id fugiat. Sunt ipsam, labore veniam dicta quidem beatae vel deserunt illo cum suscipit, repellat nostrum aspernatur architecto tempora porro autem ipsa excepturi ex perferendis reiciendis voluptate assumenda doloribus? Tempora magni eveniet esse debitis soluta velit nam voluptates ab, eius dolorem, id aspernatur provident perferendis voluptatibus laboriosam? Obcaecati assumenda eaque aut at eum quos ab officia vero et sed velit sunt eius voluptate accusamus tempore, impedit illo! Vitae, nulla deleniti? Sint ut dicta delectus, quod soluta maxime voluptatem necessitatibus non deserunt molestiae hic ducimus recusandae magni natus nulla, sapiente odit deleniti saepe adipisci! Quas, expedita.</p>
+                </div>
+            </div>
+
+        </div>
+       
+    </div>
 </body>
 </html>
