@@ -23,7 +23,7 @@ let index = 0;
 let data = null;
 
 async function load(){
-    data = await fetch('https://raw.githubusercontent.com/valibojici/website-test/main/output.json');
+    data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
     data = await data.json();
     
     

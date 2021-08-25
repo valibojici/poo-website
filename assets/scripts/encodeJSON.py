@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 			solution = re.sub(
 				'<inline>(.*)<inline>',
-				lambda m: f"<pre class='inline'><code>{escapeHTML(m.group(1).strip())}</code></pre>",
+				lambda m: f"<code>{escapeHTML(m.group(1).strip())}</code>",
 				solution, flags=re.S)
 
 			solution = re.sub(
