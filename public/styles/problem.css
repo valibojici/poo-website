@@ -2,10 +2,18 @@ body{
     height: 100vh;
 }
 
-body > div{
-    height: calc(100% - 56px);
+@media screen and (min-width: 992px) {
+    #main-container{
+        height: calc(100% - 56px);
+    }
+    #main-right-col{
+        overflow: visible;
+    }
 }
+ 
 
-.main-content-col{
-    height: 100%;
+@media screen and (max-width: 991px) {
+    #main-left-col{
+        height: calc(100vh - 56px);
+    }
 }
