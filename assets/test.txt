@@ -1,0 +1,20 @@
+#BEGIN_PROBLEM
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	cout << "Hello world!";
+}
+#END_PROBLEM
+
+#BEGIN_SOLUTION
+Nu compileaza pentru ca <inline>cout << "pulla";<inline> nu merge aia e bag pula. eweweweweweeeeeee we wew ewejwej wie we jw eijwewewewew e wewe we <block>
+int f(){
+	int x = 5;
+}<block>Deci neam kakat pe noi.<a href="./page2.html">Page2</a>
+#END_SOLUTION
+
+#BEGIN_TAGS
+easy,cock
+#END_TAGS

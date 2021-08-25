@@ -1,7 +1,6 @@
 from os import sep
 import sys
 from typing import List
-import encodeHTML as ec
 import json
 import argparse
 import re

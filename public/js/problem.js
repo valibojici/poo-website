@@ -25,8 +25,8 @@ let data = null;
 async function load(){
     data = await fetch('https://raw.githubusercontent.com/valibojici/website-test/main/output.json');
     data = await data.json();
-    console.log(data);
-    console.log(data.content);
+    
+    
     $('#next-btn').on('click', async ()=>{
         // let data = await fetch('https://gist.githubusercontent.com/valibojici/f6806c38994cbbcabe0e3872f0ed15b8/raw/395c4115d6fdaeca10933382868a215301929c84/test2.cpp');
        
@@ -34,14 +34,19 @@ async function load(){
     
         let code = content[index].problem;
         let solution = content[index].solution;
-        console.log(content[index].id);
+        
     
         $("#problem").empty().append(getNumberedCodeBlock(code));
         $('#solution').html(decodeHtml(solution));
      
         index++;
         index = index % content.length;
-        hljs.highlightAll();
+
+        // $("#problem").find("pre code").each(el => console.log($(this).text()));
+        for(let el of document.getElementById('problem').querySelectorAll('pre code')){
+            hljs.highlightElement(el);
+        }
+        
     });
     
 }
@@ -72,11 +77,6 @@ function copyToClipboard (element) {
 
 
   function getNumberedCodeBlock(code){
-    let lines = code.trim().split('\n').length;
-    
-    
-    
-   
     let div = document.createElement('div');
     div.id = 'lines-container';
 
@@ -88,9 +88,11 @@ function copyToClipboard (element) {
         let number = document.createElement('span');
         number.textContent = count;
         number.classList.add('noselect');
+        number.classList.add('line-no');
 
         
         let pre = document.createElement('pre');
+        pre.classList.add('line-code')
         
         let code = document.createElement('code');
         code.classList.add('language-cpp');
@@ -106,27 +108,7 @@ function copyToClipboard (element) {
     }
 
     return div;
-
-
-    div.classList.add('code-container');
-    
-    let lineNoPre = document.createElement('pre');
-    lineNoPre.textContent = [...Array(lines).keys()].map(i => i + 1).join('\n');
-    lineNoPre.classList.add('noselect', 'code-line-no');
-    
-    let codePre = document.createElement('pre');
-    codePre.classList.add('codeblock');
-    let codeblock = document.createElement('code');
-    codeblock.textContent = code;
-
-    codePre.appendChild(codeblock);
-
-    div.appendChild(lineNoPre);
-    div.appendChild(codePre);
-
-    return div;
-    
-  }
+}
 
   
   function decodeHtml(html) {
