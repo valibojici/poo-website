@@ -3,6 +3,22 @@
 
 using namespace std;
 
+class MyClass{
+private:
+	int x;
+	int y;
+
+public:
+	MyClass(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+
+	int get_x(){
+		return x;
+	}
+}
+
 int main(){
 	cout << "Hello world!";
 }

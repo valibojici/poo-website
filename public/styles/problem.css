@@ -73,7 +73,10 @@ background: rgb(221, 221, 221);
     width: 20px;
     text-align: end;
     font-size: 0.875em;
+    font-family: 'Courier New', Courier, monospace;
     color: darkslategrey;
+
+    background-color: white;
 }
 
 .line-code{
