@@ -43,7 +43,7 @@ async function load(){
         index = index % content.length;
 
         // $("#problem").find("pre code").each(el => console.log($(this).text()));
-        for(let el of document.getElementById('problem').querySelectorAll('pre code')){
+        for(let el of document.querySelectorAll('pre code')){
             hljs.highlightElement(el);
         }
         
