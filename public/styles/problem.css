@@ -9,11 +9,73 @@ body{
     #main-right-col{
         overflow: visible;
     }
+    #main-left-col{
+        height: 100%;
+    }
 }
  
 
 @media screen and (max-width: 991px) {
     #main-left-col{
-        height: calc(100vh - 56px);
+        height: 100%;
     }
+}
+
+.mh-50{
+    max-height: 50%;
+}
+
+pre code.hljs{
+    padding-left: 1.5em;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.code-line-no{
+    position: absolute;
+    text-align: center;
+}
+ 
+#problem pre{
+    margin: 0;
+    padding: 0;
+}
+
+/*  
+
+
+#problem{
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+*/
+.noselect {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;    
+  }
+
+  #lines-container > span{
+      width: 100%;
+      font-family: monospace;
+  }
+
+
+  #lines-container > span:nth-child(2n) {
+      background: rgb(221, 221, 221);
+  }
+
+  #lines-container > span:nth-child(2n) *{
+    background: rgb(221, 221, 221);
+}
+
+#lines-container > span:nth-child(2n+1) {
+    background: rgb(231, 231, 231);
+}
+
+#lines-container > span:nth-child(2n+1) *{
+  background: rgb(231, 231, 231);
 }
