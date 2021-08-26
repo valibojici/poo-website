@@ -44,8 +44,6 @@ async function load(){
     data = await data.json();
 
     $('#next-btn').on('click', ()=>{
-        // let data = await fetch('https://gist.githubusercontent.com/valibojici/f6806c38994cbbcabe0e3872f0ed15b8/raw/395c4115d6fdaeca10933382868a215301929c84/test2.cpp');
-       
         let content = data.content;
         
         index = (index == content.length-1) ? 0 : index + 1;
@@ -62,7 +60,6 @@ async function load(){
         
         $('#prompt').removeClass('d-none');
         $('#solution').addClass('d-none');
-        
     });
 
     $('#prev-btn').on('click', ()=>{
@@ -90,9 +87,14 @@ async function load(){
     $('#next-btn').trigger('click');
 
     $('#correct-btn, #incorrect-btn').on('click', event=>{
-        console.log(event.target);
-        $('#prompt').addClass('d-none');
-        $('#solution').removeClass('d-none');
+        $('#prompt').animate({ opacity : 0,}, 200, ()=>{
+            $("#prompt").addClass('d-none');            
+            $("#prompt").css({opacity : 100});
+            $('#solution').removeClass('d-none');
+            
+            $(window).scrollTop($('#solution').offset().top);
+        });
+        
     })
 }
 

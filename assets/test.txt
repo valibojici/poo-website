@@ -28,7 +28,43 @@ int main(){
 Nu compileaza pentru ca <inline>cout << "pulla";<inline> nu merge aia e bag pula. eweweweweweeeeeee we wew ewejwej wie we jw eijwewewewew e wewe we <block>
 int f(){
 	int x = 5;
-}<block>Deci neam kakat pe noi.<a href="./page2.html">Page2</a>
+}<block>Deci neam kakat pe noi.
+dejfoefjeofejfoefe oef
+ kfeofjeopf easyfe
+ fefefe fe fefefe fefefe
+
+ fefefefefefef
+ fefefefefefeff
+ fef
+ f
+ f
+
+ fefefefefefeff
+ fefefefefefeff
+ fef
+ f
+
+ fefefefefefeff
+ fef
+ f
+ f
+
+ fefefefefefeff
+ fefefef
+ f
+ f
+
+ fefefefefefeff
+ fef
+ f
+
+ fefefefffffffffffffff
+
+ f
+ f
+ f
+ f
+ ffffffffffffffffffffffffffffffffffffff<a href="./page2.html">Page2</a>
 #END_SOLUTION
 
 #BEGIN_TAGS
