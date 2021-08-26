@@ -15,9 +15,6 @@
     <!-- jquery -->
     <script src="./js/jquery.js" defer></script>
 
-    <!-- clipboardjs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-
     <!-- highlightjs -->
     <link rel="stylesheet" href="./styles/vs.min.css">
     <script src="./js/highlight.min.js"></script>
@@ -79,10 +76,10 @@
             <!-- Butoane control probleme -->
             <div class="row justify-content-evenly mt-3 gy-4 gy-sm-0">
                 <div class="col col-sm-4 col-lg-5 col-xl-4">
-                    <span id='prev-btn' class="btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap"><i class="bi bi-chevron-left me-2"></i>Problema anterioara</span>
+                    <span class="prev-btn btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap"><i class="bi bi-chevron-left me-2"></i>Problema anterioara</span>
                 </div>
                 <div class="col col-sm-4 col-lg-5 col-xl-4">
-                    <span id='next-btn' class="btn btn-outline-success d-flex align-items-center justify-content-center text-nowrap"> Problema urmatoare<i class="bi bi-chevron-right ms-2"></i></span>
+                    <span class="next-btn btn btn-outline-success d-flex align-items-center justify-content-center text-nowrap"> Problema urmatoare<i class="bi bi-chevron-right ms-2"></i></span>
                 </div>
 
             </div>
@@ -113,16 +110,30 @@
                 </div>
                 <div class="row mt-5 justify-content-center text-center">
                     <div class="col-5 col-sm-4 col-md-3">
-                        <a id='correct-btn' class="btn btn-lg btn-outline-success py-3 shadow d-block w-100" href="./problem.html#solution">DA</a>
+                        <a id='correct-btn' class="btn btn-lg btn-outline-success py-3 shadow d-block w-100" >DA</a>
                     </div>
                     <div class="col-5 col-sm-4 col-md-3">
-                        <a id='incorrect-btn' class="btn btn-lg btn-outline-warning py-3 shadow d-block w-100" href="./problem.html#solution">NU</a>
+                        <a id='incorrect-btn' class="btn btn-lg btn-outline-warning py-3 shadow d-block w-100" >NU</a>
                     </div>
                 </div>
             </div>
 
             <!-- solutia -->
-            <div id="solution" class="lead p-3 d-none"></div>
+            <div id="solution-container" class="d-none">
+                <div id="solution" class="lead p-3 "></div>
+                <div class="row d-md-none justify-content-center mt-5 mb-3 gy-3">
+                    <div class="col col-sm-4">
+                        <a class="prev-btn btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="bi bi-chevron-left me-2"></i>Problema anterioara
+                        </a>
+                    </div>
+                    <div class="col col-sm-4">
+                        <a class="next-btn btn btn-outline-success d-flex align-items-center justify-content-center text-nowrap">
+                            Problema urmatoare <i class="bi bi-chevron-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

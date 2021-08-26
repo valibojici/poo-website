@@ -9,8 +9,8 @@ function changeButtonsSize(media) {
 
         $('span.btn').addClass('btn-sm');
 
-        addRemoveClass('#next-btn', 'btn-success', 'btn-outline-success');
-        addRemoveClass('#prev-btn', 'btn-warning', 'btn-outline-warning');
+        addRemoveClass('.next-btn', 'btn-success', 'btn-outline-success');
+        addRemoveClass('.prev-btn', 'btn-warning', 'btn-outline-warning');
         addRemoveClass('#copy-btn', 'btn-altlight', 'btn-outline-altlight');
         addRemoveClass('#correct-btn', 'btn-success','btn-outline-success');
         addRemoveClass('#incorrect-btn', 'btn-warning','btn-outline-warning');
@@ -19,8 +19,8 @@ function changeButtonsSize(media) {
     } else {
         $('span.btn').removeClass('btn-sm');
 
-        addRemoveClass('#next-btn','btn-outline-success', 'btn-success');
-        addRemoveClass('#prev-btn','btn-outline-warning', 'btn-warning' );
+        addRemoveClass('.next-btn','btn-outline-success', 'btn-success');
+        addRemoveClass('.prev-btn','btn-outline-warning', 'btn-warning' );
         addRemoveClass('#copy-btn','btn-outline-altlight', 'btn-altlight');
         addRemoveClass('#correct-btn','btn-outline-success', 'btn-success');
         addRemoveClass('#incorrect-btn','btn-outline-warning', 'btn-warning');
@@ -33,9 +33,6 @@ function changeButtonsSize(media) {
       changeButtonsSize(media);
   });
 
-
-  new ClipboardJS('.btn');
-
 let index = -1;
 let data = null;
 
@@ -43,7 +40,7 @@ async function load(){
     data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
     data = await data.json();
 
-    $('#next-btn').on('click', ()=>{
+    $('.next-btn').on('click', ()=>{
         let content = data.content;
         
         index = (index == content.length-1) ? 0 : index + 1;
@@ -59,10 +56,12 @@ async function load(){
         document.querySelectorAll('pre code').forEach(elem => hljs.highlightElement(elem)); 
         
         $('#prompt').removeClass('d-none');
-        $('#solution').addClass('d-none');
+        $('#solution-container').addClass('d-none');
+
+        $(window).scrollTop($('body').offset().top);
     });
 
-    $('#prev-btn').on('click', ()=>{
+    $('.prev-btn').on('click', ()=>{
         // let data = await fetch('https://gist.githubusercontent.com/valibojici/f6806c38994cbbcabe0e3872f0ed15b8/raw/395c4115d6fdaeca10933382868a215301929c84/test2.cpp');
        
         let content = data.content;
@@ -81,18 +80,20 @@ async function load(){
         document.querySelectorAll('pre code').forEach(elem => hljs.highlightElement(elem));   
         
         $('#prompt').removeClass('d-none');
-        $('#solution').addClass('d-none');
+        $('#solution-container').addClass('d-none');
+
+        $(window).scrollTop($('body').offset().top);
     });
     
-    $('#next-btn').trigger('click');
+    $('.next-btn').first().trigger('click');
 
     $('#correct-btn, #incorrect-btn').on('click', event=>{
         $('#prompt').animate({ opacity : 0,}, 200, ()=>{
             $("#prompt").addClass('d-none');            
             $("#prompt").css({opacity : 100});
-            $('#solution').removeClass('d-none');
+            $('#solution-container').removeClass('d-none');
             
-            $(window).scrollTop($('#solution').offset().top);
+            $(window).scrollTop($('#solution-container').offset().top);
         });
         
     })
@@ -102,7 +103,7 @@ load();
 
 
 $('#copy-btn').on('click', e =>{
-    copyToClipboard(document.querySelector("#problem code"));
+    copyToClipboard(document.querySelectorAll("#problem code"));
 });
 
 function copyToClipboard (elements) {
