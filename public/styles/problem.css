@@ -3,6 +3,9 @@ body{
     tab-size: 4;
 }
 
+#spinner{
+    width: 10vmin;
+}
 
 .mh-50{
     max-height: 50%;

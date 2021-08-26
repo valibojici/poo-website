@@ -1,5 +1,4 @@
 function changeButtonsSize(media) {
-
     function addRemoveClass(selector, addClass, removeClass) {
         $(`${selector}`).addClass(addClass);
         $(`${selector}`).removeClass(removeClass);
@@ -28,14 +27,90 @@ function changeButtonsSize(media) {
         addRemoveClass('#incorrect-btn', 'btn-outline-warning', 'btn-warning');
     }
 }
-var media = window.matchMedia("(max-width: 992px)");
+
+let media = window.matchMedia("(max-width: 992px)");
 
 changeButtonsSize(media) // Call listener function at run time
 $(media).on('change', () => {
     changeButtonsSize(media);
 });
 
+
+
+
+async function getProblems() {
+    // get all problems from github repo
+    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    data = await data.json();
+    data = data.content;
+    return data;
+}
+
+let problems = getProblems();
+
+problems.then((problems)=>{
+    // TO DO filter problmes handle no problems situation
+
+    $("#loading-container").addClass('d-none');
+
+    console.log(problems);
+    addEventsToButtons(problems);
+    loadProblem(problems[0]);
+    $("#main-container").removeClass('d-none');
+});
+
+function addEventsToButtons(data) {
+    let problemIndex = 0;
+    let problems = data;
+    
+    // next and prev problem buttons
+    $('.next-btn, .prev-btn').on('click', (event) => {
+        let $buttonPressed = $(event.target);
+        if ($buttonPressed.hasClass('next-btn')) {
+            problemIndex = (problemIndex == problems.length - 1) ? 0 : problemIndex + 1;
+        } else {
+            problemIndex = (problemIndex <= 0) ? problems.length - 1 : problemIndex - 1;
+        }
+        loadProblem(problems[problemIndex]);
+        // scroll to the top
+        $(window).scrollTop($('body').offset().top);
+    });
+
+    // prompt buttons
+    $('#correct-btn, #incorrect-btn').on('click', event => {
+        // animate prompt to fade
+        $('#prompt').animate({
+            opacity: 0
+        }, 200, () => {
+            $("#prompt").addClass('d-none');
+
+            $("#prompt").css({
+                opacity: 100
+            });
+
+            // hide prompt first then show solution
+            $('#solution-container').removeClass('d-none');
+
+            // scroll to solution (for mobile)
+            $(window).scrollTop($('#solution-container').offset().top);
+        });
+    });
+
+    // copy button
+    $('#copy-btn').on('click', e => {
+        copyToClipboard(document.querySelectorAll("#problem code"));
+        let originalText = $("#copy-btn").html();
+        $("#copy-btn").html('Text copiat!');
+        setTimeout(() => {
+            $("#copy-btn").html(originalText);
+        }, 1500);
+    });
+}
+
+
 function loadProblem(data) {
+    // puts problem content on page, hides solution and shows prompt 
+    // also highlights with highlightsjs
     let code = data.problem;
     let solution = data.solution;
     let id = data.id;
@@ -50,56 +125,9 @@ function loadProblem(data) {
     $('#solution-container').addClass('d-none');
 }
 
-async function loadData() {
-    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
-    data = await data.json();
-    data = data.content;
-
-    let index = 0;
-
-    $('.next-btn, .prev-btn').on('click', (event) => {
-        let $buttonPressed = $(event.target);
-        if ($buttonPressed.hasClass('next-btn')) {
-            index = (index == data.length - 1) ? 0 : index + 1;
-        } else {
-            index = (index <= 0) ? data.length - 1 : index - 1;
-        }
-
-        loadProblem(data[index]);
-
-        $(window).scrollTop($('body').offset().top);
-    });
-
-    $('#correct-btn, #incorrect-btn').on('click', event => {
-        $('#prompt').animate({
-            opacity: 0,
-        }, 200, () => {
-            $("#prompt").addClass('d-none');
-            $("#prompt").css({
-                opacity: 100
-            });
-            $('#solution-container').removeClass('d-none');
-
-            $(window).scrollTop($('#solution-container').offset().top);
-        });
-    });
-
-    loadProblem(data[0]);
-}
-
-loadData();
-
-
-$('#copy-btn').on('click', e => {
-    copyToClipboard(document.querySelectorAll("#problem code"));
-    let originalText = $("#copy-btn").html();
-    $("#copy-btn").html('Text copiat!');
-    setTimeout(() => {
-        $("#copy-btn").html(originalText);
-    }, 1500);
-});
 
 function copyToClipboard(elements) {
+    // from stack overflow
     if (!elements.length) {
         elements = [elements];
     }
@@ -125,6 +153,7 @@ function copyToClipboard(elements) {
 
 
 function getNumberedCodeBlock(code) {
+    // to do in python script?
     let div = document.createElement('div');
     div.id = 'lines-container';
 
@@ -157,10 +186,3 @@ function getNumberedCodeBlock(code) {
 
     return div;
 }
-
-
-// function decodeHtml(html) {
-//     var txt = document.createElement("textarea");
-//     txt.innerHTML = html;
-//     return txt.value;
-// }
