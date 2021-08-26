@@ -104,6 +104,11 @@ load();
 
 $('#copy-btn').on('click', e =>{
     copyToClipboard(document.querySelectorAll("#problem code"));
+    let originalText = $("#copy-btn").html();
+    $("#copy-btn").html('Text copiat!');
+    setTimeout(()=>{
+        $("#copy-btn").html(originalText);
+    }, 1500);
 });
 
 function copyToClipboard (elements) {
