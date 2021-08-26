@@ -75,9 +75,15 @@ pre.inline{
 }
 
 @media screen and (min-width: 992px) {
+    body{
+        display: flex;
+        flex-direction: column;
+    }
+
     #main-container{
         /* height: calc(100% - 56px); */
-        height: calc(100% - 40px - 1rem);
+        /* height: calc(100% - 40px - 1rem); */
+        flex-grow: 1;
     }
     #main-right-col{
         overflow: visible;
@@ -99,6 +105,8 @@ pre.inline{
  
 
 @media screen and (max-width: 991px) {
+
+
     #main-container{
         min-height: calc(100vh - 40px - 1rem);
 
