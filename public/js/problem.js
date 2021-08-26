@@ -1,15 +1,32 @@
 function changeButtonsSize(media) {
+
+    function addRemoveClass(selector, addClass, removeClass){
+        $(`${selector}`).addClass(addClass);
+        $(`${selector}`).removeClass(removeClass);
+    }
+
     if (media.matches) { // If media query matches
-        for(let btn of $('span.btn')){
-            $(btn).addClass("btn-sm");
-        }
+
+        $('span.btn').addClass('btn-sm');
+
+        addRemoveClass('#next-btn', 'btn-success', 'btn-outline-success');
+        addRemoveClass('#prev-btn', 'btn-warning', 'btn-outline-warning');
+        addRemoveClass('#copy-btn', 'btn-altlight', 'btn-outline-altlight');
+        addRemoveClass('#correct-btn', 'btn-success','btn-outline-success');
+        addRemoveClass('#incorrect-btn', 'btn-warning','btn-outline-warning');
+
+
     } else {
-        for(let btn of $('span.btn')){
-            $(btn).removeClass("btn-sm");
-        }
+        $('span.btn').removeClass('btn-sm');
+
+        addRemoveClass('#next-btn','btn-outline-success', 'btn-success');
+        addRemoveClass('#prev-btn','btn-outline-warning', 'btn-warning' );
+        addRemoveClass('#copy-btn','btn-outline-altlight', 'btn-altlight');
+        addRemoveClass('#correct-btn','btn-outline-success', 'btn-success');
+        addRemoveClass('#incorrect-btn','btn-outline-warning', 'btn-warning');
     }
   }
-  var media = window.matchMedia("(max-width: 768px)");
+  var media = window.matchMedia("(max-width: 992px)");
 
   changeButtonsSize(media) // Call listener function at run time
   $(media).on('change', ()=>{
@@ -19,45 +36,77 @@ function changeButtonsSize(media) {
 
   new ClipboardJS('.btn');
 
-let index = 0;
+let index = -1;
 let data = null;
 
 async function load(){
     data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
     data = await data.json();
-    
-    
-    $('#next-btn').on('click', async ()=>{
+
+    $('#next-btn').on('click', ()=>{
         // let data = await fetch('https://gist.githubusercontent.com/valibojici/f6806c38994cbbcabe0e3872f0ed15b8/raw/395c4115d6fdaeca10933382868a215301929c84/test2.cpp');
        
         let content = data.content;
+        
+        index = (index == content.length-1) ? 0 : index + 1;
     
         let code = content[index].problem;
         let solution = content[index].solution;
+        let id = content[index].id;
         
-    
+        $('#id-problema').text(`${id}`);
         $("#problem").empty().append(getNumberedCodeBlock(code));
         $('#solution').html(decodeHtml(solution));
      
-        index++;
-        index = index % content.length;
-
-        // $("#problem").find("pre code").each(el => console.log($(this).text()));
-        for(let el of document.querySelectorAll('pre code')){
-            hljs.highlightElement(el);
-        }
+        document.querySelectorAll('pre code').forEach(elem => hljs.highlightElement(elem)); 
+        
+        $('#prompt').removeClass('d-none');
+        $('#solution').addClass('d-none');
         
     });
+
+    $('#prev-btn').on('click', ()=>{
+        // let data = await fetch('https://gist.githubusercontent.com/valibojici/f6806c38994cbbcabe0e3872f0ed15b8/raw/395c4115d6fdaeca10933382868a215301929c84/test2.cpp');
+       
+        let content = data.content;
+
+        index = (index == 0) ? content.length - 1 : index-1;
     
+        let code = content[index].problem;
+        let solution = content[index].solution;
+        let id = content[index].id;
+        
+        $('#id-problema').text(`${id}`);
+    
+        $("#problem").empty().append(getNumberedCodeBlock(code));
+        $('#solution').html(decodeHtml(solution));
+        
+        document.querySelectorAll('pre code').forEach(elem => hljs.highlightElement(elem));   
+        
+        $('#prompt').removeClass('d-none');
+        $('#solution').addClass('d-none');
+    });
+    
+    $('#next-btn').trigger('click');
+
+    $('#correct-btn, #incorrect-btn').on('click', event=>{
+        console.log(event.target);
+        $('#prompt').addClass('d-none');
+        $('#solution').removeClass('d-none');
+    })
 }
 
 load();
+
 
 $('#copy-btn').on('click', e =>{
     copyToClipboard(document.querySelector("#problem code"));
 });
 
-function copyToClipboard (element) {
+function copyToClipboard (elements) {
+    if(!elements.length){
+        elements = [elements];
+    }
     // Create a new textarea element and give it id='temp_element'
     const textarea = document.createElement('textarea')
     textarea.id = 'temp_element'
@@ -65,8 +114,11 @@ function copyToClipboard (element) {
     textarea.style.height = 0
     // Now append it to your page somewhere, I chose <body>
     document.body.appendChild(textarea)
-    // Give our textarea a value of whatever inside the div of id=containerid
-    textarea.value = element.innerText
+    // Give our textarea a value of whatever inside the elements
+    for(let elem of elements){
+        textarea.value += (elem.innerText.trim()) ? elem.innerText + '\n' : '\n';
+    }
+    textarea.value = textarea.value.trim();
     // Now copy whatever inside the textarea to clipboard
     const selector = document.querySelector('#temp_element')
     selector.select()
