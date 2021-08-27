@@ -27,7 +27,7 @@
 </head>
 <body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
+    <nav id='navbar' class="navbar navbar-expand-lg navbar-dark bg-dark text-light py-2">
         <div class="container">
             <a class="navbar-brand" href="#">&Icirc;nvață POO</a>
             
@@ -73,7 +73,7 @@
     <div id='main-container' class="row no-gutter p-0 m-0 d-none">
 
         <!-- coloana stanga -->
-        <div id='main-left-col' class="col-12 col-lg-6 bg-altdark h-100 overflow-auto">
+        <div id='main-left-col' class="col-12 col-lg-6 bg-altdark overflow-auto">
 
             <!-- Id problema -->
             <div class="row mt-3">
@@ -93,7 +93,7 @@
             
             <!-- Cod problema -->
             <div id='problem-outer-container' class="row px-2 mx-sm-3 mx-lg-5 mt-3 overflow-auto mh-50">
-                <div id='problem' class="bg-light p-0 m-0"></div>
+                <div id='problem' class="bg-light p-0 m-0 d-flex"></div>
             </div>
             
             <!-- Buton copy -->
@@ -108,7 +108,7 @@
 
 
         <!-- coloana dreapta -->
-        <div id='main-right-col' class="col-12 col-lg-6 bg-altlight h-100 overflow-auto">
+        <div id='main-right-col' class="col-12 col-lg-6 bg-altlight ">
 
             <!-- prompt + butoane DA sau NU -->
             <div id='prompt' class="container-fluid h-100 d-flex flex-column justify-content-center px-0 my-5 my-md-0">
@@ -126,7 +126,7 @@
             </div>
 
             <!-- solutia -->
-            <div id="solution-container" class="d-none">
+            <div id="solution-container" class="d-none row mh-100 overflow-auto">
                 <div id="solution" class="pt-4 px-1 px-sm-3 pb-md-4"></div>
                 <!-- butoane next prev pt mobil -->
                 <div class="row d-md-none justify-content-center mt-5 mb-3 gy-3">

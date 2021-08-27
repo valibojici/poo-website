@@ -9,6 +9,8 @@ function changeButtonsSize(media) {
         $('span.btn').addClass('btn-sm');
         $('#solution').removeClass('lead');
 
+        
+
         addRemoveClass('.next-btn', 'btn-success', 'btn-outline-success');
         addRemoveClass('.prev-btn', 'btn-warning', 'btn-outline-warning');
         addRemoveClass('#copy-btn', 'btn-altlight', 'btn-outline-altlight');
@@ -17,6 +19,7 @@ function changeButtonsSize(media) {
 
 
     } else {
+        // $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar').css('height'))}px`});
         $('span.btn').removeClass('btn-sm');
         $('#solution').addClass('lead');
 
@@ -64,8 +67,10 @@ function addEventsToButtons(data) {
     let problems = data;
     
     // next and prev problem buttons
+    
     $('.next-btn, .prev-btn').on('click', (event) => {
         let $buttonPressed = $(event.target);
+        $buttonPressed.blur();
         if ($buttonPressed.hasClass('next-btn')) {
             problemIndex = (problemIndex == problems.length - 1) ? 0 : problemIndex + 1;
         } else {
@@ -75,6 +80,8 @@ function addEventsToButtons(data) {
         // scroll to the top
         $(window).scrollTop($('body').offset().top);
     });
+
+    $('.next-btn, .prev-btn').on('dblclick', false);
 
     // prompt buttons
     $('#correct-btn, #incorrect-btn').on('click', event => {
@@ -109,6 +116,8 @@ function addEventsToButtons(data) {
 
 
 function loadProblem(data) {
+    $("#loading-container").removeClass('d-none');
+    $("#main-contaniner").addClass('d-none');
     // puts problem content on page, hides solution and shows prompt 
     // also highlights with highlightsjs
     let code = data.problem;
@@ -123,6 +132,9 @@ function loadProblem(data) {
 
     $('#prompt').removeClass('d-none');
     $('#solution-container').addClass('d-none');
+
+    $("#loading-container").addClass('d-none');
+    $("#main-contaniner").removeClass('d-none');
 }
 
 

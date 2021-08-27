@@ -1,10 +1,14 @@
 body{
-    height: 100vh;
+    min-height: 100vh;
     tab-size: 4;
 }
 
 #spinner{
     width: 10vmin;
+}
+
+#loading-container{
+    flex-grow: 1;
 }
 
 .mh-50{
@@ -13,6 +17,7 @@ body{
 
 pre code.hljs{
     padding: 0;
+    overflow: visible;
 }
 
 pre{
@@ -37,6 +42,18 @@ pre{
     font-size: 1.25em;
 }
 
+#lines-container{
+    flex-grow: 1;
+}
+
+#lines-container > span{
+    display: inline-flex;
+}
+
+#lines-container *{
+    overflow: visible;
+}
+
 #lines-container > span:nth-child(2n) {
     background: rgb(221, 221, 221);
 }
@@ -59,8 +76,6 @@ background: rgb(221, 221, 221);
     font-size: 0.875em;
     font-family: 'Courier New', Courier, monospace;
     color: darkslategrey;
-
-    background-color: white;
 }
 
 .line-code{
@@ -75,24 +90,29 @@ pre.inline code{
 pre.inline{
     display: inline;
     margin: 0 2px;
+    background-color: whitesmoke;
 }
 
-@media screen and (min-width: 992px) {
-    body{
-        display: flex;
-        flex-direction: column;
-    }
+#solution pre:not(.inline){
+    display: flex;
+}
 
+#solution pre:not(.inline) > code{
+    flex-grow: 1;
+}
+
+
+@media screen and (min-width: 992px) {
     #main-container{
-        /* height: calc(100% - 56px); */
-        /* height: calc(100% - 40px - 1rem); */
-        flex-grow: 1;
+        height: calc(100vh - 56px);
     }
     #main-right-col{
         overflow: visible;
+        /* height: auto !important; */
+        max-height: 100% !important;
     }
     #main-left-col{
-        height: 100%;
+        height: auto !important;
     }
 }
 
@@ -108,21 +128,25 @@ pre.inline{
  
 
 @media screen and (max-width: 991px) {
-
+    body{
+        display: flex;
+        flex-direction: column;
+    }
 
     #main-container{
-        min-height: calc(100vh - 40px - 1rem);
-
         flex-direction: column;
+        flex-grow: 1;
     }
 
     #main-left-col{
         flex-grow: 0;
+        height: initial !important;
         overflow: initial !important;
     }
 
     #main-right-col{
-        flex-grow: 2;
+        flex-grow: 1;
+        height: initial !important;
         overflow: initial !important;
     }
 
@@ -137,6 +161,11 @@ pre.inline{
     #correct-btn, #incorrect-btn{
         font-weight: lighter;
         color: white;
+    }
+
+    #problem-outer-container{
+        height: auto;
+        max-height: initial;
     }
 }
 
