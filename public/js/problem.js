@@ -5,6 +5,7 @@ function changeButtonsSize(media) {
     }
 
     if (media.matches) { // If media query matches
+        $('#main-container').css({height : `initial`});
 
         $('span.btn').addClass('btn-sm');
         $('#solution').removeClass('lead');
@@ -19,7 +20,7 @@ function changeButtonsSize(media) {
 
 
     } else {
-        // $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar').css('height'))}px`});
+        $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar').css('height'))}px`});
         $('span.btn').removeClass('btn-sm');
         $('#solution').addClass('lead');
 
