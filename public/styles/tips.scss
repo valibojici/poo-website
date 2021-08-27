@@ -1,0 +1,25 @@
+#navbar-container{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+body{
+    min-height: 100vh;
+}
+ 
+
+#offcanvas{
+    z-index: 9999;
+}
+
+#offcanvas-btn{
+    
+    position: fixed;
+    top: 60px;
+    left: 0;
+    z-index: 10;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+}

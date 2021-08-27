@@ -3,66 +3,28 @@
 
 using namespace std;
 
-class MyClass{
-private:
-	int x;
-	int y;
-
-public:
-	MyClass(int x, int y){
-		this.x = x;
-		this.y = y;
-	}
-
-	int get_x(){
-		return x;
-	}
+template<class T>
+int get(T x){
+    return x.toString();
 }
 
 int main(){
-	cout << "Hello world!";
+	cout << "Hello world!"; // dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddssss
 }
 #END_PROBLEM
 
 #BEGIN_SOLUTION
-Nu compileaza pentru ca <inline>cout << "pulla";<inline> nu merge aia e bag pula. eweweweweweeeeeee we wew ewejwej wie we jw eijwewewewew e wewe we <block>
+Nu compileaza pentru ca <inline>cout << "hello";<inline> nu merge aia e situatia. eweweweweweeeeeee we wew ewejwej wie we jw eijwewewewew e wewe we <block>
 int f(){
-	int x = 5;
+	int x = 5; // dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    int xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = 23;
 }<block>Deci neam kakat pe noi.
 dejfoefjeofejfoefe oef
  kfeofjeopf easyfe
  fefefe fe fefefe fefefe
 
  fefefefefefef
- fefefefefefeff
- fef
- f
- f
-
- fefefefefefeff
- fefefefefefeff
- fef
- f
-
- fefefefefefeff
- fef
- f
- f
-
- fefefefefefeff
- fefefef
- f
- f
-
- fefefefefefeff
- fef
- f
-
- fefefefffffffffffffff
-
- f
- f
- f
+ 
  f
  ffffffffffffffffffffffffffffffffffffff<a href="./page2.html">Page2</a>
 #END_SOLUTION

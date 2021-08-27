@@ -1,0 +1,1 @@
+$('body').css({'padding-top': parseFloat($('#navbar-container').css('height'))});
