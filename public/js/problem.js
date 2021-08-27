@@ -40,6 +40,14 @@ $(media).on('change', () => {
 });
 
 
+$(window).on('resize', ()=>{
+    if(!media.matches){
+        $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar-container').css('height'))}px`});
+    } else {
+        $('#main-container').css({height : `initial`});
+    }
+})
+
 
 
 async function getProblems() {

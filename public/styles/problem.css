@@ -38,6 +38,11 @@ pre{
     user-select: none;    
 }
 
+#problem-outer-container{
+    flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+}
+
 #problem{
     font-size: 1.25em;
 }
