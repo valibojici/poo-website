@@ -20,7 +20,7 @@ function changeButtonsSize(media) {
 
 
     } else {
-        $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar').css('height'))}px`});
+        $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar-container').css('height'))}px`});
         $('span.btn').removeClass('btn-sm');
         $('#solution').addClass('lead');
 
