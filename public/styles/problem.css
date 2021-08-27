@@ -4,11 +4,11 @@ body{
 }
 
 #spinner{
-    width: 10vmin;
+    width: 16%;
 }
 
 #loading-container{
-    position: relative;
+    position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
