@@ -26,11 +26,14 @@ $('#dis').on('click', e=>{
     target.scrollIntoView();
 
     let scrollTimeout;
-    addEventListener('scroll', function(e) {
+    function listenScroll(e){
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(function() {
             bsoffcanvas.toggle();
         }, 100);
-    });
+        removeEventListener('scroll', listenScroll);
+    }
+
+    addEventListener('scroll', listenScroll);
     
 })
