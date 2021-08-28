@@ -41,11 +41,11 @@
                     <li class="nav-item dropdown mx-xl-2">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorii probleme</a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Usor</a></li>
-                            <li><a class="dropdown-item" href="#">Mediu</a></li>
-                            <li><a class="dropdown-item" href="#">Greu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=easy">Usor</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=medium">Mediu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=hard">Greu</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Random</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=random">Random</a></li>
                         </ul>
                     </li>
                     <li class="nav-item mx-xl-2">
@@ -59,21 +59,8 @@
         </div>
     </nav>
 
-    
-    
-    <!-- TO DO  -->
-
-<!-- 
-    offcanvas btn to big for mobile
-    navbar is under the btn -> make z index bigger
-    link problems page in navbar
- -->
-
-
-
-
     <!-- offcanvas --> 
-    <div class="offcanvas offcanvas-start bg-dark d-block d-md-none" tabindex="-1" id="offcanvas">
+    <div class="offcanvas offcanvas-start bg-dark d-block d-md-none" data-bs-scroll="true" tabindex="-1" id="offcanvas">
         <div class="offcanvas-header px-4 pt-4 pb-0">
             <h5 class="offcanvas-title text-light text-center flex-grow-1" id="offcanvasLabel">Cuprins</h5>
             <button type="button" class="btn-close btn-close-white text-reset p-0 m-0" data-bs-dismiss="offcanvas"></button>
