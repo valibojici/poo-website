@@ -29,6 +29,7 @@ $('#dis').on('click', e=>{
  
     let targetId = e.target.getAttribute('target')
     let target = $(`#s3`)[0];
-    bsoffcanvas.toggle();
     target.scrollIntoView();
+    
+    bsoffcanvas.toggle();
 })
