@@ -19,21 +19,19 @@ function removeLeadParagraphsOnMobile(media){
 
 let offcanvas = $('.offcanvas')[0];
 let bsoffcanvas = new bootstrap.Offcanvas(offcanvas);
-$('#dis').on('click', e=>{
- 
-    let targetId = e.target.getAttribute('target')
-    let target = $(`#s3`)[0];
-    target.scrollIntoView();
 
-    let scrollTimeout;
-    function listenScroll(e){
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(function() {
-            bsoffcanvas.toggle();
-            removeEventListener('scroll', listenScroll);
-        }, 100);
+
+$('#offcanvas-nav a').on('click', e=>{
+    e.preventDefault();
+    let targetId = e.target.getAttribute('href')
+    let target = $(`${targetId}`)[0];
+    
+    bsoffcanvas.hide();
+
+    function scrollTo(event){
+        target.scrollIntoView(true);
+        removeEventListener('hidden.bs.offcanvas', scrollTo);
     }
 
-    addEventListener('scroll', listenScroll);
-    
+    addEventListener('hidden.bs.offcanvas', scrollTo);
 })
