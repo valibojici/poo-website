@@ -13,3 +13,22 @@ function removeLeadParagraphsOnMobile(media){
         $(".article-content ").addClass('lead');
     }
 }
+
+
+// let scrollTimeout;
+// addEventListener('scroll', function(e) {
+//     clearTimeout(scrollTimeout);
+//     scrollTimeout = setTimeout(function() {
+//         console.log('Scroll ended');
+//     }, 100);
+// });
+
+let offcanvas = $('.offcanvas')[0];
+let bsoffcanvas = new bootstrap.Offcanvas(offcanvas);
+$('#dis').on('click', e=>{
+ 
+    let targetId = e.target.getAttribute('target')
+    let target = $(`#s3`)[0];
+    bsoffcanvas.toggle();
+    target.scrollIntoView();
+})
