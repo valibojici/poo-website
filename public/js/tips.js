@@ -30,8 +30,8 @@ $('#dis').on('click', e=>{
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(function() {
             bsoffcanvas.toggle();
+            removeEventListener('scroll', listenScroll);
         }, 100);
-        removeEventListener('scroll', listenScroll);
     }
 
     addEventListener('scroll', listenScroll);
