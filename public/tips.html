@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="./styles/tips.min.css">
     <title>Tips</title>
 </head>
-<body data-bs-spy="scroll" data-bs-target="#scrollspy" data-bs-offset="0" tabindex="0" class="bg-altlight">
+<body data-bs-spy="scroll" data-bs-target=".scrollspy2 " data-bs-offset="0" tabindex="0" class="bg-altlight">
+
     <!-- navabr -->
     <nav id='navbar-container' class="navbar navbar-expand-lg navbar-dark bg-dark text-light py-2 ">
         <div class="container">
@@ -58,14 +59,27 @@
         </div>
     </nav>
 
-    <!-- offcanvas -->
-    <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvas">
+    
+    
+    <!-- TO DO  -->
+
+<!-- 
+    offcanvas btn to big for mobile
+    navbar is under the btn -> make z index bigger
+    link problems page in navbar
+ -->
+
+
+
+
+    <!-- offcanvas --> 
+    <div class="offcanvas offcanvas-start bg-dark d-block d-md-none" tabindex="-1" id="offcanvas">
         <div class="offcanvas-header px-4 pt-4 pb-0">
             <h5 class="offcanvas-title text-light text-center flex-grow-1" id="offcanvasLabel">Cuprins</h5>
             <button type="button" class="btn-close btn-close-white text-reset p-0 m-0" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body pt-0">
-            <nav id="scrollspyOffcanvas" class="navbar navbar-dark bg-dark flex-column align-items-stretch px-3 sticky-top w-100">
+            <nav id="offcanvas-nav" class="navbar navbar-dark bg-dark flex-column align-items-stretch px-3 sticky-top w-100">
                 <nav class="nav nav-pills flex-column align-items-start">
                   <a class="nav-link py-0 mt-2" href="#s1">Item 1</a>
                   <nav class="nav nav-pills flex-column">
