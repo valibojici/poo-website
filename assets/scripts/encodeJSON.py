@@ -9,8 +9,8 @@ parser=argparse.ArgumentParser(
     description='''
 	Convert file to JSON. 
 	Code must begin with #BEGIN_CODE and end with #END_CODE.
-	Solution must begin with #BEGIN_SOLUTION and end with #END_SOLUTION. Code blocks must be enclosed in <inline> or <block> tags.
-	Tags section must begin with #BEGIN_TAGS and end with #END_TAGS. Individual tags must be separated by ; ''',)
+	Solution must begin with #BEGIN_SOLUTION and end with #END_SOLUTION. Code blocks must be enclosed in <inline>...</inline> or <block>...</block> tags.
+	Tags section must begin with #BEGIN_TAGS and end with #END_TAGS. Individual tags must be separated by ; or , ''',)
 
 parser.add_argument('file',help='input text file path')
 parser.add_argument('-w', '--write', help='file path for output (overwrites)')
@@ -30,17 +30,40 @@ if __name__ == '__main__':
 		with open(args.file) as f:
 			text = f.read()
 
-			problem = re.search('#BEGIN_PROBLEM(.*)#END_PROBLEM', text, flags=re.S).group(1).strip()
-			solution = re.search('#BEGIN_SOLUTION(.*)#END_SOLUTION', text, flags=re.S).group(1).strip()
-			tags = [tag.strip() for tag in re.search('#BEGIN_TAGS(.*)#END_TAGS', text, flags=re.S).group(1).strip().split(';')]
+			try:
+				problem = re.search('#BEGIN_PROBLEM(.*)#END_PROBLEM', text, flags=re.S).group(1).strip()
+			except AttributeError as e:
+				ans = input('WARNING: Missing problem. Continue? (y/n)')
+				if ans == 'n':
+					sys.exit()
+				problem = ''
+
+			try:
+				solution = re.search('#BEGIN_SOLUTION(.*)#END_SOLUTION', text, flags=re.S).group(1).strip()
+			except AttributeError as e:
+				ans = input('WARNING: Missing solution. Continue? (y/n)')
+				if ans == 'n':
+					sys.exit()
+				solution = ''
+
+			try:
+				tags = [tag.strip() for tag in re.split('[,;]',re.search('#BEGIN_TAGS(.*)#END_TAGS', text, flags=re.S).group(1).strip())]
+				if 'correct' not in tags and 'incorrect' not in tags:
+					raise Exception('ERROR: Missing correct/incorrect tag')
+			except AttributeError as e:
+				ans = input('WARNING: Missing tags. Continue? (y/n)')
+				if ans == 'n':
+					sys.exit()
+				tags = []
+
 
 			solution = re.sub(
-				'<inline>(.*)<inline>',
-				lambda m: f"<code>{escapeHTML(m.group(1).strip())}</code>",
+				'<inline>(.*?)</inline>',
+				lambda m: f"<pre class='inline'><code>{escapeHTML(m.group(1).strip())}</code></pre>",
 				solution, flags=re.S)
 
 			solution = re.sub(
-				'<block>(.*)<block>',
+				'<block>(.*?)</block>',
 				lambda m: f"<pre><code>{escapeHTML(m.group(1).strip())}</code></pre>",
 				solution, flags=re.S)
 
