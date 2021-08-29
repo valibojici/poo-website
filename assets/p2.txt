@@ -34,14 +34,17 @@ int main(){
 #END_PROBLEM
 
 #BEGIN_SOLUTION
+<p>
 Programul nu compileaza, avem eroare la linia 30: <inline>Persoana p1,p2("Maria", 21, 1.76);</inline>
-<br>
+</p>
 <samp> error: &quot;Persoana::Persoana()&quot; is private within this context </samp>
-<br>
+<p>
 Care sunt modificatorii de acces in C++? Si care este modificatorul de acces implicit?
-<br>
+</p>
+<p>
 Pentru ca nu am specificat niciun modificator de acces, se aplica cel implicit adica private deci tot ce este in clasa este private. Deci si constructorii sunt private deci nu pot fi apelati din main.
-<br>
+</p>
+<p>
 Modificarea care face programul corect este sa adaugi modificatorul de acces public. Unde mai exact? Niciodata sa nu ai datele membre (in cazul asta <var>nume</var>, <var>varsta</var>, <var>inaltime</var>) publice. Deci pui <inline>public:</inline> fix inainte de constructori.
 
 <block>
@@ -80,6 +83,7 @@ int main(){
     p2.afis();
 }
 </block>
+</p>
 #END_SOLUTION
 
 #BEGIN_TAGS
