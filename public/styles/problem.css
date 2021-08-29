@@ -63,11 +63,11 @@ pre{
 }
 
 #lines-container > span:nth-child(2n) {
-    background: rgb(221, 221, 221);
+    background: rgb(224, 224, 224);
 }
 
 #lines-container > span:nth-child(2n) *{
-background: rgb(221, 221, 221);
+background: rgb(224, 224, 224);
 }
 
 #lines-container > span:nth-child(2n+1) {

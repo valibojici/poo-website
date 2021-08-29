@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +22,7 @@
     <!-- my stuff -->
     <script src="./js/problem.js" defer></script>
     <link rel="stylesheet" href="./styles/problem.css">
-
+    <link rel="icon" type="image/png" href="./imgs/icon.png">
     <title>Probleme</title>
 </head>
 <body class="bg-altdark">
@@ -44,11 +44,11 @@
                     <li class="nav-item dropdown mx-xl-2">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorii probleme</a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Usor</a></li>
-                            <li><a class="dropdown-item" href="#">Mediu</a></li>
-                            <li><a class="dropdown-item" href="#">Greu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=easy">Usor</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=medium">Mediu</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?t=hard">Greu</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Random</a></li>
+                            <li><a class="dropdown-item" href="./problem.html?order=random">Random</a></li>
                         </ul>
                     </li>
                     <li class="nav-item mx-xl-2">
@@ -62,9 +62,15 @@
         </div>
     </nav>
 
+    <!-- loading container -->
     <div id='loading-container' class="bg-altdark d-flex flex-column justify-content-center align-items-center">
             <img id='spinner' src="./imgs/spinner.gif" alt="Please wait..." class="img-fluid d-block">
             <div class="text-center text-light lead">Loading...</div>
+    </div>
+
+    <!-- no problems container -->
+    <div id='no-problems' class="container-fluid d-flex justify-content-center align-items-center d-none text-light mt-5">
+        <div class="lead">Sorry! Nu exista probleme...(inca)</div>
     </div>
 
      <!-- Container care imparte pagina in 2 (nu imparte pt mobil) -->
@@ -81,7 +87,7 @@
             <!-- Butoane control probleme -->
             <div class="row justify-content-evenly mt-3 gy-4 gy-sm-0">
                 <div class="col col-sm-4 col-lg-5 col-xl-4">
-                    <a class="prev-btn btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap"><i class="bi bi-chevron-left me-2"></i>Problema anterioara</a>
+                    <a class="prev-btn btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap" role="button"><i class="bi bi-chevron-left me-2"></i>Problema anterioara</a>
                 </div>
                 <div class="col col-sm-4 col-lg-5 col-xl-4">
                     <a class="next-btn btn btn-outline-success d-flex align-items-center justify-content-center text-nowrap"> Problema urmatoare<i class="bi bi-chevron-right ms-2"></i></a>
@@ -125,7 +131,8 @@
 
             <!-- solutia -->
             <div id="solution-container" class="d-none row mh-100 overflow-auto">
-                <div id="solution" class="pt-4 px-1 px-sm-3 pb-md-4"></div>
+                <div id="feedback" class="text px-4 pt-4 h3 fw-bold"></div>
+                <div id="solution" class="pt-3 px-1 px-sm-3 pb-md-4"></div>
                 <!-- butoane next prev pt mobil -->
                 <div class="row d-md-none justify-content-center mt-5 mb-3 gy-3">
                     <div class="col col-sm-4">

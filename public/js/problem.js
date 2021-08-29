@@ -48,32 +48,74 @@ $(window).on('resize', ()=>{
     }
 })
 
-
-
 async function getProblems() {
     // get all problems from github repo
     let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
     data = await data.json();
     data = data.content;
-    return data;
+    return data; 
 }
 
-let problems = getProblems();
-
-problems.then((problems)=>{
-    // TO DO filter problmes handle no problems situation
-
+getProblems().then((problems)=>{
     $("#loading-container").addClass('d-none');
+ 
+    const parsedUrl = new URL(window.location.href);
+    const urlSearchParams = new URLSearchParams(parsedUrl.search);
+    
+    if(urlSearchParams.has('id')){
+        let id = parseInt(urlSearchParams.get('id'));
+        problems = problems.filter(problem => problem.id === id);
+    } else {
+        
+        if(urlSearchParams.has('t')){
+            let tags = urlSearchParams.get('t').split(',');
+            problems = problems.filter(problem => tags.every(tag => problem.tags.includes(tag)) );
+        }
+    
+        if(urlSearchParams.has('ot')){
+            let tags = urlSearchParams.get('ot').split(',');
+            problems = problems.filter(problem => tags.some(tag => problem.tags.includes(tag)) );
+        }
 
-    console.log(problems);
-    addEventsToButtons(problems);
-    loadProblem(problems[0]);
-    $("#main-container").removeClass('d-none');
+        if(urlSearchParams.has('order')){
+            let ord = urlSearchParams.get('order');
+            if(ord === 'asc') problems.sort((p1, p2) => p1.id < p2.id ? -1 : 1);
+            else 
+            if(ord === 'desc') problems.sort((p1,p2) => p1.id < p2.id ? 1 : -1);
+            else 
+            if(ord === 'random') shuffle(problems);
+        }
+    }
+
+    // test if problems array is empty
+    if(problems.length === 0){
+        $('#no-problems').removeClass('d-none');
+    } else {
+        addEventsToButtons(problems);
+        loadProblem(problems[0]);
+        $("#main-container").removeClass('d-none');
+    }
 });
+
+
+
+
 
 function addEventsToButtons(data) {
     let problemIndex = 0;
     let problems = data;
+
+    if(problemIndex == 0){
+        $('.prev-btn').addClass('disabled');
+    } else {
+        $('.prev-btn').removeClass('disabled');
+    }
+
+    if(problemIndex == problems.length-1){
+        $('.next-btn').addClass('disabled');
+    } else {
+        $('.next-btn').removeClass('disabled');
+    }
     
     // next and prev problem buttons
     
@@ -81,11 +123,25 @@ function addEventsToButtons(data) {
         let $buttonPressed = $(event.target);
         $buttonPressed.blur();
         if ($buttonPressed.hasClass('next-btn')) {
-            problemIndex = (problemIndex == problems.length - 1) ? 0 : problemIndex + 1;
+            if(problemIndex + 1 < problems.length) problemIndex++;
+            
         } else {
-            problemIndex = (problemIndex <= 0) ? problems.length - 1 : problemIndex - 1;
+            if(problemIndex - 1 >= 0) problemIndex--;
         }
         loadProblem(problems[problemIndex]);
+
+        if(problemIndex == 0){
+            $('.prev-btn').addClass('disabled');
+        } else {
+            $('.prev-btn').removeClass('disabled');
+        }
+
+        if(problemIndex == problems.length-1){
+            $('.next-btn').addClass('disabled');
+        } else {
+            $('.next-btn').removeClass('disabled');
+        }
+
         // scroll to the top
         $(window).scrollTop($('body').offset().top);
     });
@@ -103,6 +159,11 @@ function addEventsToButtons(data) {
             $("#prompt").css({
                 opacity: 100
             });
+
+            let isCorrect = problems[problemIndex].tags.includes('correct') == $(event.target).is("#correct-btn");
+
+            $('#feedback').text(isCorrect ? 'CORECT !' : 'GRESIT !');
+            $('#feedback').css({color : `${isCorrect ? 'green' : 'red'}`});
 
             // hide prompt first then show solution
             $('#solution-container').removeClass('d-none');
@@ -206,4 +267,15 @@ function getNumberedCodeBlock(code) {
     }
 
     return div;
+}
+
+
+function shuffle(array) {
+    var m = array.length, t, i;
+    while (m) {
+        i = Math.floor(Math.random() * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
 }
