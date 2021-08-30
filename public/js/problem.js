@@ -46,12 +46,14 @@ $(window).on('resize', ()=>{
     } else {
         $('#main-container').css({height : `initial`});
     }
-})
+});
 
 async function getProblems() {
     // get all problems from github repo
     let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
+
     data = data.content;
     return data; 
 }
@@ -95,7 +97,7 @@ getProblems().then((problems)=>{
         loadProblem(problems[0]);
         $("#main-container").removeClass('d-none');
     }
-});
+}).catch(err => console.log(err));
 
 
 
@@ -193,10 +195,29 @@ function loadProblem(data) {
     let code = data.problem;
     let solution = data.solution;
     let id = data.id;
-
+ 
     $('#id-problema').text(`${id}`);
     $("#problem").empty().append(getNumberedCodeBlock(code));
     $('#solution').html(solution);
+
+    let divs = []
+    $('#solution pre.block > code').each((index, elem) => {
+        let code = elem.innerText;
+       divs.push(getNumberedCodeBlock(code));
+    });
+
+    $('#solution pre.block').each((index, elem) => {
+        let $outerDiv = $('<div></div>')
+        $outerDiv.addClass('codeblock-container');
+        $outerDiv.append(divs[index]);
+        $(elem).replaceWith($outerDiv);
+    })
+
+
+    // for(let c of document.querySelectorAll('#solution pre.block > code')){
+    //     let temp = c.innerText;
+    //     $(c).empty().append(getNumberedCodeBlock(temp))
+    // }
 
     $('pre code').get().forEach(elem => hljs.highlightElement(elem));
 
@@ -237,7 +258,7 @@ function copyToClipboard(elements) {
 function getNumberedCodeBlock(code) {
     // to do in python script?
     let div = document.createElement('div');
-    div.id = 'lines-container';
+    div.classList.add('lines-container');
 
     let count = 0;
     for (let line of code.split('\n')) {

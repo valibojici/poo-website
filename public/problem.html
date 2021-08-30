@@ -21,7 +21,7 @@
 
     <!-- my stuff -->
     <script src="./js/problem.js" defer></script>
-    <link rel="stylesheet" href="./styles/problem.css">
+    <link rel="stylesheet" href="./styles/problem.min.css">
     <link rel="icon" type="image/png" href="./imgs/icon.png">
     <title>Probleme</title>
 </head>
@@ -95,18 +95,18 @@
 
             </div>
             
-            <!-- Cod problema -->
-            <div id='problem-outer-container' class="row px-2 px-lg-1 mx-sm-3 mx-xl-5 mt-3 mh-50">
-                <div id='problem' class="bg-light p-0 m-0 d-flex overflow-auto "></div>
-            </div>
-            
             <!-- Buton copy -->
-            <div class="row justify-content-center align-items-center px-2 px-lg-0 mt-3 mb-3 mb-lg-0">
+            <div class="row justify-content-center align-items-center px-2 px-lg-0 mt-3 mt-lg-5 mb-3 mb-lg-0">
                 <div class="col col-sm-6 col-md-4 col-lg-6 col-xl-5">
                     <a id='copy-btn' class="btn btn-outline-altlight d-flex align-items-center justify-content-center"> <i class="bi bi-clipboard me-2"></i> Copiaza textul problemei</a>
                 </div>
 
             </div>
+            <!-- Cod problema -->
+            <div id='problem-outer-container' class="row px-2 px-lg-1 mx-sm-3 mx-xl-5 my-3 ">
+                <div id='problem' class="codeblock-container bg-light p-0 m-0 d-flex overflow-auto "></div>
+            </div>
+            
                                
         </div>
 
