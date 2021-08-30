@@ -21,6 +21,7 @@ body{
 pre code.hljs{
     padding: 0;
     overflow: visible;
+    font-size: inherit;
 }
 
 pre{
@@ -40,21 +41,13 @@ pre{
     -o-user-select: none;
     user-select: none;    
 }
-
-#problem-outer-container{
-    flex-wrap: nowrap;
-}
-
+ 
 .codeblock-container{
     display: flex;
     overflow: auto;
     font-size: 1rem;
 }
-
-pre code{
-    font-size: 1rem; 
-}
-
+ 
 .lines-container{
     flex-grow: 1;
 }
@@ -86,7 +79,6 @@ background: rgb(224, 224, 224);
 .line-no{
     width: 30px;
     text-align: end;
-    font-size: 0.875em;
     font-family: 'Courier New', Courier, monospace;
     color: darkslategrey;
 }
@@ -140,6 +132,11 @@ pre.inline{
         /* height: auto !important; */
         max-height: 100%;
     }
+
+        
+    .codeblock-container{
+        font-size: 1.2rem;
+    }
 }
 
 @media screen and (max-width: 1200px) {
@@ -147,9 +144,6 @@ pre.inline{
         height: 100%;
     }
 
-    #problem{
-        font-size: 1rem;
-    }
 }
  
 
@@ -175,11 +169,7 @@ pre.inline{
         height: initial !important;
         overflow: initial !important;
     }
-
-    #problem{
-        font-size: 1rem;
-    }
-    
+ 
     #question, #correct-btn, #incorrect-btn{
         font-size: calc(1rem + 2.1vw);
     }
@@ -196,9 +186,9 @@ pre.inline{
 }
 
 @media screen and (max-width: 768px) {
-    #problem{
-        font-size: 1rem;
+    .codeblock-container{
+        font-size: 0.75rem;
     }
 
-    
+     
 }
