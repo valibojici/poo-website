@@ -45,7 +45,7 @@ pre{
 .codeblock-container{
     display: flex;
     overflow: auto;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
  
 .lines-container{
@@ -187,7 +187,7 @@ pre.inline{
 
 @media screen and (max-width: 768px) {
     .codeblock-container{
-        font-size: 0.75rem;
+        font-size: 1rem;
     }
 
      
