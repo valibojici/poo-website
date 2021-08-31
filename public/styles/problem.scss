@@ -82,9 +82,11 @@ pre.inline code{
 }
 
 pre.inline{
-    display: inline;
-    margin: 0 2px;
+    display: inline-block;
     background-color: whitesmoke;
+    vertical-align: bottom;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 #solution samp.error{

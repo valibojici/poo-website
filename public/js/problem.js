@@ -264,7 +264,7 @@ function getNumberedCodeBlock(code) {
 
         count++;
         let $innerContainer = $('<div/>');
-        let $numberContainer = $('<span/>').addClass('noselect line-no').text(count);
+        let $numberContainer = $('<span/>').addClass('noselect line-no').append($('<span/>').text(count));
         let $code = $('<code/>').addClass('language-cpp').text(`${(line.length) ? line : '\n'}`);
         
         let $line = $('<pre/>').append($code).addClass('line-code');
