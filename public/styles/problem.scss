@@ -173,7 +173,7 @@ pre.inline{
     #problem-outer-container{
         height: auto;
         max-height: none;
-        overflow-y: hidden;
+        overflow-y: hidden !important;
     }
 
     #problem{
