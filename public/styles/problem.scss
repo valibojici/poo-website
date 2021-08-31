@@ -39,7 +39,8 @@ pre{
 
 .codeblock-container{
     display: flex;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: visible;
     font-size: 1.1rem;
 }
  
