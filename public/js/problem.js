@@ -257,37 +257,24 @@ function copyToClipboard(elements) {
 
 function getNumberedCodeBlock(code) {
     // to do in python script?
-    let div = document.createElement('div');
-    div.classList.add('lines-container');
-
+    let $container = $('<div/>').addClass('lines-container');
+    let lineColors = ['#e0e0e0', '#e7e7e7'];
     let count = 0;
     for (let line of code.split('\n')) {
 
         count++;
-        let span = document.createElement('span');
-        let number = document.createElement('span');
-        number.textContent = count;
-        number.classList.add('noselect');
-        number.classList.add('line-no');
+        let $innerContainer = $('<div/>');
+        let $numberContainer = $('<span/>').addClass('noselect line-no').text(count);
+        let $code = $('<code/>').addClass('language-cpp').text(`${(line.length) ? line : '\n'}`);
+        
+        let $line = $('<pre/>').append($code).addClass('line-code');
+        
+        $innerContainer.append($numberContainer).append($line);
 
-
-        let pre = document.createElement('pre');
-        pre.classList.add('line-code')
-
-        let code = document.createElement('code');
-        code.classList.add('language-cpp');
-
-        code.textContent = (line.length > 0) ? line : '\n';
-        pre.appendChild(code);
-
-        span.appendChild(number)
-        span.appendChild(pre);
-
-        span.style.display = 'flex';
-        div.appendChild(span);
+        $container.append($innerContainer);
     }
 
-    return div;
+    return $container;
 }
 
 

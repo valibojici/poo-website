@@ -14,6 +14,7 @@ body{
 
 #offcanvas{
     z-index: 9999;
+    height: 100vh;
 }
 
 #offcanvas-btn{
@@ -31,6 +32,10 @@ body{
 
 #offcanvas-btn:focus{
     box-shadow: none;
+}
+
+.nav-section.active{
+    color: black !important;
 }
 
 article > h3{
