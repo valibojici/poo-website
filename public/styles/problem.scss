@@ -1,6 +1,10 @@
 body{
     min-height: 100vh;
-    tab-size: 1;
+    tab-size: 4;
+}
+
+a{
+    color: blue;
 }
 
 .noselect {
@@ -95,7 +99,6 @@ pre.inline{
     background-color: rgba(233, 233, 233, 0.856);
     color: #dd0000;
     padding: 0.2em 10px;
-    margin: 10px 0;
 }
  
 #solution samp.output{
@@ -109,6 +112,10 @@ pre.inline{
 
 #solution .codeblock-container{
     margin: 1em 0;
+}
+
+#solution > div > *{
+    margin-bottom: 1em;
 }
 
 @media screen and (min-width: 992px) {
