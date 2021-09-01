@@ -261,11 +261,10 @@ function getNumberedCodeBlock(code) {
     let lineColors = ['#e0e0e0', '#e7e7e7'];
     let count = 0;
     for (let line of code.split('\n')) {
-
         count++;
         let $innerContainer = $('<div/>');
         let $numberContainer = $('<span/>').addClass('noselect line-no').append($('<span/>').text(count));
-        let $code = $('<code/>').addClass('language-cpp').text(`${(line.length) ? line : '\n'}`);
+        let $code = $('<code/>').addClass('language-cpp').text(`${(line.length) ? line : ''}`);
         
         let $line = $('<pre/>').append($code).addClass('line-code');
         
