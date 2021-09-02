@@ -5,6 +5,9 @@
     width: 100%;
     z-index: 2;
 }
+article a{
+    color: rgb(77, 77, 247);
+}
  
 body{
     min-height: 100vh;
@@ -40,6 +43,75 @@ body{
 
 article > h3{
     border-left: 5px solid var(--bs-success);
+}
+
+.article-content > div{
+    margin-bottom: 1em;
+}
+
+pre code.hljs{
+    padding: 0;
+    overflow: visible;
+    font-size: inherit;
+}
+
+pre{
+    padding: 0;
+    margin: 0;
+}
+
+.codeblock-container{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 1.2rem;
+    margin-top: 1em;
+}
+ 
+.lines-container{
+    flex-grow: 1;
+    line-height: 1.25;
+}
+
+.lines-container > div{
+    display: flex;
+}
+ 
+.lines-container > div:nth-child(2n), .lines-container > div:nth-child(2n) * {
+    background: #e0e0e0;
+}
+ 
+.lines-container > div:nth-child(2n+1),.lines-container > div:nth-child(2n+1) * {
+    background: #e7e7e7;
+}
+
+.line-no{
+    width: 30px;
+    font-size: 0.9em;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: darkslategrey;
+}
+
+.line-code{
+    margin-left: 0.6em;
+    padding-left: 0.6em;
+    border-left: 1.5px solid rgba(0, 0, 0, 0.2);
+}
+
+pre.inline code{
+    display: inline;
+    background: transparent;
+}
+
+pre.inline{
+    display: inline-block;
+    background-color: rgba(245, 245, 245, 0.5);
+    vertical-align: bottom;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 @media screen and (min-width: 300px) {
