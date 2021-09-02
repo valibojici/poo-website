@@ -14,7 +14,7 @@
 
     <!-- highlightjs -->
     <link rel="stylesheet" href="./styles/vs.min.css">
-    <script src="./js/highlight.min.js"></script>
+    <script src="./js/highlight.min.js" defer></script>
 
     <!-- my stuff -->
     <script src="./js/tips.js" defer></script>
@@ -100,14 +100,186 @@
 
     <div class="row g-0" >
         <div class="content col col-md-9 col-xl-10 px-2 pe-4 px-sm-3 px-md-4 px-xll-0">
-            <section id="s1" class="bg-altlight pt-5">
-                
+            <section id="overloading-overriding" class="bg-altlight pt-5">
                 <div class="container">
-                    <h1 class="display-2">Lorem ipsum dolor sit.</h1>
+                    <h1 class="display-3">Supraincarcare (overloading) & supradefinire (overriding)</h1>
         
-                    <article id="s1-a1" class="mt-4">
-                        <h3 class='my-2 ps-2 rounded'>Lorem, ipsum dolor.</h3>
-                        <div class="article-content lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum praesentium magni fugiat, pariatur sint sit similique obcaecati aliquam laborum maxime repellendus fuga ut autem nulla odit. Officiis magni a animi, voluptatem perspiciatis ut blanditiis unde obcaecati sequi soluta ducimus nam assumenda similique doloremque voluptatum, qui dignissimos deleniti saepe reprehenderit! Vel magnam reprehenderit, facilis ea assumenda nisi illo consectetur. Odio, quia. Quo perspiciatis ad optio voluptatum voluptates corrupti dignissimos assumenda, sequi porro, illum, expedita perferendis rem velit tempora. Voluptates adipisci a earum temporibus, fugit accusantium vitae explicabo possimus delectus error exercitationem laudantium facere sunt nobis recusandae voluptatibus natus ut architecto! Pariatur! Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores nulla voluptas culpa fugiat harum suscipit placeat animi minus vero earum eum repudiandae veniam, reiciendis et odit nemo, molestias accusantium, repellat tempore iste rerum aliquid! Quisquam excepturi debitis laborum recusandae vero?</div>
+                    <article id="function overloading" class="mt-4">
+                        <h3 class='my-2 ps-2 rounded'>Supraincarcare functii</h3>
+                        <div class="article-content lead">
+                            <div>
+                                In C++ putem avea mai multe functii cu acelasi nume dar trebuie ca parametrii ori sa fie de tipuri diferite, ori sa difere numarul de parametrii, ori parametrii sa fie in alta ordine (ma refer la tipul lor de ex. <pre class="inline"><code>int, int, float</code></pre> si <pre class="inline"><code>float, int, int</code></pre> nu la denumire, asta nu conteaza). De exemplu:
+                                <pre class="block"><code class="language-cpp">void f(int x) {}            // numar diferit de parametrii fata de functiile de mai jos
+void f(int x, float y) {}   // difera ordinea tipurilor parametriilor fata de functia de mai jos
+void f(float x, int y) {}</code></pre>
+                            </div>
+                            <div>
+                                Totusi ai grija la parametrii cu valori implicite, de exemplu mai jos avem eroare pentru ca apelul de functie este ambiguu, nu se stie care functie sa se aleaga.
+                                <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+void f(int x) {}
+void f(int x, int y = 4) {}
+
+int main() {
+    f(5); // eroare aici
+}</code></pre>
+                            </div>
+                        <div>
+                            Tehnic vorbind functiile trebuie sa aiba signaturi diferite. Signatura se refera la numele functiei, numarul, ordinea si tipul parametrilor.
+                        </div>
+                        <div>
+                            Daca avem ceva de genul:
+                            <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+void f(int x, int y) {}
+void f(double x, int y) {}
+
+int main() {
+    f(2, 2.3);
+}</code></pre>
+                    Cum se alege ce functie se apeleaza? Compilatorul se uita pe rand la fiecare argument si creaza o multime de functii candidat pentru fiecare argument, adica tipul argumentului (cand apelezi functia) se poate converti (cumva) in tipul parametrului (in definitia functiei). Pentru fiecare argument se creeaza o multime de functii care se potrivesc cel mai bine (chiar daca exista multe functii canditat unele fac mai multa &quot;treaba&quot; decat altele sa converteasca, de aceea se aleg cele care se potrivesc cel mai bine). Din multimile astea de functii care se potrivesc cel mai bine pentru fiecare argument se face o intersectie si functia rezultata este cea care se apeleaza. Daca intersectia e vida sau contine mai mult de 1 functie avem eroare de compilare.
+                        </div>
+
+                        <div>
+                            De exemplu:
+                            <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class MyClass {
+    // o clasa goala pentru exemplu
+};
+
+void f(MyClass x, long long y) {}   // functia 1
+void f(long long x, MyClass y) {}   // functia 2
+void f(MyClass x, MyClass y) {}     // functia 3
+
+int main() {
+    int x = 4;
+    MyClass y;
+
+    f(x, y);
+    f(x, x);
+}</code></pre>
+                            Sa ne uitam la linia 16: <pre class="inline"><code>f(x, y);</code></pre>. Mai intai la primul argument de tip <pre class="inline"><code>MyClass</code></pre>, multimea functiilor candidat = {functia 1, functia 2},multimea functiilor care ce potrivesc cel mai bine = {functia 1, functia 2}. Acum sa ne uitam la al doilea argument de tip <pre class="inline"><code>int</code></pre>, multimea functiilor candidat = multimea functiilor care se potrivesc cel mai bine = {functia 1} (pentru ca se poate converti <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>long long</code></pre> ).
+                        </div>
+                        <div>
+                            {functia 1, functia 2} ∩ {functia 1} = {functia 1}. Asta inseamna ca in final pentru <pre class="inline"><code>f(x, y);</code></pre> se apeleaza functia 1.
+                        </div>
+                        <div>
+                            Daca ne uitam la linia 17: <pre class="inline"><code>f(x, x);</code></pre>, pentru primul argument multimea functiilor care se potrivesc cel mai bine = {functia 2}, pentru al doilea argument multimea functiilor care se potrivesc cel mai bine = {functia 1}, iar {functia 2} ∩ {functia 1} = Ø si deci eroare.
+                        </div>
+
+                        <div>
+                            In general daca avem o functie care e supraincarcata si avem doua variante F1 si F2, cum alege compilatorul functia care se potriveste cel mai bine? Functia F1 este mai &quot;buna&quot; decat F2 daca in primul rand conversiile implicite pe care le face F1 (de la tipul argumentelor la tipul parametrilor) nu sunt mai rele decat cele facute de F2 (pt. fiecare argument) si in plus:
+                            <ol class="">
+                                <li>E cel putin un argument in F1 a carui conversie implicita este mai buna decat conversia implicita pentru acel argument in F2</li>
+                                <li>Sau daca nu e asa, dar doar in cazul conversiilor definite de tine (gen operatorul de cast intr-o clasa), daca conversia implicita de la tipul returnat de F1 la tipul destinatie este mai buna decat conversia implicita de la tipul returnat de F2 la tipul destinatie.
+                                    <pre class="block"><code>class MyClass {
+public:
+    operator float() { return 5.5; }
+    operator int() { return 1; }
+};
+
+int main() {
+    MyClass a;
+    double x = a;   // se apeleza prima functie vezi mai jos de ce
+    cout << x;      // se afiseaza 5.5
+}
+                                    </code></pre>
+                                </li>
+                                <li>Sau daca nu e asa, F1 este non-template iar F2 este template sau ambele sunt template dar F1 este mai specializata (dar despre template vorbesc separat).</li>
+                            </ol>
+                        </div>
+
+                        <div>
+                            Acum ce inseamna ca o conversie e mai buna decat alta? Exista 3 tipuri (in ordinea importantei):
+                            <ol>
+                                <li class="mt-4">
+                                    <h5>Exact match</h5>
+                                    <div>Nu trebuie sa se faca nicio &quot;conversie&quot; sau daca se face se considera exact match.
+                                        <pre class="block"><code>void f(int& x);
+void f(double x);
+int x = 42;
+f(x); // argument type is int; exact match with int&
+
+/////////////////////////////////////////
+
+void g(int* p);
+void g(void* p);
+
+int a[100];
+g(a); // calls f(int*); exact match with array-to-pointer conversion</code></pre>
+                                    </div>
+                                </li>
+                                <li class="mt-4">
+                                    <h5>Promotion</h5>
+                                    <div>Aici intra <i>integral promotion</i> si <i>floating-point promotion</i>. Promotia e un tip special de conversie pentru tipurile de date built-in (<pre class="inline"><code>int</code></pre>, <pre class="inline"><code>float</code></pre> etc.) si este garantat ca nu schimba valoarea. (adica tipul de date la care se converteste poate reprezenta exact orice valoare a tipului de date de la care se converteste)</div>
+                                    <div class="text-decoration-underline">Integral promotion</div>
+                                    <ul>
+                                        <li><pre class="inline"><code>signed char</code></pre> sau <pre class="inline"><code>signed short</code></pre> se pot converti la <pre class="inline"><code>int</code></pre></li>
+                                        <li><pre class="inline"><code>unsigned char</code></pre> sau <pre class="inline"><code>unsigned short</code></pre> se pot converti la <pre class="inline"><code>int</code></pre> daca <pre class="inline"><code>int</code></pre> poate retine toate valorile sau la <pre class="inline"><code>unsigned int</code></pre> daca nu poate. (e posibil ca short/char si int sa aiba acelasi nr. de biti pe un calculator si de aceea nu poti din unsigned short/char in int) </li>
+                                        <li><pre class="inline"><code>char</code></pre> se poate converti la <pre class="inline"><code>int</code></pre> sau <pre class="inline"><code>unsigned int</code></pre> (depinde daca prin <pre class="inline"><code>char</code></pre> te referi la <pre class="inline"><code>signed char</code></pre> sau <pre class="inline"><code>unsigned char</code></pre>)</li>
+                                        <li><pre class="inline"><code>bool</code></pre> se poate converti la <pre class="inline"><code>int</code></pre>, <pre class="inline"><code>false</code></pre> devine <pre class="inline"><code>0</code></pre> iar <pre class="inline"><code>true</code></pre> devine <pre class="inline"><code>1</code></pre></li>
+                                    </ul>
+                                    <div class="text-decoration-underline">Floating-point promotion</div>
+                                    <ul>
+                                        <li>Se refera doar la conversia de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>double</code></pre>.</li>
+                                    </ul>
+                                </li>
+                                <li class="mt-4">
+                                    <h5>Conversion</h5>
+                                    <div>
+                                        Aici intra <i>integral conversion</i>, <i>floating-point conversion</i>, <i>floating-integral conversion</i>, <i>bool conversion</i>
+                                    </div>
+                                    <div class="text-decoration-underline">Integral conversion</div>
+                                    <ul>
+                                        <li>aici intra tot ce nu e promotion, de exemplu din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>long</code></pre> sau din <pre class="inline"><code>unsigned short</code></pre> in <pre class="inline"><code>short</code></pre> </li>
+                                    </ul>
+                                    <div class="text-decoration-underline">Floating-point conversion</div>
+                                    <ul>
+                                        <li>aici intra conversii dintre 2 tipuri de date ce reprezinta nr. cu virgula dar <b>nu</b> e promotion, de exemplu din <pre class="inline"><code>double</code></pre> in <pre class="inline"><code>float</code></pre> sau din <pre class="inline"><code>float</code></pre> in <pre class="inline"><code>long double</code></pre>
+                                        <div>
+                                            <pre class="block"><code>void f(double);
+void f(long double);
+f(0.0f);</code></pre>
+                                            Se apeleaza prima functie pentru ca promotia (de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>double</code></pre> este mai buna decat conversia de la <pre class="inline"><code>float</code></pre> la  <pre class="inline"><code>long double</code></pre>  )
+                                        </div>
+                                        </li>
+                                    </ul>
+                                    <div class="text-decoration-underline">Floating-integral conversion</div>
+                                    <ul>
+                                        <li>aici intra conversii dintre un tip de date ce reprezinta nr. cu virgula si un tip de date care reprezinta nr. intregi dar <b>nu</b> e promotion, de exemplu din <pre class="inline"><code>double</code></pre> in <pre class="inline"><code>int</code></pre> sau din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>float</code></pre>
+                                        <div>
+                                            <pre class="block"><code>void f(int);
+void f(long double);
+f(0.0f);</code></pre>
+                                            Eroare de compilare, apelul este ambiguu, avem 2 conversii (de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>int</code></pre> si de la <pre class="inline"><code>float</code></pre> la  <pre class="inline"><code>long double</code></pre>  )
+                                        </div>
+                                        </li>
+                                    </ul>
+                                    <div class="text-decoration-underline">Bool conversion</div>
+                                    <ul>
+                                        <li>de exemplu din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>bool</code></pre> sau din <pre class="inline"><code>float</code></pre> in <pre class="inline"><code>bool</code></pre>. (de ex. <pre class="inline"><code>bool x = 5; // true</code></pre> )
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Surse</h3>
+                        <ul>
+                            <li><a href="https://en.cppreference.com/w/c/language/conversion">https://en.cppreference.com/w/c/language/conversion</a></li>
+                            <li><a href="https://docs.microsoft.com/en-us/cpp/cpp/standard-conversions?view=msvc-160">https://docs.microsoft.com/en-us/cpp/cpp/standard-conversions?view=msvc-160</a></li>
+                            <li><a href="https://stackoverflow.com/questions/30490592/no-really-when-does-floating-point-promotion-actually-happen">https://stackoverflow.com/questions/30490592/no-really-when-does-floating-point-promotion-actually-happen</a></li>
+                            <li><a href="https://en.cppreference.com/w/cpp/language/implicit_conversion">https://en.cppreference.com/w/cpp/language/implicit_conversion</a></li>
+                            <li><a href="https://riptutorial.com/cplusplus/example/8117/steps-of-overload-resolution">https://riptutorial.com/cplusplus/example/8117/steps-of-overload-resolution</a></li>
+                            <li><a href="https://riptutorial.com/cplusplus/example/6616/exact-match">https://riptutorial.com/cplusplus/example/6616/exact-match</a></li>
+                            <li><a href="https://en.cppreference.com/w/cpp/language/overload_resolution">https://en.cppreference.com/w/cpp/language/overload_resolution</a></li>
+                        </ul>
+                    </div>
                     </article>
         
                     <article id="s1-a2" class='mt-4'>
@@ -120,6 +292,7 @@
                         <div class="article-content lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores nulla voluptas culpa fugiat harum suscipit placeat animi minus vero earum eum repudiandae veniam, reiciendis et odit nemo, molestias accusantium, repellat tempore iste rerum aliquid! Quisquam excepturi debitis laborum recusandae vero?Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae deleniti dolore ipsa cumque, harum possimus dolorum neque. Labore distinctio ut officia quia magnam provident aliquam debitis nulla ab quae molestias tempore veritatis corrupti possimus at tempora repudiandae impedit pariatur explicabo, ullam atque? Magnam error saepe dolorem expedita debitis odio reiciendis corporis ex, id animi, rem dolores aliquam ullam maxime fugit illo? Perspiciatis fuga accusamus impedit pariatur ea sint quis id repellat nihil odio voluptate, culpa qui earum fugit reiciendis atque natus, ut mollitia! Distinctio recusandae commodi cumque autem dolores dolorum soluta at, deleniti eos maiores quaerat amet? Tenetur debitis, vero sunt a pariatur labore, ab inventore deserunt quae delectus vitae dolorem, quod dolorum veniam? Veritatis aperiam minus quos maiores necessitatibus, magnam atque at hic tenetur odit possimus est asperiores animi officiis natus ut saepe expedita enim error voluptates aliquam similique! Ut necessitatibus repudiandae sed quam quae odio, magnam soluta quis delectus, voluptatum similique, architecto dolores? Adipisci excepturi explicabo itaque modi aperiam impedit quia tempore voluptate magnam non sed odio nesciunt veniam ipsam, illo harum dolore dignissimos eligendi quos vitae voluptatum, distinctio fuga! Nam, numquam eius quibusdam aliquam expedita tempore, laboriosam, inventore repellat molestiae a quaerat suscipit ducimus amet vel dignissimos.</div>
                     </article>
                 </div>
+                
             </section>
         
             <section id="s2" class="bg-altlight pt-5">
@@ -218,11 +391,5 @@ int main(){
 
         
     </div>
-
-
-    
- 
-
-     <script>hljs.highlightAll()</script>
 </body>
 </html>
