@@ -30,69 +30,6 @@ a{
     max-height: 50%;
 }
 
-pre code.hljs{
-    padding: 0;
-    overflow: visible;
-    font-size: inherit;
-}
-
-pre{
-    padding: 0;
-    margin: 0;
-}
-
-.codeblock-container{
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    font-size: 1.1rem;
-}
- 
-.lines-container{
-    flex-grow: 1;
-    line-height: 1.25;
-}
-
-.lines-container > div{
-    display: flex;
-}
- 
-.lines-container > div:nth-child(2n), .lines-container > div:nth-child(2n) * {
-    background: #e0e0e0;
-}
- 
-.lines-container > div:nth-child(2n+1),.lines-container > div:nth-child(2n+1) * {
-    background: #e7e7e7;
-}
-
-.line-no{
-    width: 30px;
-    font-size: 0.9em;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-family: 'Courier New', Courier, monospace;
-    color: darkslategrey;
-}
-
-.line-code{
-    margin-left: 0.6em;
-    padding-left: 0.6em;
-    border-left: 1.5px solid rgba(0, 0, 0, 0.2);
-}
-
-pre.inline code{
-    display: inline;
-    background: transparent;
-}
-
-pre.inline{
-    display: inline-block;
-    background-color: whitesmoke;
-    vertical-align: bottom;
-    max-width: 100%;
-    overflow-x: auto;
-}
 
 #solution samp.error{
     display: inline-block;
@@ -131,18 +68,12 @@ pre.inline{
         /* height: auto !important; */
         max-height: 100%;
     }
-
-        
-    .codeblock-container{
-        font-size: 1.2rem;
-    }
 }
 
 @media screen and (max-width: 1200px) {
     #main-left-col{
         height: 100%;
     }
-
 }
  
 
@@ -188,12 +119,4 @@ pre.inline{
         max-height: none;
         overflow-y: hidden;
     }
-}
-
-@media screen and (max-width: 768px) {
-    .codeblock-container{
-        font-size: 1rem;
-    }
-
-     
 }
