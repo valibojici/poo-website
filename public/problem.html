@@ -59,18 +59,24 @@
                         <a class="nav-link" href="./index.html#contact" >Contact</a>
                     </li>
                 </ul>
+                <form class="d-flex" id='search'>
+                    <input class="form-control me-2" type="search" placeholder="ID problema" required>
+                    <button class="btn btn-sm btn-success" type="submit">Cauta</button>
+                </form>
             </div>
+
+            
         </div>
     </nav>
 
     <!-- loading container -->
     <div id='loading-container' class="bg-altdark d-flex flex-column justify-content-center align-items-center">
-            <img id='spinner' src="./imgs/spinner.gif" alt="Please wait..." class="img-fluid d-block">
+        <div class="spinner-border text-light" role="status"></div>
             <div class="text-center text-light lead">Loading...</div>
     </div>
 
     <!-- no problems container -->
-    <div id='no-problems' class="container-fluid d-flex justify-content-center align-items-center d-none text-light mt-5">
+    <div id='no-problems' class="d-flex justify-content-center align-items-center d-none text-light">
         <div class="lead">Sorry! Nu exista probleme...(inca)</div>
     </div>
 

@@ -48,10 +48,22 @@ $(window).on('resize', ()=>{
     }
 });
 
+$('#search').on('submit', e=>{
+    e.preventDefault();
+    let num = $('#search input')[0].value.trim();
+    if(!isNaN(Number(num))){
+        let url = new URL(window.location.href.split('?')[0]);
+        url.searchParams.append('id', Number(num));
+        window.location.href = url.href;
+    } else {
+        $('#search input')[0].value = '';
+    }
+})
+
 async function getProblems() {
     // get all problems from github repo
-    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
-    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
+    // let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
 
     data = data.content;
