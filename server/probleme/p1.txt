@@ -1,0 +1,44 @@
+#BEGIN_PROBLEM
+#include <iostream> 
+using namespace std;
+
+void f(int x, int y) {
+	cout << "x=" << x << " " << "y=" << y << endl;
+}
+
+void f(int x, double y) {
+	cout << "x+y=" << x + y << endl;
+}
+
+int main()
+{
+	f(1.5, 2);
+	f(4, 2.4);
+	return 0;
+}
+#END_PROBLEM
+
+#BEGIN_SOLUTION
+<div>
+Programul funtioneaza corect. Se afiseaza:
+</div>
+<output>
+x=1 y=2
+x+y=6.4
+</output>
+<div>
+Functia f este supraincarcata. La linia 14: <inline>f(1.5, 2);</inline> se apeleaza prima functie iar la linia 16: <inline>f(4, 2.4)</inline> se apeleaza a doua. De ce? 
+</div>
+<div>
+Sa ne uitam la <inline>f(1.5, 2);</inline>. Ambele functii, <inline>void f(int x, int y)</inline> si <inline>void f(int x, double y)</inline> au ca prim parametru o variabila de tip <inline>int</inline> deci ambele functii convertesc 1.5 la 1 (de la <inline>double</inline> la <inline>int</inline>).
+</div>
+<div>
+Al doilea parametru din prima functie este de tip <inline>int</inline> care se potriveste perfect cu ce avem. Al doilea parametru din a doua functie este de tip <inline>double</inline> deci trebuie o conversie de la <inline>int</inline> la <inline>double</inline>, adica munca in plus. Deci prima functie este aleasa.
+</div>
+<div>
+Similar se comporta linia 15: <inline>f(4, 2.4);</inline>. Pentru mai multe detalii legat de cum se alege o functie daca este supraincarcata si are mai multe variante vezi ce am scris <a href='./tips.html#function-overloading'>aici</a>.
+</div>
+#END_SOLUTION
+#BEGIN_TAGS
+easy, correct, function overloading, implicit cast
+#END_TAGS
