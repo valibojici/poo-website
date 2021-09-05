@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors({
-	origin: 'http://127.0.0.1:5500'
+	origin: '*'
 }))
 
 app.get('/get', (req, res) => {
