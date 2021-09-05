@@ -1,0 +1,43 @@
+#BEGIN_PROBLEM
+#include <iostream> 
+using namespace std;
+
+void g(int x, int y, double z) {
+	cout << "x + y + z = " << x + y + z << endl;
+	z = x + y;
+}
+
+void g(int x, double y, int z) {
+	cout << "x + y - z = " << x + y - z << endl;
+	z = 5;
+}
+
+void g(double x, double y, int z) {
+	x = y = 1.0;
+	cout << "x * y + z =" << x * y + z << endl;
+}
+
+int main() {
+	g(5, 6.5, 10);
+	g(1, 2, 3);
+	g(4, 5, 2.0);
+}
+#END_PROBLEM
+
+#BEGIN_SOLUTION
+<div>
+Programul nu este corect. Avem eroare de compilare la linia 21: <inline>g(1, 2, 3);</inline>
+</div>
+<error>
+more than one instance of overloaded function "f" matches the argument list
+</error>
+<div>
+Avem functia g care este supraincarcata si avem 3 &quot;variante&quot;: <inline>void g(int x, int y, double z)</inline>, <inline>void g(int x, double y, int z)</inline>, <inline>void g(double x, double y, int z)</inline>. In main mai intai apelam functia g aici <inline>g(5, 6.5, 10);</inline>. Se potriveste perfect cu a doua functie (<inline>void g(int x, double y, int z)</inline>, are 3 argumente in ordinea asta: <inline>int</inline>, <inline>double</inline>, <inline>int</inline>). Cand apelam functia g la sfarsit <inline>g(4, 5, 2.0);</inline> si acum se potriveste perfect cu prima functie <inline>void g(int x, int y, double z)</inline>.
+</div>
+<div>
+Problemele apar la <inline>g(1, 2, 3);</inline>. Toate argumentele sunt de tip <inline>int</inline>. Acum sa ne uitam la functii: avem prima si a doua care trebuie sa faca 1 conversie (de la <inline>int</inline> la <inline>double</inline>) si a treia care trebuie sa faca 2 conversii. A treia iese din discutie fiindca trebuie sa faca mai multa treaba. Dintre prima si a doua functie pe care o alegem? Asta e problema, ca nu stim, se potrivesc amandoua. Deci apelul functiei g la linia 21: <inline>g(1, 2, 3);</inline> este ambiguu.
+</div>
+#END_SOLUTION
+#BEGIN_TAGS
+easy, incorrect, function overloading, implicit cast
+#END_TAGS
