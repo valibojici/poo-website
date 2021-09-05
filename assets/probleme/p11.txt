@@ -1,0 +1,38 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(int*& x, int& y) {
+	y = *x;
+	x = &y;
+}
+
+int main()
+{
+	int a = 10;
+	int b = 20;
+	int* p = &a;
+	f(p, b);
+
+	*p = 0;
+
+	cout << a << " " << b << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+10 0
+</output>
+<div>
+Se creeaza 2 variabile <var>a</var> si <var>b</var> si un pointer care arata spre zona de memorie unde este <var>a</var>. Se apeleaza functia f unde parametrii sunt de tip referinta (referinta la un pointer de tip <inline>int</inline> si referinta la un <inline>int</inline>). Deci in interiorul functiei <var>x</var> este <var>p</var> iar <var>y</var> este <var>b</var>. <var>y</var> ia valoarea variabilei de la adresa la care arata pointerul <var>x</var> adica <var>b</var> ia valorea lui <var>a</var> si dupa <var>x</var> arata spre adresa lui <var>y</var>, deci <var>p</var> arata spre adresa lui <var>b</var>. Prin <inline>*p</inline> accesezi zona din memorie la care arata pointerul si in cazul asta setezi valorea lui <var>b</var> la 0.
+</div>
+#END_SOLUTION
+
+#BEGIN_TAGS
+correct, easy, pointers, references
+#END_TAGS
