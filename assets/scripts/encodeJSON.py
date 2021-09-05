@@ -36,6 +36,8 @@ def getProblem(file):
 
 		try:
 			problem = re.search('#BEGIN_PROBLEM(.*)#END_PROBLEM', text, flags=re.S).group(1).strip()
+			if len(problem) == 0:
+				raise AttributeError()
 		except AttributeError as e:
 			ans = input('WARNING: Missing problem. Continue? (y/n)')
 			if ans == 'n':
@@ -44,6 +46,8 @@ def getProblem(file):
 
 		try:
 			solution = re.search('#BEGIN_SOLUTION(.*)#END_SOLUTION', text, flags=re.S).group(1).strip()
+			if len(solution) == 0:
+				raise AttributeError()
 		except AttributeError as e:
 			ans = input('WARNING: Missing solution. Continue? (y/n)')
 			if ans == 'n':
@@ -54,6 +58,8 @@ def getProblem(file):
 			tags = [tag.strip() for tag in re.split('[,;]',re.search('#BEGIN_TAGS(.*)#END_TAGS', text, flags=re.S).group(1).strip())]
 			if 'correct' not in tags and 'incorrect' not in tags:
 				raise Exception('ERROR: Missing correct/incorrect tag')
+			if len(tags) == 0:
+				raise AttributeError()
 		except AttributeError as e:
 			ans = input('WARNING: Missing tags. Continue? (y/n)')
 			if ans == 'n':
