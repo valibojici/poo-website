@@ -1,0 +1,51 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int main() {
+	int x = 5;
+	const int y = 10;
+
+	const int* p = &y;
+	int const* p2 = &x;
+
+	*p2 = *p;
+
+	cout << x << " " << y << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu este corect, avem eroare la linia 11: <inline>*p2 = *p;</inline>
+</div>
+<error>
+expression must be a modifiable lvalue
+</error>
+<div>
+Avem <var>x</var> care are valoarea 5 si <var>y</var> care are valoarea 10 (<var>y</var> este <inline>const int</inline> si deci nu mai poti schimba valoarea lui <var>y</var>, poti elimina partea de const cu un cast dar ce rost mai are). <inline>const int*</inline> este identic cu <inline>int const*</inline> deci
+</div>
+<block>
+const int* p = &y;
+int const* p2 = &x;
+</block>
+<div>
+e identic cu
+</div>
+<block>
+const int* p = &y;
+const int* p2 = &x;
+</block>
+<div>
+<inline>const int* p = &y;</inline> inseamna un pointer la un <inline>const int</inline> adica NU ai voie sa modifici valorea de la adresa la care arata pointerul dar in schimb poti modifica la ce adresa arata pointerul (gen <inline>p = &x;</inline> e corect dar <inline>*p = 5;</inline> nu e corect pentru ca modific valoarea de la adresa la care arata pointerul).
+</div>
+<div>
+Problema e la <inline>*p2 = *p;</inline> ca <var>p2</var> e pointer la <inline>const int</inline> si incerci sa modifici valoarea de la adresa la care arata pointerul. Ca sa mearga programul trebuie schimbata linia 9: <inline>int const* p2 = &x;</inline> in <inline>int* p2 = &x;</inline> si acum <var>p2</var> e pointer la <inline>int</inline> si poti sa modifici valoarea de la adresa la care arata pointerul, deci <var>x</var> ia valoarea lui <var>y</var> adica 10.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, pointers, const
+#END_TAGS
