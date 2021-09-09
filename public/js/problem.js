@@ -109,7 +109,11 @@ getProblems().then((problems)=>{
         loadProblem(problems[0]);
         $("#main-container").removeClass('d-none');
     }
-}).catch(err => console.log(err));
+}).catch(err => {
+    console.log(err);
+    $('#no-problems').removeClass('d-none');
+    $('#loading-container').addClass('d-none');
+});
 
 
 
