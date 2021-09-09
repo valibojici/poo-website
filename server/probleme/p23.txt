@@ -1,0 +1,50 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+const int x;
+
+const int f(int x, int y)
+{
+	int temp = x + y;
+	return temp;
+}
+
+int main()
+{
+	int a = f(2, 3);
+	cout << a << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu e corect, avem eroare la linia 4: <inline>const int x;</inline>
+</div>
+<error>
+'x': 'const' object must be initialized if not 'extern'
+</error>
+<div>
+Cand creezi o variabila <inline>const</inline> trebuie sa-i dai si o valore neaparat, (daca nu e si <inline>extern</inline>, <a href='https://stackoverflow.com/a/10422050'>vezi aici</a>) pentru ca nu este stocata in memorie. In cod, unde apare o variabila <inline>const</inline> este inlocuita cu valorea ei. Ca sa fie corect modifica linia 4 in: <inline>const int x = 0;</inline> de exemplu.
+</div>
+<block>
+const int x; 
+// gresit
+
+const int x;
+x = 20;
+// gresit
+
+const int x = 1;
+// corect
+</block>
+<div>
+La final se afiseaza 5 (poti initializa un <inline>int</inline> cu valoarea unui <inline>const int</inline>).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+incorrect, const, easy
+#END_TAGS

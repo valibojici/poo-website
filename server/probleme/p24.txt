@@ -1,0 +1,45 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(int*& t, int& x)
+{
+	cout << "in functia f" << endl;
+	t = &x;
+}
+
+int main()
+{
+	int x = 20;
+	int y = 30;
+	int* p = &x;
+
+	(*p)++;
+	f(p, y);
+	(*p)--;
+
+	cout << *p << ' ' << x << ' ' << y << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+in functia f
+29 21 29
+</output>
+<div>
+Avem doua variabile <var>x</var> si <var>y</var> cu valorile 20 si 30, si un pointer <var>p</var> la <var>x</var>, <var>p</var> arata spre zona de memorie unde se afla <var>x</var>. La linia 16: <inline>(*p)++;</inline>, mai intai dereferentiezi pointerul ca sa ai acces la zona de memorie unde arata, adica la <var>x</var> si dupa incrementezi valoarea cu 1, deci practic inseamna <inline>x++;</inline>(acum x e 21).
+</div>
+<div>
+Cand transmiti parametrii prin referinta (la o functie) modificarile parametrilor se vor reflecta si in afara functiei. In cazul asta functia <var>f</var> primeste un pointer transmis prin referinta, deci il putem modifica in interiorul functiei si se va modifica si in locul unde este apelata functia (in cazul asta in <var>main</var>). La linia 17: <inline>f(p, y)</inline> se apeleaza <var>f</var>, se afiseaza <inline>"in functia f"</inline> si dupa, pointerul <var>t</var> din functie arata spre parametrul <var>x</var>. Dar pointerul <var>t</var> este practic pointerul <var>p</var> din <var>main</var>, deci acum <var>p</var> nu mai arata spre zona de memorie unde este <var>x</var>, ci unde este <var>y</var>. <inline>(*p)--</inline> inseamna de fapt <inline>y--;</inline> (y e 29 acum). La final <var>x</var> este 21, <var>y</var> este 29, iar <var>p</var> arata spre zona de memorie unde e <var>y</var>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct, pointers
+#END_TAGS
