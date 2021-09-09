@@ -1,0 +1,39 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int main() {
+	const int x = 5;
+	int* const p = &x;
+
+	int y = 100;
+	const int* const p2 = &y;
+	y = 200;
+
+	cout << *p + *p2;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu este corect, avem eroare la linia 6: <inline>int* const p = &x;</inline>
+</div>
+<error>
+a value of type "const int *" cannot be used to initialize an entity of type "int *const"
+</error>
+<div>
+<var>p</var> este un pointer const la un <inline>int</inline> (poti modifica valoarea de la adresa la care arata, dar nu poti modifica la ce adresa arata pointerul) dar <var>x</var> este <inline>const int</inline> si practic ai putea modifica valorea lui prin pointerul <var>p</var> deci nu e corect sa initializezi pointerul <var>p</var> cu adresa lui <var>x</var>. Ca sa fie corect <var>p</var> trebuie sa fie un pointer la <inline>const int</inline> sau <var>x</var> sa fie doar <inline>int</inline>. Deci ori schimbi linia 5: <inline>const int x = 5;</inline> in <inline>int x = 5;</inline> ori schimbi linia 6: <inline>int* const p = &x;</inline> in <inline>const int* const p = &x</inline>.
+</div>
+<div>
+<var>p2</var> este un pointer constant la un <inline>const int</inline> deci nu poti modifica valoarea de la adresa la care arata <var>p2</var> si nici adresa la care arata. Poti modifica <var>y</var>, nu are legatura cu <var>p2</var>. La final se afiseaza: <inline>205</inline> (daca faci modificarile de mai sus).
+</div>
+<div>
+Ca sa nu te incurci cand citesti ceva de genul <inline>const int* const p2 = &y;</inline>, citeste de la dreapta la stanga: <var>p2</var> este un const  pointer la un <inline>int</inline> const, <inline>const int* const * const p3 = &p2;</inline> este un const pointer la un const pointer la un <inline>const int</inline>. Poti folosi si site-ul <a href='https://cdecl.org/?q=int*const+*const+p3'>asta</a>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, pointers, const
+#END_TAGS

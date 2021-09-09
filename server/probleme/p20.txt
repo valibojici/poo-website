@@ -1,0 +1,41 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int myFunction(int A = 1, int B = 2, int C) {
+	int temp = A;
+	for (int i = 0; i < B; ++i)
+	{
+		temp += C;
+		C--;
+	}
+	return temp;
+}
+
+int main() {
+	int num = myFunction(1, 2, 3);
+	cout << num << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 4: <inline>int myFunction(int A = 1, int B = 2, int C) {</inline>.
+</div>
+<error>
+default argument not at end of parameter list
+</error>
+<div>
+Daca ai o functie cu parametrii care au valori implicite, ei trebuie sa se afle la sfarsit, nu pot urma parametrii fara valori implicite dupa cei cu valori implicite.
+Ca sa fie corect modifica linia 4 in <inline>int myFunction(int A = 1, int B = 2, int C = 0) {</inline> sau in <inline>int myFunction(int A, int B, int C) {</inline>. La final se afiseaza:
+</div>
+<output>
+1
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect
+#END_TAGS

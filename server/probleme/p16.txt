@@ -1,0 +1,45 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+const int f(int x, int y) {
+	int* p = &x;
+	int& ry = y;
+
+	*p = 100;
+	ry = x;
+	ry = 5;
+
+	return x + y;
+}
+
+int main() {
+	const int a = 500;
+	int b = 300;
+
+	int c = f(a, b);
+
+	cout << a << " " << b << " " << c << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+500 300 105
+</output>
+<div>
+Avem <var>a</var> care este un <inline>const int</inline> cu valorea 500 si <var>b</var> care are valorea 300. <var>c</var> se initializeaza cu valorea returnata de functia <var>f</var> (nu conteaza ca <var>f</var> intoarce un <inline>const int</inline>, se poate initializa un <inline>int</inline> cu un <inline>const int</inline>).
+</div>
+<div>
+In functia <var>f</var> parametrii sunt transmisi prin valoare deci <var>x</var> si <var>y</var> sunt copii ale variabilelor <var>a</var> si <var>b</var>. <inline>int* p = &x;</inline> inseamna ca pointerul <var>p</var> arata spre zona de memorie unde este <var>x</var>, iar <var>ry</var> este o referinta la y (un alt nume practic). Prin <inline>*p = 100;</inline> dereferentiezi pointerul <var>p</var> ca sa ai acces la zona de memorie la care arata si modifici valoarea de acolo in 100, adica <var>x</var> devine 100. <inline>ry = x;</inline> inseamna practic <inline>y = x;</inline>, pentru ca <var>ry</var> este o referinta la <var>y</var> (NU inseamna ca schimbi la ce se refera <var>ry</var>, nu poti face asta), deci <var>y</var> ia valorea lui <var>x</var> adica 100. <inline>ry = 5;</inline> inseamna ca <var>y</var> ia valorea 5. La final se returneaza 100 + 5 adica 105. (nu uita ca <var>x</var> si <var>y</var> sunt copii ale lui <var>a</var> si <var>b</var> deci nu le modifica). Deci <var>a</var> ramane 500, <var>b</var> ramane 300 si <var>c</var> ia valorea 105.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, pointers, references, correct
+#END_TAGS

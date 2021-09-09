@@ -1,0 +1,56 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <string>
+using namespace std;
+
+void f(int x, const double& y) {
+	if (x == 0) {
+		cout << "x = 0!";
+	}
+	else {
+		cout << y / x << endl;
+	}
+}
+
+void f(int x, double& y) {
+	cout << x << " si " << y << endl;
+}
+
+int main() {
+	f(2, 3.0);
+
+	int x = 4;
+	double y = 10.0;
+
+	f(x, y);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+1.5
+4 si 10
+</output>
+<div>
+Prima functie <inline>void f(int x, const double& y)</inline> are ca parametru o referinta la un <inline>const double</inline>, asta inseamana ca poti apela functia asta si cu ceva temporar care nu exista in memorie adica <inline>f(1, 2.0)</inline> si cu o variabila <inline>f(1, a);</inline>.
+</div>
+<div>
+<inline>void f(int x, double& y)</inline> aici referinta e la un <inline>double</inline> deci functia se asteapta ca parametrul <var>y</var> sa fie o referinta la ceva care chiar exista in memorie, nu ar merge <inline>f(1, 2.0)</inline>.
+</div>
+<div>
+Deci la <inline>f(2, 3.0);</inline> se apeleaza prima functie, <var>x</var> e diferit de 0 si se afiseaza 3.0 / 2 adica <inline>1.5</inline>.
+La linia 24: <inline>f(x, y);</inline> desi se potrivesc ambele functii a doua este preferata, e mai specifica, si se apeleaza <inline>void f(int x, double& y)</inline> si se afiseaza <inline>4 si 10</inline>.
+</div>
+<div>
+Daca vrei ca functia sa accepte numai ceva temporar poti scrie <inline>void f(int x, double&& y)</inline> (asta de la C++11 incoace), acum <inline>f(1, 2.0);</inline> merge dar <inline>f(1, x);</inline> nu merge.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, references, function overloading, correct
+#END_TAGS

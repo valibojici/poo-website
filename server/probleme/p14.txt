@@ -1,0 +1,65 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int main() {
+	int a = 100;
+	int b = 200;
+	int c = 300;
+
+	int* const p1 = &a;
+	*p1 = 999;
+	p1 = &b;
+	*p1 = 9999;
+
+	const int* p2 = &c;
+	p2 = p1;
+	p2 = &a;
+
+	cout << *p1 << ' ' << *p2;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare la linia 11: <inline>p1 = &b;</inline>
+</div>
+<error>
+expression must be a modifiable lvalue
+</error>
+<div>
+<var>p1</var> este un pointer constant la un <inline>int</inline>, deci il poti dereferentia cu <inline>*</inline> si sa schimbi valorea de la adresa la care arata, dar nu poti schimba la ce adresa arata (adica arata spre <var>a</var>, nu poti schimba sa arate spre <var>b</var>). Ca sa fie corect poti schimba linia 10: <inline>int* const p1 = &a;</inline> in <inline>int* p1 = &a;</inline> si acum <var>p1</var> este un simplu pointer la un <inline>int</inline> si poti schimba si adresa la care arata.
+</div>
+<block>
+#include <iostream>
+using namespace std;
+
+int main() {
+	int a = 100;
+	int b = 200;
+	int c = 300;
+
+	int* p1 = &a;	// p1 arata spre a
+	*p1 = 999;		// a ia valorea 999
+	p1 = &b;		// acum p1 arata spre b
+	*p1 = 9999;		// b ia valoarea 9999
+
+	const int* p2 = &c;		// p2 arata spre c
+	
+	// p2 e un pointer la un int constant, poti schimba la ce
+	// adresa arata dar nu poti schimba valoarea de la adresa 
+	// la care arata: *p2 = 5; eroare si p2 = &a; ok
+	
+	p2 = p1;	// p2 arata spre ce arata p1 adica b
+	p2 = &a;	// acum p2 arata spre a (p1 nu se modifica)
+
+	cout << *p1 << ' ' << *p2; // 9999 999
+}
+</block>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, pointers, const
+#END_TAGS

@@ -19,7 +19,7 @@ group.add_argument('-w', '--write', nargs=2, metavar=('problemFile', 'outputFile
 group.add_argument('-a', '--append',nargs=2, metavar=('problemFile', 'outputFile'), help='write problem from problemFile to outputFile (appends to end)')
 group.add_argument('-i','--insert', nargs=3, metavar=('problemFile', 'outputFile', 'problem_id'), help='write problem from problemFile to outputFile (inserts before problem with id problem_id)')
 group.add_argument('-rp','--replace', nargs=3, metavar=('problemFile', 'outputFile', 'problem_id'), help='write problem from problemFile to outputFile overwriting problem with id problem_id')
-group.add_argument('-r', '--remove', nargs=2, metavar=('JSONFile, problem_id'), help='removes problem with problem_id from JSONFile')
+group.add_argument('-r', '--remove', nargs=2, metavar=('JSONFile', 'problem_id'), help='removes problem with problem_id from JSONFile')
 
 args=parser.parse_args()
 

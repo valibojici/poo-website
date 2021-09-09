@@ -1,0 +1,57 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void multiply(int* v, int n, int x)
+{
+	for (int i = 0; i < n; ++i)
+		v[i] *= x;
+}
+
+void print(int* v, int n)
+{
+	for (int i = 0; i < n; ++i)
+		cout << v[i] << ' ';
+	
+	cout << endl;
+}
+
+int main()
+{
+	int* i = new int[5]{ 1, 2, 3, 4, 5 }; 
+	// din C++11 https://www.geeksforgeeks.org/uniform-initialization-in-c/
+
+	int* j = i;
+
+	multiply(i, 5, 2);
+	print(i, 5);
+	print(j, 5);
+
+	delete[] i;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+2 4 6 8 10
+2 4 6 8 10
+</output>
+<div>
+Se creeaza un array alocat dinamic cu 5 elemente (1, 2, 3, 4 si 5). Se creeaza un pointer <var>j</var> care arata spre aceeasi zona de memorie ca <var>i</var> (primul element din array). Functia <inline>void multiply(int* v, int n, int x)</inline> primeste ca argumente pointerul <var>i</var>, lungimea array-ului si un numar cu care inmulteste toate elementele. La linia 26: <inline>print(i, 5);</inline> si linia 27: <inline>print(j, 5);</inline> se apeleaza functia <inline>void print(int* v, int n)</inline> care printeaza elementele array-ului. Se printeaza aceleasi valori de 2 ori pentru ca <var>i</var> si <var>j</var> arata spre aceeasi zona de memorie.
+</div>
+<div>
+Cand scrii o functie <inline>void f(int v[]) { /* ... */ }</inline> este acelasi lucru cu <inline>void f(int *v) { /* ... */ }</inline> (nu conteaza ca returneaza <inline>void</inline> sau array-ul/pointerul este <inline>int</inline>). <inline>v[i]</inline> este de fapt <inline>*(v + i)</inline>.
+</div>
+<div>
+Mereu array-urile sunt transmise prin &quot;referinta&quot; la o functie (de fapt cum este mai sus, se transmite pointerul la primul element prin valoare dar asta nu conteaza pentru ca arata spre aceeasi zona de memorie, adica array-ul initial).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, easy, dynamic memory allocation, pointers
+#END_TAGS

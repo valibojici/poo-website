@@ -1,0 +1,57 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int f(double x)
+{
+	int i = 1;
+	while (i * i < x)
+	{
+		i++;
+		cout << '*';
+	}
+	cout << '!' << endl;
+	return i;
+}
+
+int f(int x)
+{
+	if (x % 2 == 0)
+		return x * 2;
+	else
+		return x * 3 - 10;
+}
+
+int main()
+{
+	short a = 3;
+	float b = 5.0f;
+
+	int x = f(a);
+	int y = f(b);
+
+	cout << x << ' ' << y << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+**!
+-1 3
+</output>
+<div>
+Functia <var>f</var> este supraincarcata. La linia 29: <inline>int x = f(a);</inline> se apeleaza functia <var>f</var> cu un <inline>short int</inline>. Ambele variante ale functiei <var>f</var> fac o conversie deci nu ar trebui sa fie ambiguu apelul, adica sa nu se stie care functie se apeleaza? In cazul asta nu pentru ca, desi ambele functii fac o conversie, cea de la <inline>short int</inline> la <inline>int</inline> este mai speciala, se numeste &quot;promotie&quot; (adica valorile care se reprezinta cu un <inline>short int</inline> se pot reprezenta la fel de exact si cu un <inline>int</inline>). Cand se alege ce functie se apeleaza, promotiile sunt mai importante decat conversile obisnuite si de aceea se apeleaza a doua functie. 
+</div>
+<div>
+La linia 30: <inline>int y = f(b);</inline> se apeleaza functia <var>f</var> cu un <inline>float</inline>. Este aceeasi situatie de mai sus, din nou conversia din <inline>float</inline> in <inline>double</inline> este &quot;promotie&quot; deci se alege prima functie. Mai multe detalii <a href='./tips.html#function-overloading'>aici</a>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, easy, function overloading
+#END_TAGS

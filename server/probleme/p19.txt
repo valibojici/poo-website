@@ -1,0 +1,68 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(int x, double y, const int z) 
+{
+	cout << "x = " << x << endl;
+	cout << y / 2 << endl;
+	int temp = z + x;
+
+	for (int i = 0; i < temp; ++i)
+	{
+		cout << 'a' << ' ' << endl;
+	}
+}
+
+void f(int x,const double y, int z)
+{
+	while (x > 1) 
+	{
+		cout << y << ", ";
+		x--;
+	}
+	cout << endl;
+
+	if (z < 0) z = -z;
+	
+	cout << x + z << endl;
+}
+ 
+
+int main() {
+	const int x = 4;
+	const double y = 3.14;
+	f(2, 2.0, x);
+	f(3, y, 3);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 16
+</div>
+<error>
+function 'void f(int,double,const int)' already has a body
+</error>
+<div>
+Nu te poti baza pe faptul ca un parametru este sau nu <inline>const</inline> atunci cand vrei sa supraincarci o functie, decat daca acel parametru este <b>pointer sau referinta</b> pentru ca daca nu este pointer sau referinta se transmite argumentul prin valoare, adica se copiaza si nu conteaza ca parametrul e <inline>const</inline> pentru ca oricum este o copie.
+</div>
+<div>
+Eroarea spune ca practic definesti aceeasi functie de 2 ori, nu conteaza ca unii paramterii sunt <inline>const</inline> pentru ca nu sunt referinte sau pointeri. Ca programul sa functioneze corect poti schimba prima functie (linia 4) in <inline>void f(int x, double& y, const int z)</inline>, acum primeste o referinta la <inline>double</inline>, ceea ce ii permite sa modifice valoarea argumentului cand se apeleaza functia, deci nu mai face acelasi lucru cu a doua functie care nu putea face asta pentru ca argumentul se transmite prin copiere.
+</div>
+<div>
+Cu modificarea de mai sus, <inline>f(2, 2.0, x);</inline> se apeleaza a doua functie pentru ca <inline>2.0</inline> este o valoare temporara care nu exista in memorie si nu putem avea referinta la ea. La urmatoarea linie <inline>f(3, y, 3);</inline> se apeleaza a doua functie pentru ca la prima ai referinta la un <inline>double</inline> care NU e const, deci ai putea modifica valorea lui in functie si se va reflecta si in afara functiei, dar in <inline>main</inline>, <var>y</var> este <inline>const double</inline> si nu-i poti modifica valorea. La final se afiseaza:
+</div>
+<output>
+2,
+5
+3.14, 3.14,
+4
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, const, function overloading
+#END_TAGS

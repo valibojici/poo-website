@@ -1,0 +1,56 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+void afis(char v[][20], int rows) {
+	
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < strlen(v[i]); ++j) {
+			cout << v[i][j] << " ";
+		}
+		cout << '\n';
+	}
+}
+
+int main() {
+	char v[3][20] = {
+		"Creion",
+		"Hartie",
+		"Pix"
+	};
+
+	afis(v, 3);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul e corect, se afiseaza:
+</div>
+<output>
+C r e i o n
+H a r t i e
+P i x
+</output>
+<div>
+Se creeaza o &quot;matrice&quot; de <inline>char</inline> sau mai bine zis, un array de cuvinte, unde lungimea maxima a cuvintelor este 20 si exista 3 cuvinte. Daca ai in parametrii functiei array-uri care au mai multe dimensiuni (in cazul asta 2) trebuie sa specifici marimea pentru fiecare dimensiune in afara de prima (poti si la prima dar daca nu faci asta dimensiunea e variabila). 
+</div>
+<block>
+void f(int v[][][100])  { /* ... */ } 	// gresit
+void f(int v[25][][30]) { /* ... */ } 	// gresit
+void f(int v[][20][10]) { /* ... */ } 	// corect
+void f(int v[10][20][10]) { /* ... */ } // corect
+</block>
+<div><inline>void afis(char v[][20], int rows)</inline> are ca prim parametru o matrice de <inline>char</inline> cu 20 coloane si numar variabil de linii, parametrul <var>rows</var> inseamna numarul de linii.
+</div>
+<div>
+Luam fiecare linie pe rand (pe fiecare linie e un cuvant), acum parcurgem pe rand literele cuvantului respectiv, care poate avea mai putin de 20 de caractere de aceea folosim <inline>strlen</inline> care e o functie care ne da numarul de caractere din cuvant. Se afiseaza literele cuvintelor separate prin spatiu, iar cand se termina cuvantul se trece la o linie noua si la urmatorul cuvant.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, easy, 2d array
+#END_TAGS
