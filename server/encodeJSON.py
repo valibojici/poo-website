@@ -69,7 +69,7 @@ def getProblem(file):
 
 		solution = re.sub(
 			'<inline>(.*?)</inline>',
-			lambda m: f"<pre class='inline'><code>{escapeHTML(m.group(1).strip())}</code></pre>",
+			lambda m: f"<pre class='inline'><code class='language-cpp'>{escapeHTML(m.group(1).strip())}</code></pre>",
 			solution, flags=re.S)
 
 		solution = re.sub(
