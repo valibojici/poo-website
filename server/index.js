@@ -1,13 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
-const data = require('./output.json');
+const compression = require('compression');
+
 const app = express();
 const port = 3000;
 
 app.use(cors({
 	origin: '*'
-}))
+}));
+
+app.use(compression());
 
 app.get('/get', (req, res) => {
   res.header("Content-Type",'application/json');
