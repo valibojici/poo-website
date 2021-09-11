@@ -57,6 +57,11 @@ a{
     margin-bottom: 0.5em;
 }
 
+table{
+    font-size: 1rem;
+    font-weight: normal;
+}
+
 @media screen and (min-width: 992px) {
     #main-container{
         height: calc(100vh - 56px);
