@@ -1,0 +1,44 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(int v[])
+{
+	cout << "Prima functie" << endl;
+}
+
+void f(int* p)
+{
+	cout << "A doua functie" << endl;
+}
+
+int main()
+{
+	int v[] = { 1, 2, 3, 4, 5 };
+	f(v);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 9: <inline>void f(int *p)</inline>
+</div>
+<error>
+function 'void f(int [])' already has a body
+</error>
+<div>
+Cand transmiti un array ca parametru isi pierde &quot;forma&quot; de array, devine un pointer la primul element. Acum, <inline>void f(int v[])</inline> si <inline>void f(int* v)</inline> par lucruri diferite dar <inline>void f(int v[])</inline> este transformat de compilator in <inline>void f(int* v)</inline> deci cele 2 functii au aceeasi signatura (nume, numar parametrii, ordine parametrii, tip paramterii).  Practic incerci sa definesti functia <var>f</var> din nou fara sa schimbi ceva la ea (in afara de corp). Ca sa functioneze corect ai variantele:
+</div>
+<div>
+1) schimbi linia 4 in <inline>void(const int v[])</inline>, acum prima functie primeste ca parametru un array de <inline>const int</inline>. Array-ul din main este de tip <inline>int</inline> deci se apeleaza a doua functie.
+</div>
+<div>
+2) schimbi linia 9 in <inline>void(const int* p)</inline>, acum a doua functie primeste ca parametru un pointer la un <inline>const int</inline> (gandeste ca e identic cu <inline>void(const int p[])</inline>). Array-ul din main este de tip <inline>int</inline> deci se apeleaza prima functie.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, pointers
+#END_TAGS

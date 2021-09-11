@@ -1,0 +1,123 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(int x, int y, double z, char w)
+{
+	cout << "Prima functie.";
+}
+
+void f(int x, long y, double z, int w)
+{
+	cout << "A doua functie.";
+}
+
+void f(short x, int y, float z, char w)
+{
+	cout << "A treia functie.";
+}
+
+int main() {
+	f(3, 4, 5.0, 'a');
+	
+	short int x = 10;
+	f(x, 50, 1.0f, 2);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare la linia 23: <inline>f(x, 50, 1.0f, 2);</inline>
+</div>
+<error>
+more than one instance of overloaded function "f" matches the argument list
+</error>
+<div>
+Cum spune si eroarea, mai multe functii se potrivesc pentru <inline>f(x, 50, 1.0f, 2);</inline> si niciuna nu e mai buna ca celelalte deci nu se stie care sa se apeleze.
+</div>
+<div>
+Sa incepem mai intai cu <inline>f(3, 4, 5.0, 'a');</inline> care e ok. Ne uitam la fiecare argument pe rand si vedem care varianta a functiei <var>f</var> (care e supraincarcata) se potriveste cel mai bine. Mai intai <inline>3</inline>, se potrivesc primele 2 functii pentru ca avem un <inline>int</inline> si nu trebuie nicio conversie (trebuie la ultima functie). Sa zicem ca punem functiile astea in o multime: { functia_1, functia_2 }. Acum pentru urmatorul argument: <inline>4</inline>, este un <inline>int</inline> si functiile care se potrivesc sunt prima si ultima, pentru ca nu fac vreo conversie, deci multimea asta este { functia_1, functia_3 }. Pentru al treilea argument, <inline>5.0</inline>, care este un <inline>double</inline> se potrivesc primele doua functii, la fel pentru ca nu trebuie conversii, deci multimea asta este { functia_1, functia_2 }. Aceeasi logica si pentru ultimul argument, <inline>'a'</inline>, care este <inline>char</inline>, multimea asta este { functia_1, functia_3 }. Ca sa vedem ce functie se apeleaza luam multimile astea si le intersectam. { functia_1, functia_2 } &cap; { functia_1, functia_3 } &cap; { functia_1, functia_2 } &cap; { functia_1, functia_3 } = { functia_1 }, deci se apeleaza prima functie.
+</div>
+<div>
+Acum, sa ne uitam la <inline>f(x, 50, 1.0f, 2);</inline>, unde <var>x</var> este un <inline>short int</inline>:
+</div>
+<div class='table-responsive'>
+<table class="table table-sm align-middle table-bordered border-altdark">
+	<thead class='align-middle'>
+		<tr>
+			<th scope="col" class='text-center'>Arg.</th>
+			<th scope="col" class='text-center'>Functii care se potrivesc</th>
+			<th scope="col" class='text-center'>Functii care nu se potrivesc</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th class='text-center' scope="row"><inline>x (short)</inline></th>
+			<td>
+				<b>Functia 3:</b> <i class='text-nowrap'>void f(<inline>short x</inline>, int y, float z, char w)</i> (pentru ca se potriveste exact, e deja <inline>short int</inline>)
+			</td>
+			<td>
+				<b>Functia 1:</b> <i class='text-nowrap'>void f(<inline>int x</inline>, int y, double z, char w)</i> (pentru ca face conversie la <inline>int</inline>)
+				<br>
+				<b>Functia 2:</b> <i class='text-nowrap'>void f(<inline>int x</inline>, long y, double z, int w)</i> (pentru ca face conversie la <inline>int</inline>)
+			</td>
+		</tr>
+		<tr>
+			<th class='text-center' scope="row"><inline>50 (int)</inline></th>
+			<td>
+				<b>Functia 1:</b> <i class='text-nowrap'>void f(int x, <inline>int y</inline>, double z, char w)</i> (pentru ca nu trebuie sa se faca conversie)
+				<br>
+				<b>Functia 3:</b> <i class='text-nowrap'>void f(short x, <inline>int y</inline>, float z, char w)</i> (pentru ca nu trebuie sa se faca conversie)
+			</td>
+			<td>
+				<b>Functia 2:</b> <i class='text-nowrap'>void f(int x, <inline>long y</inline>, double z, int w)</i> (pentru ca face conversie la <inline>long</inline>)
+			</td>
+		</tr>
+		<tr>
+			<th class='text-center' scope="row"><inline>1.0f (float)</inline></th>
+			<td>
+				<b>Functia 3:</b> <i class='text-nowrap'>void f(short x, int y, <inline>float z</inline>, char w)</i> (pentru ca nu trebuie sa se faca conversie)
+			</td>
+			<td>
+				<b>Functia 1:</b> <i class='text-nowrap'>void f(int x, int y, <inline>double z</inline>, char w)</i> (pentru ca face conversie (promotie) la <inline>double</inline>)
+				<br>
+				<b>Functia 2:</b> <i class='text-nowrap'>void f(int x, long y, <inline>double z</inline>, int w)</i> (pentru ca face conversie (promotie) la <inline>double</inline>)
+			</td>
+		</tr>
+		<tr>
+			<th class='text-center' scope="row"><inline>2 (int)</inline></th>
+			<td>
+				<b>Functia 2:</b> <i class='text-nowrap'>void f(int x, long y, double z, <inline>int w</inline>)</i> (pentru ca nu trebuie sa se faca conversie)
+			</td>
+			<td>
+				<b>Functia 1:</b> <i class='text-nowrap'>void f(int x, int y, double z, <inline>char w</inline>)</i> (pentru ca face conversie la <inline>char</inline>)
+				<br>
+				<b>Functia 3:</b> <i class='text-nowrap'>void f(short x, int y, float z, <inline>char w</inline>)</i> (pentru ca face conversie la <inline>char</inline>)
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+<div>
+Deci avem:
+<br>
+<inline>x</inline> -> { functia_3 }
+<br>
+<inline>50</inline> -> { functia_1, functia_3 }
+<br>
+<inline>1.0f</inline> -> { functia_3 }
+<br>
+<inline>2</inline> -> { functia_2 }
+<br>
+Intersectia dintre multimile astea este: &#xD8;. Rezulta ca nu se stie care functie sa se apeleaze (trebuie ca intersectia sa contina exact 1 functie ca sa nu fie ambiguu apelul de functie).
+</div>
+<div>
+Ca programul sa fie corect trebuie modificata a treia functie (linia 14: <inline>void f(short x, int y, float z, char w)</inline>) in <inline>void f(short x, int y, float z, int w)</inline> si acum la linia 23: <inline>f(x, 50, 1.0f, 2);</inline> se apeleaza a treia functie.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, function overloading
+#END_TAGS

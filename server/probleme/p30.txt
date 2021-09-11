@@ -1,0 +1,43 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void swap(int* const x, int* const y)
+{
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+int main()
+{
+	int a = 500;
+	int b = 45;
+	int c = 1000;
+	swap(&a, &b);
+	swap(&b, &c);
+
+	cout << a << " " << b << " " << c << endl;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+45 1000 500
+</output>
+<div>
+Functia <var>swap</var> are ca parametrii 2 pointeri <inline>const</inline> la <inline>int</inline>. (adica pointerii sunt constanti nu valorile de la zona de memorie la care arata). Poti modifica ce se afla la adresa la care arata pointerii dar nu poti schimba la ce adresa arata pointerii. Functia <var>swap</var> practic interschimba valorile a 2 variabile, folosindu-se de adresa lor din memorie (adica prin pointerii <var>x</var> si <var>y</var>). Variabila <var>temp</var> tine minte ce valoare este la adresa la care arata pointerul <var>x</var> (cu <inline>*</inline> dereferentiezi pointerul ca sa ai acces la ce se afla la adresa de memorie la care arata). Apoi variabila de la adresa unde arata <var>x</var> ia valoarea variabilei de la adresa unde arata <var>y</var>. La final variabila de la adresa unde arata <var>y</var> ia valorea lui <var>temp</var>.
+</div>
+<div>
+In <var>main</var> se apeleaza <var>swap</var> cu adresele variabilelor, nu cu ele direct, pentru ca functia <var>swap</var> se asteapta sa primeasca niste adrese (ca sa aiba la ce sa arate pointerii). Mai intai se interschimba <var>a</var> cu <var>b</var> si dupa <var>b</var> cu <var>c</var>. La final <var>a</var> e 45, <var>b</var> e 1000 si <var>c</var> e 500.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, easy, pointers
+#END_TAGS

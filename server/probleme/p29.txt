@@ -1,0 +1,38 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int a = 500;
+	int b = 250;
+	int* const p1 = &a;
+	const int* p2 = &b;
+	p2 = p1;
+	cout << *p1 << ' ' << *p2;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+500 500
+</output>
+<div>
+<inline>int* const p1 = &a;</inline> inseamna ca se creeaza un pointer <inline>const</inline> cu numele <var>p1</var> la un <inline>int</inline>. Deci pointerul este <inline>const</inline>, nu valoarea la care arata (adica <inline>*p1 = 100;</inline> e corect pentru ca modifici valorea de la zona de memorie la care arata, dar <inline>p1 = &b;</inline> nu e corect pentru ca nu ai voie sa modifici spre ce zona de memorie arata <var>p1</var>).
+</div>
+<div>
+ In schimb <var>p2</var> este un pointer simplu la un <inline>const int</inline>. Deci acum pointerul NU mai este <inline>const</inline> dar arata spre un <inline>const int</inline> ( <inline>p2 = &a;</inline> e corect pentru ca poti schimba zona de memorie la care arata, dar <inline>*p2 = 100;</inline> nu e corect pentru ca modifici ceva ce este <inline>const int</inline>). Deci este corect <inline>p2 = p1;</inline>, acum <var>p2</var> arata spre aceeasi zona de memorie ca <var>p1</var>, adica acolo unde este variabila <var>a</var>.
+</div>
+<div>
+La final se dereferentiaza pointerii (cu <inline>*</inline>) ca sa ai acces la variabila de la zona de memorie la care arata (adica la <var>a</var>).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct, pointers
+#END_TAGS

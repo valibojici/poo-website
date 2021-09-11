@@ -1,0 +1,39 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void afis(int v[], int n)
+{
+	for (int i = 0; i < n; ++i)
+		cout << v[i] << ' ';
+	cout << endl;
+}
+
+int main()
+{
+	int v[] = { 1, 2, 3, 4, 5 };
+	int w[] = { 10, 20, 30, 40, 50 };
+
+	v = w;
+	afis(v, 5);
+	afis(w, 5);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 16: <inline>v = w;</inline>
+</div>
+<error>
+expression must be a modifiable lvalue
+</error>
+<div>
+Nu poti modifica un intreg array dupa ce l-ai creat, poti sa modifici elementele pe rand dar nu ceva de genul <inline>v = w;</inline>. Ca sa functioneze corect programul trebuie stearsa linia 16: <inline>v = w;</inline>. Daca vrei sa copiezi tot vectorul deodata poti folosi functia <inline>memcpy</inline> care primeste ca parametrii: un pointer ca destinatie, un pointer ca sursa si dimensiunea in bytes. Poti inlocui linia 16 cu <inline>memcpy(v, w, 5 * sizeof(int));</inline>. <inline>sizeof</inline> e un operator care iti da dimensiunea in bytes, avem 5 numere deci in total 5 * dimensiunea unui <inline>int</inline> bytes. Dar mai bine folosesti un <inline>vector</inline> din STL si nu te mai complici cu <inline>memcpy</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect
+#END_TAGS

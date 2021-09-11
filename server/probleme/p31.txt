@@ -1,0 +1,110 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+
+int main() {
+	int v[] = { 1, 2, 3, 4, 5 };
+	int s = 0;
+	for (int n : v)		// din C++11
+	{
+		s += n;
+		n *= 2;
+	}
+
+	cout << s << endl;
+
+	for (int i = 0; i < 5; ++i)
+		cout << v[i] << ' ';
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+15
+1 2 3 4 5
+</output>
+<div>
+<inline>for(int n : v) { /* ... */ }</inline> se numeste <a href="https://www.geeksforgeeks.org/range-based-loop-c/">range-based for loop</a>. De obicei se foloseste cu containerele din STL dar merge si cu array-uri simple (dar nu merge cu pointeri).
+</div>
+<block>
+void f(int v[])
+{
+	for (int i : v)
+		cout << i << ' ';
+
+	// eroare, v nu este array, este de fapt un pointer.
+	// Cand transmiti un array ca parametru, se transforma in pointer
+	// la primul element, se pierde informatia despre dimensiunea si tipul
+	// array-ului (acum v e doar int* in loc de int[100] de exemplu)
+	// asta se numeste 'array to pointer decay' 
+	// Functia este identica cu:
+	//
+	// void f(int *v) { ... }
+}
+
+void g( int(&v)[5] )
+{
+	for (int i : v)
+		cout << i << ' ';
+
+	// aici merge, se transmite array-ul prin 'referinta'
+	// adica se pastreaza 'forma' (dimensiunea adica) nu se
+	// mai transforma in pointer. Range based for loop are nevoie
+	// de dimensiunea intreg array-ului, !! deci trebuie sa specifici, aici e 5 !!
+	// (de asta nu merge cu pointeri, se pierde informatia despre dimensiune)
+}
+</block>
+
+<block>
+for(int n : v)
+{
+	s += n;
+	n *= 2;
+}
+
+// este ca si cum ai scrie:
+
+for(int i = 0; i < 5; ++i)
+{
+	int n = v[i]; // n este o copie !! 
+
+	s += n;
+	n *= 2;		  // NU se modifica si elementul din array
+}
+</block>
+
+<div>
+Daca vrei sa si modifici elementele:
+</div>
+<block>
+for(int& n : v)
+{
+	s += n;
+	n *= 2; 
+}
+
+// este ca si cum ai scrie:
+
+for(int i = 0; i < 5; ++i)
+{
+	int& n = v[i]; // n este o referinta !! 
+
+	s += n;
+	n *= 2;        // se modifica si elementul din array
+}
+</block>
+<div>
+Revenind la problema, parcurgi toate elementele din <var>v</var> cu un range for loop, aduni in <var>s</var> fiecare element si modifici o copie a elementului din array (deci array-ul nu se modifica). Dupa se afiseaza suma, si pe alta linie elementele din array-ul <var>v</var>, care nu s-au schimbat.
+</div>
+
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct
+#END_TAGS

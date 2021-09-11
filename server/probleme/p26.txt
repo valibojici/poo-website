@@ -1,0 +1,41 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int v[] = { 1, 2, 3, 4, 5 };
+	
+	int* p = v;
+	p++;
+
+	p[-1] = 10;
+
+	for (int i = 0; i < 5; ++i)
+		cout << v[i] << ' ';
+}
+#END_PROBLEM
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+10 2 3 4 5
+</output>
+<div>
+Deci avem un vector <var>v</var> cu 5 elemente (nu mai trebuie sa pui intre <inline>[]</inline> numarul de elemente daca spui care sunt, se deduce automat ca sunt 5). <inline>int* p = v;</inline> pare ca initializeaza <var>p</var> cu array-ul <var>v</var> dar de fapt inseamna <inline>int* p = &v[0];</inline>. Acum <var>p</var> arata spre zona din memorie unde e primul element din array. <inline>p++;</inline> inseamna ca <var>p</var> arata acum spre al doilea element. (intr-un array elementele sunt unele langa altele, in ordine, in memorie).
+</div>
+<div>
+Pentru un array sau un pointer <var>v</var> si un indice <var>i</var>, expresia <inline>v[i]</inline> inseamna <inline>*(v + i)</inline>. Te gandesti ca <var>v</var> este un pointer, te duci in dreapta cu <var>i</var> pozitii si dupa dereferentiezi pointerul ca sa ai acces la elementul la care arata. (din cauza asta <inline>v[i]</inline> este la fel ca <inline>i[v]</inline> pentru ca <inline>*(v + i)</inline> e la fel ca <inline>*(i + v)</inline> ). Vezi <a href='https://stackoverflow.com/questions/4810664/how-do-i-use-arrays-in-c'>aici</a> despre array-uri pe SO.
+</div>
+<div>
+Deci <var>p</var> arata spre al doilea element si <inline>p[-1] = 10;</inline> inseamna <inline>*(p - 1) = 10;</inline> adica te duci in stanga cu o pozitie (la primul element) si modifici valoarea in 10. Deci primul element este 10 acum. La final elementele sunt <inline>10, 2, 3, 4, 5</inline>
+</div>
+
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, easy, pointers
+#END_TAGS

@@ -1,0 +1,52 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+void f(short x, double y)
+{
+	for (short i = 0; i < x; ++i)
+		cout << y << ", ";
+	cout << "Gata!" << endl;
+}
+
+void f(int x, long double y)
+{
+	int temp = y;
+	cout << x + temp << endl;
+}
+
+int main()
+{
+	short x = 5;
+	long double y = 3.14;
+	f(x, y);
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare la linia 21: <inline>f(x, y);</inline>
+</div>
+<error>
+more than one instance of overloaded function "f" matches the argument list
+</error>
+<div>
+Functia <var>f</var> este supraincarcata. In <var>main</var> se apeleaza <var>f</var> cu un <inline>short int</inline> si un <inline>long double</inline>. Luam argumentele pe rand si vedem care varianta a lui <var>f</var> se potriveste cel mai bine pentru fiecare (pot fi mai multe). Primul argument este <inline>short int</inline> care se potriveste exact cu prima functie (merge si a doua functie dar acolo trebuie o conversie la <inline>int</inline> iar aici nu trebuie). Al doilea argument este <inline>long double</inline> care se potriveste exact cu a doua functie (la fel ar merge si o conversie la <inline>double</inline> pentru prima functie dar la a doua nu trebuie).
+</div>
+<div>
+Daca ne gandim ca si cum am avea niste multimi, multimea de functii care se potrivesc cel mai bine pentru primul argument este { functia_1 }, iar pentru al doilea argument { functia_2 }. Intersectia dintre multimile astea este &empty;, deci nu se stie ce functie sa se apeleze. (mai multe detalii <a href="tips.html#function-overloading">aici</a>).
+</div>
+<div>
+Ca programul sa functioneze corect poti schimba linia 4: <inline>void f(short x, double y)</inline> in <inline>void f(short x,long double y)</inline> de exemplu. Acum la linia 22: <inline>f(x, y);</inline> al doilea argument se potriveste si la prima functie. Deci multimea de functii care se potrivesc cel mai bine pentru argumentul <var>y</var> (care este de tip <inline>long double</inline>) este { functia_1, functia_2 }, iar pentru argumentul <var>x</var> ramane { functia_1 }. Intersectia dintre multimile astea este prima functie (<inline>void f(short x,long double y)</inline>), deci ea se apeleaza.
+La final se afiseaza:
+</div>
+<output>
+3.14, 3.14, 3.14, 3.14, 3.14, Gata!
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, function overloading
+#END_TAGS

@@ -31,7 +31,7 @@ Daca ai o functie cu parametrii care au valori implicite, ei trebuie sa se afle 
 Ca sa fie corect modifica linia 4 in <inline>int myFunction(int A = 1, int B = 2, int C = 0) {</inline> sau in <inline>int myFunction(int A, int B, int C) {</inline>. La final se afiseaza:
 </div>
 <output>
-1
+6
 </output>
 #END_SOLUTION
 
