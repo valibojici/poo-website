@@ -62,8 +62,8 @@ $('#search').on('submit', e=>{
 
 async function getProblems() {
     // get all problems from github repo
-    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
-    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
+    // let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
 
     data = data.content;
@@ -185,6 +185,9 @@ function addEventsToButtons(data) {
 
             // hide prompt first then show solution
             $('#solution-container').removeClass('d-none');
+
+            // reset scroll on solution container from previous problems
+            $("#solution-container").scrollTop(0);
 
             // scroll to solution (for mobile)
             $(window).scrollTop($('#solution-container').offset().top);
