@@ -1,0 +1,41 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int f(int x)
+{
+    int y = x * x;
+    return y++;
+}
+
+
+int main()
+{
+    int a = f(2);
+    cout << a << endl;
+    cout << f(++a) << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+4
+25
+</output>
+<div>
+La linia 13: <inline>int a = f(2);</inline>, se apeleaza functia <var>f</var> cu valorea <inline>2</inline>: <var>y</var> ia valorea 2*2 adica 4 si acum la <inline>return y++;</inline>, pentru ca <inline>++</inline> este <b>dupa</b> <var>y</var>, inseamna ca mai intai se returneaza valorea lui <var>y</var> (adica <inline>4</inline>) si dupa se adauga <inline>1</inline> la <var>y</var>, dar pentru ca functia s-a terminat si <var>y</var> e o simpla variabila locala, nu mai are nici un efect.(ar fi avut daca <var>y</var> era o variabila statica)
+</div>
+<div>
+Deci in <var>main</var> <var>a</var> ia valorea <inline>4</inline>. La linia urmatoare <inline>cout << f(++a) << endl;</inline>, <inline>++</inline> este <b>inainte</b> de <var>a</var>, deci mai intai se mareste valoarea lui <var>a</var> si dupa se evalueaza expresia, in cazul asta se apeleaza functia <var>f</var> si dupa <inline>cout</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct
+#END_TAGS

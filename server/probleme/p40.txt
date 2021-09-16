@@ -1,0 +1,75 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+    int i;
+public:
+    B() { i = 1; }
+    virtual int get_i() { return i; }
+};
+
+class D : virtual public B {
+    int j;
+public:
+    D() { j = 2; }
+    int get_i() { return B::get_i() + j; }
+};
+
+class D2 : virtual public B {
+    int j2;
+public:
+    D2() { j2 = 3; }
+    int get_i() { return B::get_i() + j2; }
+};
+
+class MM : public D, public D2 {
+    int x;
+public:
+    MM() { x = D::get_i() + D2::get_i(); }
+    int get_i() { return x; }
+};
+
+int main()
+{
+    B* o = new MM();
+    cout << o->get_i() << " ";
+    
+    MM* p = dynamic_cast<MM*>(o);
+    if (p)
+        cout << p->get_i() << " ";
+    
+    D* p2 = dynamic_cast<D*>(o);
+    if (p2)
+        cout << p2->get_i();
+    
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+7 7 7
+</output>
+<div>
+La linia <inline>B* o = new MM();</inline> se aloca dinamic spatiu pentru un obiect de tip <inline>MM</inline> iar pointerul de tip <inline>B</inline> arata spre el. (upcasting pentru ca MM mosteneste B). Se executa constructorii in ordinea: B, D, D2, MM. Constructorii din B, D, D2 seteaza variabila membra la o anumita valoare iar in MM, <var>x</var> ia valoarea 3 + 4 adica <inline>7</inline>.
+</div>
+<div>
+La linia urmatoare: <inline>cout << o->get_i() << " "</inline>, pentru ca <var>o</var> este un pointer de tip <inline>B*</inline>, nu uitam in clasa <inline>B</inline> la functia <inline>get_i()</inline> care este <inline>virtual</inline>. Cum <var>o</var> arata spre un obiect de tip <inline>MM</inline> si in clasa <inline>MM</inline> functia <inline>get_i()</inline> este supradefinita, ea se va apela si va returna valorea lui <var>x</var> adica 7 de mai sus. Deci se afiseaza <inline>7</inline>.
+</div>
+<div>
+La linia <inline>MM* p = dynamic_cast<MM*>(o);</inline>, se face un dynamic cast la un pointer de tip <inline>MM*</inline> si cum <var>o</var> arata spre un obiect de tip <inline>MM</inline> va fi ok cast-ul. <var>p</var> este diferit de <inline>nullptr</inline> deci se executa ce este in <inline>if</inline> adica <inline>cout << p->get_i() << " ";</inline>. <var>p</var> este de tip <inline>MM*</inline>, se apeleaza functia <inline>get_i()</inline> din clasa <inline>MM</inline> care intoarce 7, deci se afiseaza tot <inline>7</inline>.
+</div>
+<div>
+La linia <inline>D* p2 = dynamic_cast<D*>(o);</inline>, se face un dynamic cast la un pointer de tip <inline>D*</inline>. Clasa <inline>MM</inline> mosteneste clasa <inline>D</inline> deci merge cast-ul. La fel se executa ce este in <inline>if</inline> adica <inline>cout << p2->get_i();</inline>. <var>p2</var> este pointer de tip <inline>D*</inline> si functia <inline>get_i()</inline> din clasa <inline>D</inline>, desi nu are cuvantul <inline>virtual</inline> in fata, <b>este virtuala</b>. De ce? <a href="https://stackoverflow.com/a/58042469">Pentru ca proprietatea unei functii din clasa de baza de a fi virtuala e valabila si pentru functia supradefinita din clasa derivata.</a> Pentru ca <var>p2</var> arata spre un obiect de tip <inline>MM</inline> si functia <inline>get_i()</inline> din <inline>D</inline> este virtuala se apeleaza <inline>get_i()</inline> din <inline>MM</inline>, care intoarce 7 si se afiseaza <inline>7</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+hard, correct, virtual, inheritance, polymorphism, multiple inheritance, pointers, dynamic cast
+#END_TAGS

@@ -1,0 +1,86 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Locuinta {
+protected:
+    int camere;
+public:
+    Locuinta(int c = 10) { camere = c; }
+    virtual Locuinta upgrade(Locuinta other) { 
+  		return other.camere + 2; 
+    }
+    void print() const { 
+    	cout << "Locuinta are " << camere << " camere"; 
+    }
+};
+
+class Casa : public Locuinta {
+private:
+    int etaje;
+public:
+    Casa(int e = 0) : Locuinta(4) { etaje = e; }
+
+    Locuinta upgrade(Locuinta other) { 
+    	return camere + other.camere * 2; 
+	}
+};
+
+int main()
+{
+    Locuinta* p1 = new Casa(5);
+    Locuinta* p2 = new Locuinta();
+    Locuinta* p3 = new Locuinta(p1->upgrade(*p2));
+    p3->print();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, eroare de compilare la linia 24 <inline>return camere + other.camere * 2;</inline>
+</div>
+<error>
+protected member "Locuinta::camere" (declared at line 6) is not accessible through a "Locuinta" pointer or object
+</error>
+<div>
+Membrii <inline>protected</inline> dintr-o clasa de baza poti fi accesati intr-o clasa derivata doar de obiecte (sau pointeri) de tipul clasei derivate. 
+</div>
+<block>
+class Base {
+protected:
+    int x;
+};
+
+class Derived : public Base {
+    void f(Base ob) { cout << ob.x; }         // eroare, accesezi x-ul prin ceva de tip Base
+    void f(Base* ob) { cout << ob->x; }       // eroare
+    void f(const Base& ob) { cout << ob.x; }  // eroare
+
+    void f(Derived ob) { cout << ob.x; }          // ok, ob e Derived si ai acces la x
+    void f(Derived* ob) { cout << ob->x; }        // ok
+    void f(const Derived& ob) { cout << ob.x; }   // ok
+
+    void g() { x = 100; }  // ok, ai acces la x-ul pentru obiectul curent
+};
+</block>
+<div>
+Problema e la <inline>other.camere</inline>, <var>other</var> e de tip <inline>Locuinta</inline> nu <inline>Casa</inline>. Cum tu este in clasa <inline>Casa</inline> si <var>other</var> nu e de tip <inline>Casa</inline>, nu ai acces la <var>other.camere</var> (care e <inline>protected</inline> in clasa <inline>Locuinta</inline>).
+Ca programul sa fie corect, poti modifica functia <inline>Locuinta upgrade(Locuinta other)</inline> din clasa <inline>Casa</inline> in <inline>Locuinta upgrade(Casa other)</inline>, acum primeste un obiect de tip <inline>Casa</inline> si poti accesa variabila <var>camere</var>.
+</div>
+<div>
+Dupa modificari, <inline>Locuinta* p1 = new Casa(5);</inline> se creeaza un obiect de tip <inline>Casa</inline>, se apeleaza constructorii in ordinea <inline>Locuinta</inline>, <inline>Casa</inline>. In lista de initializare din constructorul din <inline>Casa</inline> este apelat constructorul din <inline>Locuinta</inline> cu valoarea 4, si dupa se continua cu constructorul din <inline>Casa</inline> (etaje = 5). Dupa ce se creeaza se face upcast (pointerul <var>p1</var> de tip <inline>Locuinta</inline> arata spre ceva de tip <inline>Casa</inline>). 
+</div>
+<div>
+<inline>Locuinta* p2 = new Locuinta();</inline>, se creeaza un obiect de tip <inline>Locuinta</inline>, nu este transmis vreun argument pentru constructor deci ramane cel default adica in obiectul la care arata <var>p2</var>, <var>camere</var> este 10.
+</div>
+<div>
+La <inline>p1->upgrade(*p2)</inline> se apeleaza metoda <inline>upgrade</inline> din clasa <inline>Locuinta</inline>, pentru ca <var>p1</var> este de tip <inline>Locuinta</inline> si functia <inline>upgrade</inline> din <inline>Casa</inline> difera prin tipul parametrului, se ignora faptul ca metoda e <inline>virtual</inline>. Obiectul la care arata <var>p2</var> (are <var>camere</var> egal cu 10 de mai sus) este transmis ca parametru in functia <inline>upgrade</inline>. Se returneaza 10 + 2 adica <inline>12</inline>. Deci <inline>p3 = new Locuinta(12);</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+incorrect, medium, virtual, pointers, inheritance, protected
+#END_TAGS

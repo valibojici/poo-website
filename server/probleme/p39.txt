@@ -1,0 +1,83 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Cerc {
+    double raza;
+public:
+    Cerc(double r = 5.0) { raza = r; }
+    void afis() { cout << "Raza este " << raza << endl; }
+    void schimba(double r) { raza = r; }
+};
+
+Cerc construieste(double x) { return Cerc(x); }
+
+void verifica(Cerc& c)
+{
+    c.afis();
+    c.schimba(2.0);
+    c.afis();
+}
+ 
+int main()
+{
+    verifica(construieste(1.5));
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul are eroare de compilare la linia 23: <inline>verifica(construieste(1.5));</inline>.
+</div>
+<error>
+initial value of reference to non-const must be an lvalue
+</error>
+<div>
+Functia <inline>Cerc construieste(double x)</inline> returneaza un obiect de tip <inline>Cerc</inline> temporar, nu este stocat in memorie deci nu ii poti lua adresa. La linia 23: <inline>verifica(construieste(1.5));</inline> se apeleaza functia <inline>void verifica(Cerc& c)</inline> care primeste o referinta la un obiect de tip <inline>Cerc</inline>, dar functia se apeleaza cu obiectul temporar intors de functia <var>construieste</var>. De aici si eroarea, nu poti avea o referinta la ceva temporar.
+</div>
+<div>
+Ca programul sa fie corect, trebuie eliminata referinta, linia 15 devine: <inline>void verifica(Cerc c)</inline>. Acum cand se apeleaza functia <var>verifica</var>, obiectul temporar este transmis prin valoare (se copiaza) deci nu mai sunt probleme, dar acum modificarile din functia <var>verifica</var> nu se vor mai reflecta in afara functiei pentru ca parametrul nu mai e referinta (aici nu e cazul).
+</div>
+<div>
+Poate esti tentat sa schimbi linia 15 in: <inline>void verifica(const Cerc& c)</inline> pentru ca asa functia poate primi ca parametrii si valori temporare (totusi nu poti avea referinte la obiecte temporare, poti avea din C++11 dar se noteaza cu && in loc de &). Nu este corect pentru ca in functia <var>verifica</var> se apeleaza niste metode care nu sunt <inline>const</inline>, dar parametrul e de tip <inline>const</inline> si ai eroare. 
+</div>
+<div class="text-center">
+<button class="btn btn-altdark mt-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCode">Arata programul corect.</button>
+	<div class="collapse" id="collapseCode">
+<block>
+#include <iostream>
+using namespace std;
+
+class Cerc {
+    double raza;
+public:
+    Cerc(double r = 5.0) { raza = r; }
+    void afis() { cout << "Raza este " << raza << endl; }
+    void schimba(double r) { raza = r; }
+};
+
+Cerc construieste(double x) { return Cerc(x); }
+
+void verifica(Cerc c) // linia schimbata
+{
+    c.afis();
+    c.schimba(2.0);
+    c.afis();
+}
+ 
+int main()
+{
+    verifica(construieste(1.5));
+    return 0;
+}
+</block>
+	</div>
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, references, rvalue
+#END_TAGS

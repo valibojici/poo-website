@@ -1,0 +1,34 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+ 
+int main() {
+	int* const p = new int(2);
+	int& x = *p;
+
+	int y = *p;
+
+	x = 20;
+	*p = x;
+	cout << *p << ' ' << y << endl;
+	delete p;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+20 2
+</output>
+<div>
+<inline>int* const p = new int(2);</inline> se creeaza un pointer constant <var>p</var> catre un <inline>int</inline> alocat dinamic cu valoarea <inline>2</inline>. Pointerul este constant asta inseamna ca nu poti schimba spre ce zona de memorie arata dar poti modifica ce se afla la zona aceea de memorie la care arata. <inline>int& x = *p;</inline> se creeaza o referinta (un alias) la ce se afla in zona de memorie la care arata <var>p</var> (cu <inline>*p</inline> accesezi ce se afla la zona de memorie la care arata <var>p</var>). Dupa se creeaza o variabila <var>y</var> de tip <inline>int</inline> cu valorea <inline>2</inline>, adica ce se afla la zona de memorie la care arata <var>p</var>. <inline>x = 20;</inline> inseamna practic <inline>*p = 20;</inline> pentru ca <var>x</var> este o referinta. <inline>*p = x;</inline> inseamna practic <inline>*p = p;</inline> deci nu face nimic. La final <inline>*p</inline> este <inline>20</inline> si <var>y</var> ramane neschimbat, adica 2. De asemenea se elibereaza zona de memorie alocata mai sus. (ce se aloca cu <inline>new</inline> se sterge cu <inline>delete</inline>, ce se aloca cu <inline>new[]</inline> se sterge cu <inline>delete[]</inline>).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct, pointers, references
+#END_TAGS

@@ -1,0 +1,59 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <typeinfo>
+using namespace std;
+
+class A {
+    const int x;
+public:
+
+    A(int y = 10) : x(y) {}
+    int getX() const { return x; }
+};
+
+class B : A {
+    int y;
+public:
+    B() { y = 20; }
+    int getY() const { return y; }
+};
+
+int main()
+{
+    A* p = new B;
+    cout << p->getX();
+    if (typeid((A*)p).name() == "B*")
+        cout << ((B*)p)->getY();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, eroare de compilare la linia 22: <inline>A* p = new B;</inline>
+</div>
+<error>
+conversion to inaccessible base class "A" is not allowed
+</error>
+<div>
+Clasa <inline>B</inline> mosteneste <b>privat</b> clasa <inline>A</inline>, pentru ca modificatorul de access default la mostenire e <inline>private</inline>. Cand mostenesti privat, din exterior nu stie nimeni ca ai derivat. La linia <inline>A* p = new B;</inline> vrei sa faci upcasting, deci presupui ca <inline>B</inline> mosteneste <inline>A</inline> dar nu stie nimeni asta aici in <var>main</var> (doar cand esti in clasa <inline>B</inline> stii asta) deci nu e valabil. E ca si cum ai vrea sa faci upcasting dar fara mostenire, nu merge.
+</div>
+<div>
+Ca sa fie corect, trebuie sa mostenesti public, deci linia 13 sa devina <inline>class B : public A {</inline>.
+</div>
+<div>
+Dupa modificari, la <inline>A* p = new B;</inline> se apeleaza constructorii in ordinea <inline>A</inline>, <inline>B</inline>. In lista de initializare a constructorului din <inline>B</inline> nu este apelat constructorul din <inline>A</inline> cu o valoare, deci se apeleaza ca parametrul implicit 10. Se seteaza <var>x</var> la 10 (<var>x</var> e <inline>const int</inline> deci trebuie initializat in lista de initializare a constructorului, nu merge facut asta in corpul constructorului), dupa se continua cu constructorul din <inline>B</inline>, care seteaza <var>y</var> la 20.
+</div>
+<div>
+La <inline>cout << p->getX();</inline> se apeleaza functia <inline>getX()</inline> din <inline>A</inline> (care e <inline>const</inline> deci nu poate modifica starea obiectului, gen variabile sau sa apeleze functii neconst, dar oricum nu face asta) si se afiseaza <inline>10</inline>.
+</div>
+<div>
+<var>p</var> este de tip <inline>A*</inline> deja deci nu are sens vreun cast la <inline>A*</inline>, deci <inline>typeid((A*)p).name()</inline> e la fel ca <inline>typeid(p).name();</inline>. <inline>typeid</inline> returneaza un obiect de tip <inline>type_info</inline> ce reprezinta informatii despre tipul de date, are si o metoda <inline>name()</inline> care returneaza numele tipului de date dar depinde de compilator numele exact. Tipul lui <var>p</var> este <inline>A*</inline> (ne intereseaza pointerul, nu obiectul la care arata) deci in numele returnat de <inline>typeid(p).name()</inline> nu are de ce sa apara <inline>"B*"</inline> deci nu se executa if-ul. (pe visual studio, typeid(p).name() intoarce <inline>"class A * __ptr64"</inline>)
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, typeinfo, RTTI, inheritance, access modifiers
+#END_TAGS

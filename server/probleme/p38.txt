@@ -1,0 +1,59 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A
+{
+    int i;
+public:
+    A(int x = 2) : i(x + 1) {}
+    virtual int get_i() { return i; }
+};
+class B : public A
+{
+    int j;
+public:
+    B(int x = 20) : j(x - 2) {}
+    virtual int get_j() { return A::get_i() + j; }
+};
+int main()
+{
+    A o1(5);
+    B o2;
+    cout << o1.get_i() << " ";
+    cout << o2.get_j() << " ";
+    cout << o2.get_i();
+    return 0;
+}
+
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+6 21 3
+</output>
+<div>
+<inline>A o1(5);</inline> se creeaza un obiect <var>o1</var> de tip <inline>A</inline>, se apeleaza constructorul din clasa <var>A</var> cu valorea <inline>5</inline>, deci <var>i</var>-ul din obiectul <var>o1</var> ia valoarea 5+1 adica <inline>6</inline>.
+</div>
+<div>
+<inline>B o2;</inline> se creeaza un obiect <var>o2</var> de tip <inline>B</inline>. clasa <inline>B</inline> este derivata din <inline>A</inline> deci mai intai se executa constructorul din <inline>A</inline> pentru <var>o2</var>. In lista de initializarea a constructorului din <inline>B</inline> nu este apelat explicit constructorul din <inline>A</inline> deci se apeleaza cu parametrul implicit 2. <var>i</var>-ul (din clasa <inline>A</inline>) pentru obiectul <var>o2</var> este 2+1 adica <inline>3</inline>. Se continua cu constructorul din <inline>B</inline>, care seteaza <var>j</var> la 20-2 adica <inline>18</inline> (pentru ca in main nu este specificata o valoarea pentru constructor (<inline>B o2;</inline>), parametrul <var>x</var> ramane 20).
+</div>
+<div>
+La <inline>cout << o1.get_i() << " ";</inline>, <inline>o1.get_i()</inline> returneaza valorea lui <var>i</var> pentru obiectul <var>o1</var> adica 6 deci se afiseaza <inline>6 </inline>
+</div>
+<div>
+La <inline>cout << o2.get_j() << " ";</inline>, <inline>o2.get_j()</inline> returneaza <inline>A::get_i() + j</inline> (<var>j</var> este 18 de mai sus). Prin <inline>A::get_i()</inline> se apeleaza functia <inline>get_i()</inline> din clasa <inline>A</inline> (nu conteaza ca functiile astea sunt <inline>virtual</inline>, nici macar nu au acelasi nume si nici nu lucram cu pointeri). Pentru ca nu exista confuzii de nume, <inline>A::get_i()</inline> este la fel cu <inline>get_i()</inline>(daca in clasa <inline>B</inline> era o functie <inline>get_i()</inline> atunci cu <inline>A::</inline> te referi la cea din clasa <inline>A</inline>). <inline>get_i()</inline> returneaza valorea lui <var>i</var>, care pentru obiectul <var>o2</var> este 3 (de mai sus). Deci <inline>o2.get_j()</inline> returneza 3 + 18 adica <inline>21</inline> si se afiseaza <inline>21 </inline>.
+</div>
+<div>
+La <inline>cout << o2.get_i();</inline>, <inline>o2.get_i()</inline> returneza valoarea lui <var>i</var> pentru obiectul <var>o2</var> adica <inline>3</inline> si asta se si afiseaza.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, inheritance, virtual, public inheritance, constructors
+#END_TAGS

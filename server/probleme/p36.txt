@@ -1,0 +1,51 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int x = 0;
+
+int a() {
+    x = 100;
+    return 1;
+}
+
+int b(){
+    x = 200;
+    return 2;
+}
+
+int c(){
+    x = 300;
+    return 3;
+}
+
+void print(int x, int y, int z){
+    cout << x << ' ' << y << ' ' << z << endl;
+}
+
+int main()
+{
+    print(a(), b(), c());
+    cout << x << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul compileaza dar output-ul nu este sigur. Daca rulezi programul asta probabil o sa se afiseze :
+</div>
+<output>
+1 2 3
+100
+</output>
+<div>
+Dar ideea este ca la linia 15: <inline>print(a(), b(), c());</inline> nu se garanteaza o ordine in care sa se evalueze functiile <var>a</var>, <var>b</var> si <var>c</var>. (de obicei e de la dreapta la stanga dar nu e o regula). Deci cum <var>x</var> este o variabila globala si este modificata in fiecare functie la final poate fi ori 100 ori 200 ori 300. (in cazul asta pentru ca functiile sunt prea simple probabil ca compilatorul face ceva optimizari fara sa stim si e posibil ca <var>x</var> sa fie mereu <inline>100</inline>). Oricum nu te baza pe ordinea in care se evalueaza o partiile unei expresii pentru ca <a href="https://stackoverflow.com/questions/38501587/what-are-the-evaluation-order-guarantees-introduced-by-c17">nu e specificat</a>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, incorrect, runtime
+#END_TAGS

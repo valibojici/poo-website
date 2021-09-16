@@ -1,0 +1,43 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int f(int x)
+{
+    int y = x++;
+    return ++y + x;
+}
+
+
+int main()
+{
+    int a = f(2);
+    int x = a++ + 1;
+    cout << x << " " << a << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+7 7
+</output>
+<div>
+La linia 13: <inline>int a = f(2);</inline> se apeleaza functia <var>f</var> cu valorea <inline>2</inline>. In functie, <inline>int y = x++;</inline> inseamna ca mai intai <var>y</var> ia valorea lui <var>x</var> si <b>dupa</b> <var>x</var> se mareste cu 1 (pentru ca <inline>++</inline> este dupa <var>x</var>). La <inline>return ++y + x;</inline>, <var>x</var> este <inline>3</inline> (s-a marit mai sus), iar pentru ca <inline>++</inline> este <b>inainte</b> de <var>y</var> mai intai se mareste <var>y</var> cu 1 (acum e 3), abia apoi se face suma si se returneaza (3 + 3 adica 6).
+</div>
+<div>
+Deci in <var>main</var>, <var>a</var> ia valorea 6. La linia 14: <inline>int x = a++ + 1;</inline>, <inline>a++</inline> mareste valorea lui <var>a</var> cu 1 dupa ce se evalueaza expresia (adica dupa ce <var>x</var> ia valorea nu stiu cat). Deocamdata <var>a</var> ramane 6, iar <var>x</var> este 6 + 1 adica 7. La final nu uita ca se mareste si <var>a</var> cu 1.
+</div>
+<div>
+<b>Totusi nu scrie niciodata ceva de genul </b> <inline>int x = a++ + a;</inline> <b>, este <a href="https://stackoverflow.com/a/7812241">unspecified behaviour</a>.</b>
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+easy, correct
+#END_TAGS

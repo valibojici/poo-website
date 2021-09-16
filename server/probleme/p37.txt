@@ -1,0 +1,64 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+    static int x;
+
+public:
+    A (int i = 0) { x = i; }
+    
+    int getX() { return x; }
+    int& setX(int i) { x = i; }
+    
+    A operator=(A other){
+        setX(other.getX());
+        return other;
+    }
+};
+
+int main()
+{
+    A a(100), b;
+    cout << (b = a).getX();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare la compilare (mai exact linking error)
+</div>
+<error>
+unresolved external symbol "private: static int A::x" (?x@A@@0HA)
+</error>
+<div>
+Variabilele statice dintr-o clasa trebuie definite <b>in afara</b> ei. <var>x</var> este declarata in clasa dar nu este definita. De obicei cand declari ceva tot atunci si definesti in acelasi timp, dar variabilele statice intr-o clasa sunt o <a href="https://stackoverflow.com/a/1411005">exceptie</a>. Daca nu declari o variabila ai probleme la compilare, daca nu definesti o variabila ai probleme la linkare.
+</div>
+<block>
+class A{
+	int x;		   // declari si definesti x
+	static int y;  // declari y
+};
+
+int A::y = 0;	   // definesti y
+</block>
+<div>
+Ca sa fie corect, poti schimba linia 5: <inline>static int x;</inline> in <inline>int x;</inline> si acum <var>x</var> nu mai e <inline>static</inline>.
+</div>
+<div>
+La <inline>A a(100), b;</inline> se apeleaza constructorul pentru <var>a</var> cu valorea <inline>100</inline>, si <var>x</var> ia valorea 100. Pentru <var>b</var> se apeleaza constructorul cu parametrul implicit si <var>x</var> ia valorea 0. La linia <inline>cout << (b = a).getX();</inline> se apeleaza mai intai operatorul <inline>=</inline> (<var>b</var> apeleaza si <var>a</var> este argumentul).
+</div>
+<div>
+<var>a</var> se transmite prin valoare in functie (<inline>A operator=(A other)</inline>) deci <var>other</var> e o copie al lui <var>a</var>. <inline>setX(other.getX());</inline> seteaza <var>x</var>-ul din obiectul in care suntem (<var>b</var> din main) la valorea returnata de <inline>other.getX()</inline> (<var>other</var> este o copie a lui <var>a</var> din main deci se returneaza 100). Acum <var>x</var>-ul din <var>b</var> este 100. Functia <inline>operator=</inline> returneaza o copie (nu referinta la obiectul curent, cum se face de obicei) a lui <var>other</var> care e neschimbat (care e o copie al lui <var>a</var> din main). Revenind in main, <inline>(b = a)</inline> este un obiect temporar (adica ce returneaza <inline>operator=</inline>) cu <var>x</var>-ul egal cu 100. Deci <inline>getX()</inline> intoarce <inline>100</inline> si asta se afiseaza.
+</div>
+<div>
+La linia 11: <inline>int& setX(int i) { x = i; }</inline> nu e tocmai gresit dar n-are sens sa ai o functie care intoarce ceva si sa nu intorci nimic (poate pe visual studio da eroare la linia asta)
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, static
+#END_TAGS

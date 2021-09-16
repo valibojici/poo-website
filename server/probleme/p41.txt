@@ -1,0 +1,49 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+    int x;
+
+public:
+    B(int i = 7) { x = i; }
+    int get_x() { return x; }
+    operator int() { return x; }
+};
+class D : public B {
+public:
+    D(int i = -12)
+        : B(i) {}
+
+    D operator+(D a) { return get_x() + a.get_x() + 1; }
+};
+int main()
+{
+    D a;
+    int b = 18;
+    b += a;
+    cout << b;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+6
+</output>
+<div>
+La linia 21: <inline>D a;</inline> se creeaza un obiect de tip <inline>D</inline>, se executa constructorii in ordinea <inline>B</inline>, <inline>D</inline>. Cand se apeleaza in main, constructorul <inline>D(int i = -12) : B(i) {}</inline> nu primeste niciun argument deci <var>i</var> ramane -12. In lista de initializare se apeleaza constructorul din <inline>B</inline> cu valorea <inline>-12</inline>, el se executa primul si seteaza <var>x</var>-ul din <inline>B</inline> la -12. Apoi se continua cu constructorul din <inline>D</inline> care nu mai face nimic.
+</div>
+<div>
+La <inline>b += a;</inline>, <var>b</var> este de tip <inline>int</inline> deci trebuie o conversie de la <inline>D</inline> la <inline>int</inline>. Clasa <inline>D</inline> mosteneste <inline>operator int()</inline> din clasa <inline>B</inline> deci o sa fie folosit acum. In clasa <inline>B</inline> <inline>operator int()</inline> returneaza valorea lui <var>x</var> adica <inline>-12</inline>. Deci <inline>b += a;</inline> este <inline>b += -12;</inline>, adica <var>b</var> devine 18 - 12 = <inline>6</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, cast, inheritance
+#END_TAGS
