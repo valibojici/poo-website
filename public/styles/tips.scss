@@ -30,15 +30,20 @@ body{
     writing-mode: vertical-lr;
     text-orientation: upright;
     font-weight: lighter;
-    line-height: 1.4;
-    letter-spacing: -1px;
+    line-height: 1.45;
+    margin-right: 5px;
+    letter-spacing: -2px;
+
+    color: white;
+    background-color: rgb(73, 73, 73);
+    border: none;
 }
 
 #offcanvas-btn:focus{
     box-shadow: none;
 }
 
-.nav-section.active{
+.nav-link.active{
     color: black !important;
 }
 
@@ -48,6 +53,14 @@ article > h3{
 
 .article-content > div{
     margin-bottom: 1em;
+}
+
+
+code{
+    color: black;
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 2px;
 }
 
 
