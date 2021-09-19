@@ -1,0 +1,57 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+    int n;
+public:
+    B(int x) : n(x) {}
+
+    int getN() const { return n; }
+
+    int setN(int newN) {
+        int old = n;
+        n = newN;
+        return old;
+    }
+};
+
+int main()
+{
+    B* p = new B[8];
+
+    for (int i = 0; i < 8; ++i)
+        p[i].setN(i*2);
+
+    for (int i = 0; i < 8; ++i)
+        cout << p[i].getN() << " ";
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 20: <inline>B* p = new B[8];</inline>.
+</div>
+<error>
+no default constructor exists for class "B"
+</error>
+<div>
+Cum spune si eroarea la linia 20 se aloca spatiu dinamic si se creeaza 8 obiecte de tip <inline>B</inline>. Cand se creeaza cele 8 obiecte pentru fiecare se apeleaza constructorul fara vreun parametru dar in clasa <inline>B</inline> nu exista vreun constructor fara parametrii sau cu parametrii impliciti deci nu se pot crea obiectele.
+</div>
+<div>
+Ca programul sa fie corect poti schimba linia 7 in <inline>B(int x = 0) : n(x) {}</inline> sau in <inline>B() : n(0) {}</inline>. In primul caz avem parametru cu o valoare implicita, in al doilea avem constructor fara parametrii (nu trebuie neaparat 0 poti pune alte valori).
+</div>
+<div>
+Cu modificarile de mai sus, se creeaza 8 obiecte de tip <inline>B</inline>. Dupa, in primul <inline>for</inline>, se seteaza valoarea lui <var>n</var> din fiecare obiect la <inline>i * 2</inline> prin metoda <inline>setN</inline>. Chiar daca metoda intoarce ceva, rezultatul nu trebuie neaparat folosit. La al doilea <inline>for</inline> se apeleaza metoda <inline>getN</inline> (de obicei un getter e functie <inline>const</inline> pentru ca nu ar trebui sa modifice obiectul, doar returneaza ceva) si se afiseaza:
+</div>
+<output>
+0 2 4 6 8 10 12 14
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, dynamic memory allocation, constructor
+#END_TAGS

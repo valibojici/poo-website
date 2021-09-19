@@ -1,0 +1,79 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+template<class T, class U>
+T f(T x, U y)
+{
+    return x + y;
+}
+
+int f(int x, int y)
+{
+    return x - y;
+}
+
+int main()
+{
+    int* a = new int(20), b(5);
+    cout << *f(a, b) << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu are erori, (poate uneori la runtime ca accesezi memorie la intamplare) se afiseaza o valoare random din memorie.
+</div>
+<div>
+Daca scrii <inline>int* a, b</inline> este de fapt <inline>int* a; int b;</inline>. In plus, poti initializa un <inline>int</inline> de exemplu folosind <inline>()</inline>, adica <inline>int x = 20;</inline> este la fel cu <inline>int x(20);</inline>.
+</div>
+<block>
+int* a;    // a este pointer la int
+int *a;    // a este pointer la int
+int * a;   // a este pointer la int
+
+/////////////////////////
+
+int* a, b; 	// | 
+int *a, b;	// |---- a este pointer la int, b este int 
+int * a, b;	// |
+
+// liniile de mai sus sunt echivalente cu
+int* a;
+int b;
+
+/////////////////////////
+
+int *a, *b; // a,b pointeri la int
+int* a,* b; // a,b pointeri la int
+</block>
+<div>
+La linia <inline>int* a = new int(20), b(5);</inline> se aloca dinamic un <inline>int</inline> cu valoarea 20 cu pointerul <var>a</var> care arata spre el, si un <inline>int</inline> <var>b</var> care primeste valorea 5.
+</div>
+<div>
+Cand se apeleaza functia <var>f</var> la linia <inline>cout << *f(a, b) << endl;</inline>, <var>a</var> este de tip <inline>int*</inline> si <var>b</var> este de tip <inline>int</inline>. Sigur nu se potriveste cu functia <inline>int f(int x, int y)</inline> dar se potriveste cu prima pentru ca e template. In cazul asta <inline>T = int*</inline> si <inline>U = int</inline>. Deci prima functie devine:
+</div>
+<block>
+int* f(int* x, int y)
+{
+    return x + y;
+    // aici intervine aritmetica cu pointeri, x+y e un pointer
+    // care o sa arate cu y*4 bytes spre dreapta (sau spre stanga daca y < 0)
+    // pentru ca 4 bytes e dimensiunea unui int si p este de tip int*
+    // deci x+y o sa arate spre o zona de memorie nefolosita (sau folosita, eroare la runtime)
+}
+</block>
+<div>
+Deci functia asta intoarce un pointer care arata undeva in memorie (sa speram ca nu foloseste nimeni zona aia ca altfel eroare la runtime,Segmentation fault) dupa care este dereferentiat ( <inline>*f(a, b)</inline> ) ca sa vedem valoare de acolo, care e un garbage value, si asta e afisat.
+</div>
+<div>
+<b>Sa accesezi o zona din memorie care nu iti apartine este undefined behaviour, personal nu cred ca te poti baza pe faptul ca o sa gasesti o valoare random acolo, nu consider ca programul e corect in practica.</b>
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, pointers, template, function overloading
+#END_TAGS

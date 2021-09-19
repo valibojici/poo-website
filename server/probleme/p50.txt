@@ -1,0 +1,98 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Copac {
+    int varsta;
+public:
+    Copac(int x) : varsta(x) {}
+    int f() const { return varsta + 1; }
+    int g(int x) { varsta = x; }
+
+    Copac operator= (Copac other) {
+        g(other.f());
+        return other;
+    }
+};
+
+class Brad : public Copac {
+    int conuri;
+public:
+    Brad(int c) : Copac(100) { conuri = c; }
+
+    void print() const { cout << conuri << endl; }
+};
+
+int main()
+{
+    Brad a(50), b, *c;
+    cout << (b = a).f() << endl;
+    (c = &a)->print();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, eroare de compilare la linia 27: <inline>Brad a(50), b, *c;</inline>.
+</div>
+<error>
+no default constructor exists for class "Brad"
+</error>
+<div>
+La linia 27: <inline>Brad a(50), b, *c;</inline> se creeaza o variabila de tip <inline>Brad</inline> cu numele <var>b</var>, dar fara sa fie specificata vreo valoare pentru constructor. In clasa <inline>Brad</inline> nu exista constructor fara parametrii sau cu parametrii impliciti si de aici vine eroarea.
+</div>
+<div>
+Ca programul sa fie corect poti da o valoare cand construiesti obiectul <var>b</var>, <inline>Brad a(50), b(10), *c;</inline> sau sa schimbi constructorul din <inline>Brad</inline> in <inline>Brad(int c = 0) : Copac(100) { conuri = c; }</inline>.
+</div>
+<div>
+Dupa modificari (sa zicem a doua varianta, cu constructorul), la linia <inline>Brad a(50), b, *c</inline> se creeaza 2 obiecte si un pointer. Pentru <var>a</var>, se apeleaza mai intai constructorul din clasa <inline>Copac</inline> cu valorea 100 (deci <var>varsta</var> e 100) apoi <var>conuri</var> ia valoarea 50. Pentru <var>b</var>, la fel se apeleaza constructorul din <inline>Copac</inline> cu 100 si dupa <var>conuri</var> ia valorea 0, pentru ca nu a fost transmis vreun argument pentru constructor.
+</div>
+<div>
+La <inline>b = a</inline> pentru ca <inline>b</inline> si <inline>a</inline> sunt de tip <inline>Brad</inline> (NU de tip <inline>Copac</inline> !!) se apeleaza operatorul <inline>operator=</inline> din clasa <inline>Brad</inline>, care nu exista, este generat automat de compilator. Acum operatorul asta generat de compilator arata cam asa:
+</div>
+<block>
+// definit in afara clasei
+Brad& Brad::operator=(const Brad& other) {
+    if (this != &other) // se verifica daca ai ceva gen: b = b
+    {
+        Copac::operator=(other); // trebuie Copac:: ca sa ne referim la metoda din clasa Copac
+        conuri = other.conuri;
+    }
+    return *this;
+
+    // ideea e ca apeleaza operator= din clasa de baza,
+    // dupa copiaza membrii din clasa derivata si
+    // returneaza o referinta la obiectul care a apelat operator=
+}
+</block>
+<div>
+Acum, la <inline>Copac::operator=(other);</inline> se apeleaza <inline>operator=</inline> din clasa <inline>Copac</inline>, <var>other</var> fiind de fapt <var>a</var> din main iar obiectul care apeleaza este <var>b</var>. 
+</div>
+<div>
+In <inline>operator=</inline> din clasa <inline>Copac</inline>, <inline>other.f()</inline> este practic <inline>a.f()</inline> adica intoarce 100 + 1 adica 101. Acum, <inline>g(other.f())</inline> inseamna <inline>g(101);</inline>, nu uita ca suntem in obiectul <var>b</var> acum, deci se functia <var>g</var> schimba <var>varsta</var> din obiectul <var>b</var> in 101. Se returneaza o copie a parametrului <var>other</var>. Revenim la <inline>operator=</inline> generat de compilator. O sa ignore valoarea asta returnata de celalalt <inline>operator=</inline> si continua sa modifice si <var>conuri</var> din <var>b</var> la 50 (pentru ca <var>other</var> este <var>a</var> si <var>conuri</var> din <var>a</var> este 50). La final se intoarce o referina la obiectul <inline>*this</inline> care este obiectul care a apelat <inline>operator=</inline> adica <var>b</var>.
+</div>
+<div>
+Concluzia? <inline>cout << (b = a).f();</inline> este practic:
+</div>
+<block>
+b = a;
+cout << b.f();
+</block>
+<div>
+<inline>(b = a)</inline> returneaza o referinta la <var>b</var> modificat (cu <var>varsta</var> egal cu 101). Deci <inline>(b = a).f()</inline> returneaza 101 + 1 adica <inline>102</inline>.
+</div>
+<div>
+La <inline>c = &a</inline> aici <var>c</var> e pointer si doar arata spre <var>a</var> acum. La fel ca sus, <inline>(c = &a)</inline> returneaza o referinta la pointerul <var>c</var> modificat. La <inline>(c = &a)->print()</inline>, pointerul <var>p</var>, care arata spre <var>a</var> acum, apeleaza metoda <inline>print</inline> care afiseaza <inline>50</inline> (pentru ca <var>conuri</var> din <var>a</var> e 50). Deci, in final se afiseaza:
+</div>
+<output>
+102
+50
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+incorrect, medium, pointers, operator overloading, constructor
+#END_TAGS

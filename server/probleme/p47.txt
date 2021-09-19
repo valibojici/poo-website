@@ -1,0 +1,47 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+    int x;
+
+public:
+    A(int i = 0) { x = i; }
+    A operator+(const A& a) { return x + a.x; }
+    template <class T>
+    ostream& operator<<(ostream&);
+};
+template <class T>
+ostream& A::operator<<(ostream& o)
+{
+    o << x;
+    return o;
+}
+int main()
+{
+    A a1(33), a2(-21);
+    cout << a1 + a2;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 22: <inline>cout << a1 + a2;</inline>
+</div>
+<error>
+no operator "<<" matches these operands
+</error>
+<div>
+Problema este ca operatorul <inline><<</inline> este supraincarcat ca membru al clasei <inline>A</inline>. <inline>cout << a1 + a2;</inline> este ca si cum ai avea <inline>cout.operator<<(a1 + a2);</inline>, nu are sens pentru ca <inline>operator<<</inline> este in clasa <inline>A</inline> (nu este functie prieten). Deci ar trebui sa fie invers, <inline>(a1 + a2) << cout;</inline> dar nu o sa mearga asa pentru ca metoda este template si nu stie cu ce sa inlocuiasca <inline>T</inline>. Ar trebui ceva de genul <inline>(a1 + a2) << <int> cout</inline> doar ca nici asa nu merge, trebuie sa apelezi efectiv metoda cu <inline>operator<<</inline> adica <inline>(a1 + a2).operator<< <int>(cout)</inline>. Nu conteaza de tip pui intre <inline><></inline>, poti pune orice tip pentru ca in metoda nici nu apare <inline>T</inline>, eu am pus <inline>int</inline>.
+</div>
+<div>
+Ca programul sa fie corect ori stergi linia 22 ori o inlocuiesti cu <inline>(a1 + a2).operator<< <int>(cout);</inline>. Alta varianta este sa schimbi linia 9 in: <inline>int operator+(const A& a) { return x + a.x; }</inline> si acum returneaza <inline>int</inline> deci merge <inline>cout << a1 + a2;</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+incorrect, medium, operator overloading, template
+#END_TAGS

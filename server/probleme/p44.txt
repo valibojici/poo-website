@@ -1,0 +1,73 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+    int x;
+protected:
+    static int cnt;
+public:
+    B(int i = 0) : x(i) { cnt++; }
+    
+    static int getCnt() { return cnt; }
+
+    ~B() { cnt--; }
+};
+
+int B::cnt;
+
+class D : public B {
+public:
+    D() { cnt++; }
+    ~D() { cnt--; }
+};
+
+void f(B* p) {
+    cout << p->getCnt() + 1 << ' ';
+}
+
+int main()
+{
+    B* p = new B[10];
+    f(p);
+    delete[] p;
+    p = new D;
+    f(p);
+    delete p;
+    cout << D::getCnt();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu are erori, se afiseaza:
+</div>
+<output>
+11 3 1
+</output>
+<div>
+La <inline>B* p = new B[10];</inline> se creeaza un array alocat dinamic cu 10 elemente de tip <inline>B</inline>, pentru fiecare se apeleaza constructorul fara vreun parametru deci ramane cel default adica 0. <inline>B(int i = 0) : x(i) { cnt++; }</inline> in lista de initializare a constructorului <var>x</var> ia valorea 0 si dupa in corpul constructorului variabila statica <var>cnt</var> se mareste cu 1. Pentru ca <var>cnt</var> a fost definita global (<inline>int B::cnt;</inline>) a avut valoarea 0 la inceput. Acum <var>cnt</var> este <inline>10</inline>, pentru ca s-a apelat constructorul din <inline>B</inline> de 10 ori (pentru <inline>new B[10]</inline>).
+</div>
+<div>
+La <inline>f(p);</inline> se apeleaza functia <var>f</var> cu pointerul <var>p</var> din main si se afiseaza valoarea variabilei statice <var>cnt</var> + 1 adica <inline>11</inline> (un obiect de tip <inline>B</inline> poate apela metoda statica <inline>static int getCnt()</inline>).
+</div>
+<div>
+La <inline>delete[] p;</inline> se sterge array-ul alocat dinamic, deci pentru fiecare element se apeleaza destructorul <inline>~B()</inline> care de fiecare data scade 1 din <var>cnt</var>. Acum <var>cnt</var> e 0.
+</div>
+<div>
+La linia <inline>p = new D;</inline> se creeaza un obiect de tip <inline>D</inline>, se apeleaza constructorii in ordinea <inline>B</inline>, <inline>D</inline>. In lista de initializare din constructorul din <inline>D</inline> nu este specificat vreun parametru pentru constructorul din <inline>B</inline>, deci se apeleaza cu parametrul implicit 0 care mareste <var>cnt</var> cu 1 (tot aici se seteaza si <var>x</var> la 0). Dupa se continua cu constructorul din <inline>D</inline>, care mareste si el <var>cnt</var> cu 1, acum e 2 (are acces la <var>cnt</var> pentru ca e <inline>protected</inline> in clasa de baza). 
+</div>
+<div>
+Acum cand se apeleaza <inline>f(p);</inline> , se afiseaza 2+1 adica <inline>3</inline> pentru ca <var>cnt</var> este 2 acum.
+</div>
+<div>
+La linia <inline>delete p;</inline> pentru ca <var>p</var> este de tip <inline>B*</inline> ne uitam in clasa <inline>B</inline> la destructor <b>care nu e <inline>virtual</inline></b> deci doar el se apeleaza (NU se mai apeleaza destructorul din <inline>D</inline> chiar daca <var>p</var> arata spre un obiect de tip <inline>D</inline>). <var>cnt</var> scade cu 1 si devine 1. In final la <inline>cout << D::getCnt();</inline> se afiseaza valorea lui <var>cnt</var> adica <inline>1</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, dynamic memory allocation, static, destructors, upcast, inheritance
+#END_TAGS

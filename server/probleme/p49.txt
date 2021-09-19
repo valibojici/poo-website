@@ -1,0 +1,66 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int f(int x){
+	return ++x;
+}
+
+int f(int& x, int y)
+{
+	try{
+		if (x < y)throw x--;
+		return x + y;
+	}
+	catch (...){
+		throw;
+	}
+	return y - x;
+}
+
+int f(double& y){
+	cout << "!" << y << "!" << endl;
+	return y / 2;
+}
+
+int main()
+{ 
+    int x;
+	try{
+		x = 123;
+		if (x % 3 == 0) {
+		    x = f(x, 125);
+			cout << "Imi place " << x;
+		}
+		else {
+			x = f(x);
+			cout << "Nu prea imi place " << x;
+		}
+	}
+	catch (int i){
+		cout << "Nu imi place numarul " << i << endl;
+	}
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza: 
+</div>
+<output>
+Nu imi place numarul 123
+</output>
+<div>
+In blocul <inline>try</inline> din <var>main</var>, <var>x</var> ia valoarea 123. Cum 123 se imparte la 3, se executa codul in <inline>if</inline>, <inline>x = f(x, 125);</inline>. Se apeleaza functia <inline>int f(int& x, int y)</inline>. <var>x</var> este transmis prin referinta in functie si este 123, <var>y</var> este 125. Acum intram in blocul <inline>try</inline> din functia <var>f</var>. <var>x</var> este mai mic ca <var>y</var> deci se executa <inline>throw x--;</inline>, care arunca valoarea lui <var>x</var> si dupa scade 1 din <var>x</var>. Nu mai continuam si sarim in blocul de <inline>catch</inline> (care prinde orice, in cazul asta prinde valoarea 123 aruncata de mai sus). Aici avem <inline>throw;</inline> care arunca ce a primit mai departe (deci se arunca iar 123). Iesim din functia <var>f</var> ca nu mai avem ce sa prindem si revenim in <var>main</var>.
+</div>
+<div>
+In <var>main</var> ramasesem la linia 31: <inline>x = f(x, 125);</inline>. Functia a aruncat o exceptie deci nu mai continuam, trecem in blocul de <inline>catch</inline>. Acolo prindem numarul 123, aruncat de functia <var>f</var>, pentru este de tip <inline>int</inline> la fel ca <inline>i</inline> (acum <var>i</var> e 123). La final se afiseaza mesajul si numarul 123.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, medium, try catch, function overloading
+#END_TAGS

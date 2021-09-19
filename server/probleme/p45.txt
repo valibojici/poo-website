@@ -1,0 +1,46 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Persoana {
+    char nume[20];
+public:
+    Persoana(const char* n) { strcpy(nume, n); }
+    void afis() const { cout << nume; }
+};
+
+void f(Persoana* p){ p.afis(); }
+
+int main()
+{
+    Persoana p = "Ion";
+    f(&p);
+
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, are o eroare de compilare la linia 12 <inline>void f(Persoana* p){ p.afis(); }</inline>
+</div>
+<error>
+request for member 'afis' in 'p', which is of pointer type 'Persoana*' (maybe you meant to use '->' ?)
+</error>
+<div>
+La linia <inline>void f(Persoana* p){ p.afis(); }</inline>, <var>p</var> este un pointer, pointerul nu are metoda <inline>afis()</inline>, obiectul la care arata o are. Deci pointerul trebuie dereferentiat mai intai cu <inline>*p</inline> si dupa apelata functia <inline>(*p).afis()</inline> dar pentru ca e incomod de scris mereu <inline>(*p)</inline> poti folosi <inline>-></inline> si nu mai dereferentiezi pointerul (<inline>p->afis()</inline>).
+</div>
+<div>
+Ca programul sa fie corect, trebuie schimbata linia 12 in <inline>void f(Persoana* p){ p->afis(); }</inline>.
+</div>
+<div>
+Acum, pentru ca constructorul din clasa <inline>Persoana</inline> are un singur parametru, poti scrie <inline>Persoana p = "Ion";</inline> care este totuna cu <inline>Persoana p("Ion");</inline>. In C++ ceva de genul <inline>"Ion"</inline> este un array de caractere const. (<inline>const char[4]</inline> mai exact, 3 litere + caracterul de sfarsit). Daca ai o functie <inline>void f(const char v[])</inline> este exact la fel cu <inline>void f(const char* v)</inline> pentru ca un array transmis intr-o functie se transforma intr-un pointer la primul element din array.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, pointers, constructors
+#END_TAGS
