@@ -8,9 +8,6 @@ function changeButtonsSize(media) {
         $('#main-container').css({height : `initial`});
 
         $('span.btn').addClass('btn-sm');
-        $('#solution').removeClass('lead');
-
-        
 
         addRemoveClass('.next-btn', 'btn-success', 'btn-outline-success');
         addRemoveClass('.prev-btn', 'btn-warning', 'btn-outline-warning');
@@ -22,7 +19,6 @@ function changeButtonsSize(media) {
     } else {
         $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar-container').css('height'))}px`});
         $('span.btn').removeClass('btn-sm');
-        $('#solution').addClass('lead');
 
         addRemoveClass('.next-btn', 'btn-outline-success', 'btn-success');
         addRemoveClass('.prev-btn', 'btn-outline-warning', 'btn-warning');
@@ -32,16 +28,27 @@ function changeButtonsSize(media) {
     }
 }
 
-let media = window.matchMedia("(max-width: 992px)");
+function changeFontWeight(media){
+    if(media.matches){
+        $('#solution').addClass('fw-normal');
+    } else {
+        $('#solution').removeClass('fw-normal');
+    }
+}
 
-changeButtonsSize(media) // Call listener function at run time
-$(media).on('change', () => {
-    changeButtonsSize(media);
-});
+let lgBreakpoint = window.matchMedia("(max-width: 992px)");
+let fwBreakpoint = window.matchMedia("(max-width: 1300px)");
+
+changeButtonsSize(lgBreakpoint); // Call listener function at run time
+changeFontWeight(fwBreakpoint);
+
+$(lgBreakpoint).on('change', () => { changeButtonsSize(lgBreakpoint); });
+
+$(fwBreakpoint).on('change', e=>{ changeFontWeight(fwBreakpoint); });
 
 
 $(window).on('resize', ()=>{
-    if(!media.matches){
+    if(!lgBreakpoint.matches){
         $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar-container').css('height'))}px`});
     } else {
         $('#main-container').css({height : `initial`});

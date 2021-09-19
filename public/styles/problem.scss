@@ -96,6 +96,10 @@ table{
     font-weight: normal;
 }
 
+.normal-font-weight{
+    font-weight: 400 !important;
+}
+
 @media screen and (min-width: 992px) {
     #main-container{
         height: calc(100vh - 56px);

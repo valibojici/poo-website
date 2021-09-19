@@ -11,6 +11,7 @@ pre{
 
 .codeblock-outer-container{
     margin-top: 1em;
+    padding: 0;
 }
 
 .codeblock-container{
@@ -22,7 +23,7 @@ pre{
 }
 
 .codeblock-header{
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .copy-btn{
