@@ -9,12 +9,26 @@ pre{
     margin: 0;
 }
 
+.codeblock-outer-container{
+    margin-top: 1em;
+}
+
 .codeblock-container{
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     font-size: 1.2rem;
-    margin-top: 1em;
+    // margin-top: 1em;
+}
+
+.codeblock-header{
+    justify-content: end;
+}
+
+.copy-btn{
+    padding: 0 10px;
+    margin: 0.4em 0.4em;
+    border-radius: 0;
 }
  
 .lines-container{

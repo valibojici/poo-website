@@ -1,3 +1,7 @@
+$altlight : #FDF0D5;
+$altdark : #383D3B;
+$dark : #292b2c;
+
 body{
     min-height: 100vh;
     tab-size: 4;
@@ -32,6 +36,40 @@ a{
     max-height: 50%;
 }
 
+#main-left-col,
+#main-right-col{
+    scrollbar-width: thin;
+}
+
+#main-left-col,
+#main-right-col{
+    &::-webkit-scrollbar{
+        width: 16px;
+        height: 5px;
+        padding: 0 2px;
+    }
+
+    &::-webkit-scrollbar-track-piece{
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background-color: rgba(255, 255, 255, 0.342);
+        border-radius: 20px;
+        border: 5px solid transparent;
+        background-clip: padding-box;
+    }
+
+    scrollbar-color: #808080 $dark;
+}
+
+#main-right-col{
+    &::-webkit-scrollbar-thumb{
+        background-color: rgba(0, 0, 0, 0.342);
+    }
+    scrollbar-color: rgba(100, 100, 100, 0.699) transparent;
+}
+
 
 #solution samp.error{
     display: inline-block;
@@ -47,10 +85,6 @@ a{
     color: whitesmoke;
     font-family: 'Courier New', Courier, monospace;
     padding: 0.25em 10px;
-}
-
-#solution .codeblock-container{
-    margin: 1em 0;
 }
 
 #solution > div > *{

@@ -62,8 +62,8 @@ $('#search').on('submit', e=>{
 
 async function getProblems() {
     // get all problems from github repo
-    // let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
-    let data = await fetch('http://localhost:3000/get', {method: 'get'});
+    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
 
     data = data.content;
@@ -186,8 +186,8 @@ function addEventsToButtons(data) {
             // hide prompt first then show solution
             $('#solution-container').removeClass('d-none');
 
-            // reset scroll on solution container from previous problems
-            $("#solution-container").scrollTop(0);
+            // // reset scroll on solution container from previous problems
+            // $("#solution-container").scrollTop(0);
 
             // scroll to solution (for mobile)
             $(window).scrollTop($('#solution-container').offset().top);
@@ -195,14 +195,16 @@ function addEventsToButtons(data) {
     });
 
     // copy button
-    $('#copy-btn').on('click', e => {
-        copyToClipboard(document.querySelectorAll("#problem code"));
-        let originalText = $("#copy-btn").html();
-        $("#copy-btn").html('Text copiat!');
-        setTimeout(() => {
-            $("#copy-btn").html(originalText);
-        }, 1500);
-    });
+    // $('.copy-btn').on('click', e => {
+    //     let thisBtn = e.target;
+    //     let parent = thisBtn.parentNode;
+    //     copyToClipboard(parent.querySelectorAll("code"));
+    //     let originalText = $(thisBtn).html();
+    //     $(thisBtn).html('Text copiat!');
+    //     setTimeout(() => {
+    //         $(thisBtn).html(originalText);
+    //     }, 1500);
+    // });
 }
 
 
@@ -226,17 +228,9 @@ function loadProblem(data) {
     });
 
     $('#solution pre.block').each((index, elem) => {
-        let $outerDiv = $('<div></div>')
-        $outerDiv.addClass('codeblock-container');
-        $outerDiv.append(divs[index]);
-        $(elem).replaceWith($outerDiv);
+ 
+        $(elem).replaceWith(divs[index]);
     })
-
-
-    // for(let c of document.querySelectorAll('#solution pre.block > code')){
-    //     let temp = c.innerText;
-    //     $(c).empty().append(getNumberedCodeBlock(temp))
-    // }
 
     $('pre code').get().forEach(elem => hljs.highlightElement(elem));
 
@@ -276,7 +270,10 @@ function copyToClipboard(elements) {
 
 function getNumberedCodeBlock(code) {
     // to do in python script?
-    let $container = $('<div/>').addClass('lines-container');
+    let $codeblockContainer = $('<div/>').addClass('codeblock-container');
+    let $codeblockOuterContainer = $('<div/>').addClass('codeblock-outer-container');
+
+    let $linesContainer = $('<div/>').addClass('lines-container');
     let lineColors = ['#e0e0e0', '#e7e7e7'];
     let count = 0;
     for (let line of code.split('\n')) {
@@ -289,10 +286,28 @@ function getNumberedCodeBlock(code) {
         
         $innerContainer.append($numberContainer).append($line);
 
-        $container.append($innerContainer);
+        $linesContainer.append($innerContainer);
     }
 
-    return $container;
+    $codeblockContainer.append($linesContainer);
+
+    // create header div with copy btn in it
+    let $codeHeader = $("<div/>").addClass('codeblock-header bg-dark d-flex');
+    let $cpyBtn = $("<a> <i class=\"bi bi-clipboard me-2\"></i> Copy</a>").addClass('btn btn-sm btn-altlight copy-btn');
+    $cpyBtn.on('click', e=>{
+        copyToClipboard($linesContainer[0].querySelectorAll("code"));
+        let originalText = $cpyBtn.html();
+        $cpyBtn.html('Copied!');
+        setTimeout(() => {
+            $cpyBtn.html(originalText);
+        }, 1500);
+    });
+    $codeHeader.append($cpyBtn);
+
+    $codeblockOuterContainer.append($codeHeader);
+    $codeblockOuterContainer.append($codeblockContainer);
+
+    return $codeblockOuterContainer;
 }
 
 
