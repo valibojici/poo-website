@@ -193,18 +193,6 @@ function addEventsToButtons(data) {
             $(window).scrollTop($('#solution-container').offset().top);
         });
     });
-
-    // copy button
-    // $('.copy-btn').on('click', e => {
-    //     let thisBtn = e.target;
-    //     let parent = thisBtn.parentNode;
-    //     copyToClipboard(parent.querySelectorAll("code"));
-    //     let originalText = $(thisBtn).html();
-    //     $(thisBtn).html('Text copiat!');
-    //     setTimeout(() => {
-    //         $(thisBtn).html(originalText);
-    //     }, 1500);
-    // });
 }
 
 
@@ -293,13 +281,14 @@ function getNumberedCodeBlock(code) {
 
     // create header div with copy btn in it
     let $codeHeader = $("<div/>").addClass('codeblock-header bg-dark d-flex');
-    let $cpyBtn = $("<a> <i class=\"bi bi-clipboard me-2\"></i> Copy</a>").addClass('btn btn-sm btn-altlight copy-btn');
+    let $cpyBtn = $("<a> <i class=\"bi bi-clipboard me-2\"></i> Copy</a>").addClass('btn btn-sm btn-light copy-btn');
     $cpyBtn.on('click', e=>{
         copyToClipboard($linesContainer[0].querySelectorAll("code"));
         let originalText = $cpyBtn.html();
         $cpyBtn.html('Copied!');
         setTimeout(() => {
             $cpyBtn.html(originalText);
+            
         }, 1500);
     });
     $codeHeader.append($cpyBtn);
