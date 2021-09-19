@@ -8,6 +8,7 @@ function changeButtonsSize(media) {
         $('#main-container').css({height : `initial`});
 
         $('span.btn').addClass('btn-sm');
+        $('#solution').removeClass('lead');
 
         addRemoveClass('.next-btn', 'btn-success', 'btn-outline-success');
         addRemoveClass('.prev-btn', 'btn-warning', 'btn-outline-warning');
@@ -19,6 +20,7 @@ function changeButtonsSize(media) {
     } else {
         $('#main-container').css({height : `${ $(window).height() - parseFloat($('#navbar-container').css('height'))}px`});
         $('span.btn').removeClass('btn-sm');
+        $('#solution').addClass('lead');
 
         addRemoveClass('.next-btn', 'btn-outline-success', 'btn-success');
         addRemoveClass('.prev-btn', 'btn-outline-warning', 'btn-warning');
