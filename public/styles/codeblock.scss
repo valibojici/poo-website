@@ -27,7 +27,7 @@ pre{
 }
 
 .copy-btn{
-    transition: background-color 200ms ease-in;
+    transition: background-color 275ms ease-out;
     padding: 0 10px;
     margin: 0.2em 0.2em;
     border-radius: 0;
@@ -36,18 +36,18 @@ pre{
 .lines-container{
     flex-grow: 1;
     line-height: 1.25;
-}
 
-.lines-container > div{
-    display: flex;
-}
- 
-.lines-container > div:nth-child(2n), .lines-container > div:nth-child(2n) * {
-    background: #e0e0e0;
-}
- 
-.lines-container > div:nth-child(2n+1),.lines-container > div:nth-child(2n+1) * {
-    background: #e7e7e7;
+    & > div:nth-child(2n), & > div:nth-child(2n) * {
+        background: #e0e0e0;
+    }
+
+    & > div:nth-child(2n+1), & > div:nth-child(2n+1) * {
+        background: #e7e7e7;
+    }
+
+    & > div{
+        display: flex;
+    }
 }
 
 .line-no{

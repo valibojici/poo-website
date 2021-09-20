@@ -134,41 +134,40 @@ function addEventsToButtons(data) {
 
     if(problemIndex == 0){
         $('.prev-btn').addClass('disabled');
-    } else {
-        $('.prev-btn').removeClass('disabled');
     }
 
     if(problemIndex == problems.length-1){
         $('.next-btn').addClass('disabled');
-    } else {
-        $('.next-btn').removeClass('disabled');
     }
     
     // next and prev problem buttons
-    
-    $('.next-btn, .prev-btn').on('click', (event) => {
-        let $buttonPressed = $(event.target);
-        $buttonPressed.blur();
-        if ($buttonPressed.hasClass('next-btn')) {
-            if(problemIndex + 1 < problems.length) problemIndex++;
-            
-        } else {
-            if(problemIndex - 1 >= 0) problemIndex--;
+    $('.next-btn').on('click', e=>{
+        $('.next-btn').blur();
+        if(problemIndex + 1 < problems.length) problemIndex++;
+        loadProblem(problems[problemIndex]);
+
+        if(problemIndex === problems.length - 1){
+            $('.next-btn').addClass('disabled');
         }
+        if(problemIndex > 0){
+            $('.prev-btn').removeClass('disabled');
+        }
+        // scroll to the top
+        $(window).scrollTop($('body').offset().top);
+    });
+    
+    $('.prev-btn').on('click', e => {
+        $('.prev-btn').blur();
+        if(problemIndex - 1 >= 0) problemIndex--;
         loadProblem(problems[problemIndex]);
 
         if(problemIndex == 0){
             $('.prev-btn').addClass('disabled');
-        } else {
-            $('.prev-btn').removeClass('disabled');
         }
 
-        if(problemIndex == problems.length-1){
-            $('.next-btn').addClass('disabled');
-        } else {
+        if(problemIndex < problems.length-1){
             $('.next-btn').removeClass('disabled');
         }
-
         // scroll to the top
         $(window).scrollTop($('body').offset().top);
     });
@@ -218,6 +217,7 @@ function loadProblem(data) {
     $("#problem").html(code);
     $('#solution').html(solution);
 
+    // call from codeblock.js
     formatAndHighlight();
 
     $('#prompt').removeClass('d-none');
