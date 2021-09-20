@@ -1,0 +1,78 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Base {
+    int x;
+public:
+    Base(int y = 0) : x(y) {}
+    operator int() { return x; }
+
+    int operator=(Base other) { return 100; }
+};
+
+class Derived : public Base {
+	int y;
+public:
+    Derived(int x = 0) : Base(x), y(10) {}
+};
+
+int main()
+{
+    Derived a(123), b;
+    Base c;
+
+    cout << (c = a) << " " << (b = a) << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu contine erori, se afiseaza:
+</div>
+<output>
+100 0
+</output>
+<div>
+Daca nu definesti tu operatorul de atribuire <inline>operator=</inline> pentru o clasa, o sa fie generat de compilator. In cazul clasei <inline>Derived</inline> nu este definit, deci o sa fie generat automat:
+</div>
+<block>
+class Derived : public Base {
+    int y;
+public:
+    Derived(int x = 0) : Base(x), y(10) {}
+
+    Derived& operator=(const Derived&);
+};
+
+Derived& Derived::operator=(const Derived& other) {
+    if (this != &other) {  // testam pentru chestii de genul a = a
+        
+        Base::operator=(other); // apelam operator= din clasa de baza
+                                // el stie sa copieze datele membre din clasa de baza
+
+        y = other.y;    // copiem ce e in clasa asta
+    }
+    return *this;   // returnam referinta la obiectul (modificat) care a apelat operator=
+}
+</block>
+<div>
+<inline>Derived a(123)</inline>, creeaza un obiect de tip <inline>Derived</inline>, se apeleaza constructorii in ordinea <inline>Base</inline>, <inline>Derived</inline>. In lista de initializare din constructorul din clasa <inline>Derived</inline> este apelat constructorul din <inline>Base</inline> cu argumentul pe care l-a primit din main (123). Deci se executa constructorul din <inline>Base</inline> cu valoarea 123, care seteaza <var>x</var>-ul la 123. Se continua cu constructorul din <inline>Derived</inline> care seteaza <var>y</var> la 10. Acelasi lucru se intampla si cu obiectul <var>b</var> doar ca nu este transmisa vreo valoarea constructorului din <inline>Derived</inline> deci pentru obiectul <var>b</var>, <var>x</var>-ul este 0 si <var>y</var>-ul este 10. Obiectul <var>c</var> de tip <inline>Base</inline> are <inline>x</inline>-ul 0.
+</div>
+<div>
+La <inline>c = a</inline>, <var>c</var> este de tip <inline>Base</inline> si <var>a</var> este de tip <inline>Derived</inline>. Este ca si cum ai scrie <inline>c.operator=(a);</inline>, deci se apeleaza <inline>operator=</inline> din clasa <inline>Base</inline> care de fapt nu copiaza obiectul, ci returneaza <inline>100</inline>.
+</div>
+<div>
+La <inline>b = a;</inline>, <var>b</var> si <var>a</var> sunt de tip <inline>Derived</inline>. Deci <inline>b.operator=(a)</inline> inseamna ca mergem la <inline>operator=</inline> din clasa <inline>Derived</inline> (ala generat de compilator). Aici se apeleaza <inline>operator=</inline> din clasa de baza (<inline>Base::operator=(other);</inline>) care practic e o functie care intoarce 100, nu face nimic. Dupa se copiaza <var>y</var>-ul din obiectul <var>a</var> in obiectul <var>b</var> (care oricum avea aceeasi valoare, 10).
+</div>
+<div>
+<inline>cout << (c = a);</inline> afiseaza 100. <inline>cout << (b = a); </inline> este echivalent cu <inline>b = a; cout << b;</inline>, deci mai intai se modifica <var>b</var> si dupa se afiseaza. Ce se afiseaza? Clasa <inline>Derived</inline> mosteneste <inline>operator int()</inline> din clasa <inline>Base</inline>, deci o sa fie folosit ca obiectul <var>b</var> sa fie convertit implicit la un <inline>int</inline> si dupa sa fie afisat. <inline>operator int()</inline> returneaza valorea lui <var>x</var> din obiectul <var>b</var> adica <inline>0</inline> de mai sus. In concluzie se afiseaza <inline>100 0</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, constructor, operator overloading, cast, inheritance
+#END_TAGS
