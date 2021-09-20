@@ -71,8 +71,8 @@ $('#search').on('submit', e=>{
 
 async function getProblems() {
     // get all problems from github repo
-    // let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
-    let data = await fetch('http://localhost:3000/get', {method: 'get'});
+    let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/output.json');
+    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
 
     data = data.content;
@@ -124,10 +124,6 @@ getProblems().then((problems)=>{
     $('#loading-container').addClass('d-none');
 });
 
-
-
-
-
 function addEventsToButtons(data) {
     let problemIndex = 0;
     let problems = data;
@@ -139,7 +135,7 @@ function addEventsToButtons(data) {
     if(problemIndex == problems.length-1){
         $('.next-btn').addClass('disabled');
     }
-    
+
     // next and prev problem buttons
     $('.next-btn').on('click', e=>{
         $('.next-btn').blur();
