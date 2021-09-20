@@ -27,8 +27,9 @@ pre{
 }
 
 .copy-btn{
+    transition: background-color 200ms ease-in;
     padding: 0 10px;
-    margin: 0.4em 0.4em;
+    margin: 0.2em 0.2em;
     border-radius: 0;
 }
  
@@ -76,6 +77,10 @@ pre.inline{
     vertical-align: bottom;
     max-width: 100%;
     overflow-x: auto;
+}
+
+.green{
+    background-color: green !important;
 }
 
 .hljs-comment,

@@ -12,14 +12,18 @@
     <!-- jquery -->
     <script src="./js/jquery.js" defer></script>
 
+    <!-- bs icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+
     <!-- highlightjs -->
     <link rel="stylesheet" href="./styles/vs.min.css">
     <script src="./js/highlight.min.js" defer></script>
 
     <!-- my stuff -->
+    <script src="./js/codeblock.js" defer></script>
     <script src="./js/tips.js" defer></script>
     <link rel="stylesheet" href="./styles/tips.min.css">
-    <link rel="stylesheet" href="./styles/codeblockStyles.min.css">
+    <link rel="stylesheet" href="./styles/codeblock.min.css">
     <link rel="icon" type="image/png" href="./imgs/icon.png">
     <title>Tips</title>
 </head>
@@ -290,7 +294,78 @@ f(0.0f);</code></pre>
                 <div class="container">
                     <h1 class="display-2">Ce face <code>endl</code>?</h1>
                     <article id="s3-a1" class='mt-4'>
-                        <div class="article-content lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate veniam natus aliquid earum iure eligendi, accusamus sequi dolor illum quis, consequuntur quibusdam aperiam recusandae repudiandae doloremque voluptatum, cum nesciunt incidunt nihil dolorem aut quos? Excepturi vitae illum, quis iusto nesciunt eius eveniet natus, dicta doloribus fuga, odit quo ab. Inventore voluptatem optio veniam, ipsa, magni voluptates culpa officiis, qui voluptatibus debitis neque. Labore fugiat quis, eligendi dignissimos dolorum repudiandae iste doloribus, repellat officia eos maiores quasi quos? Autem cumque maxime molestias! Ut et distinctio explicabo eos officia deleniti illum nulla nesciunt, ea est asperiores libero ratione aut a quod error. Obcaecati minima alias quisquam repellendus nam voluptas sunt! Debitis repudiandae optio doloribus voluptas dolores amet animi, velit odio. Laborum laboriosam ipsa dicta hic non optio sunt reiciendis ipsam, itaque eos molestiae? Inventore ea dolorem, amet maiores unde, veniam sapiente magnam architecto consectetur vitae aliquam illum ex eos accusantium. Maiores, eos voluptates. Fugit porro corporis ullam ipsam, voluptatibus mollitia vel, repudiandae id minus deleniti dolores consequatur numquam, praesentium vero tempore quia quos magnam quam explicabo libero dolorem maxime. Nulla est inventore iure. Harum eius laborum amet quidem ratione consequatur voluptas exercitationem excepturi illo, incidunt commodi. Enim fuga provident modi ducimus molestias reprehenderit illum voluptas odio esse ab maxime ad minima sunt amet ullam velit corporis culpa quasi consectetur nostrum nam vitae, quos aspernatur. Nam quod dolorum sit reiciendis, aperiam qui eaque nesciunt deleniti iste similique incidunt minima, laboriosam aspernatur omnis in tempora? Eos velit nobis repellat possimus deleniti itaque dolores! Voluptatibus tenetur porro, tempore asperiores totam officia quisquam reprehenderit sit? Temporibus voluptas nesciunt saepe laborum magni maxime laboriosam. Culpa reprehenderit dignissimos facilis officia deserunt mollitia quidem odit ad impedit autem asperiores harum dicta laudantium eos velit ea temporibus est odio vel officiis ullam, magni quam! Natus magnam ex qui est nostrum blanditiis quam, architecto illo nemo non, sint ullam eveniet dolores saepe, harum nihil praesentium? Laborum maxime eos non, laboriosam quidem facilis cum, aperiam explicabo quisquam omnis facere dolorem atque eaque numquam quas itaque voluptates eum amet reprehenderit laudantium, corporis voluptatem unde vero odit? Adipisci magni accusamus autem architecto quisquam beatae, alias natus vitae non delectus laboriosam earum laudantium facilis nobis fugiat ipsam excepturi cum sed consequatur rem a impedit voluptatibus sit. Dolorum quisquam dolores ratione dolor quo accusamus beatae corrupti reprehenderit, quos maxime eum? Assumenda doloribus ducimus blanditiis fugit autem, suscipit nisi sunt aperiam quas. Assumenda accusamus eum magni suscipit.</div>
+                        <div class="article-content lead">
+                            <div>
+                            Sa scrii intr-un fisier dureaza, pentru ca acel fisier nu este stocat in RAM. Dureaza pana se creeaza o conexiune la harddisk sau ssd ca sa accesezi ce e pe el, asa ca in loc sa scrii cate un byte (caracter) pe rand intr-un fisier, mai bine pui mai multi intr-un loc temporar (buffer) si cand se umple, pui totul in fisier deodata. Asta se intampla si cand scrii ceva intr-un fisier (sau cand citesti) folosind <pre class="inline"><code>fstream</code></pre>.
+                        <pre class="block"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    ofstream g(&quot;out.txt&quot;);
+    
+    g &lt;&lt; &quot;Hello world!&quot;;
+
+    return 0;
+}</code></pre>
+                        Aici <pre class="inline"><code>&quot;Hello world!&quot;</code></pre> se pune intr-un buffer, un fel de array cu cateva mii de caractere, si cand se umple, continutul lui e pus in fisier (tot deodata). Asta se intampla si cand se apeleaza destructorul pentru obiectul <var>g</var> (pentru ca <var>g</var> este un obiect de tip <pre class="inline"><code>ofstream</code></pre>). Acest lucru se face pentru a se goli bufferul in caz ca s-a scris ceva si nu s-a umplut bufferul. In cazul asta bufferul nu e plin, dar la sfarsitul functiei <var>main</var>, se distruge obiectul <var>g</var> si se scrie in fisier ce mai avea in buffer. Acum daca am avea o eroare dupa <pre class="inline"><code>g &lt;&lt; &quot;Hello world!&quot;;</code></pre>, programul s-ar termina brusc si in fisier nu am mai avea nimic, pentru ca nici bufferul nu s-a umplut, nici destructorul nu a fost apelat.
+                        <pre class="block"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    ofstream g(&quot;out.txt&quot;);
+    
+    g &lt;&lt; &quot;Hello world!&quot;;
+    int x = 0;
+    cout &lt;&lt; 1 / x; // eroare aici
+    return 0;
+}</code></pre>  
+                        Acum o sa avem o eroare la linia 12, ca impartim la 0. Eroarea asta nu e prinsa si programul se opreste. Fisierul ramane gol (chiar daca avea ceva in el la inceput, cand creezi un obiect de tip <pre class="inline"><code>ofstream</code></pre>, daca nu mai dai alte argumente constructorului, se sterge continutul mai intai). Ok dar daca avem un fisier special unde scriem niste date din program sa tinem evidenta de ceva. Daca avem eroare si nu este prinsa, fisierul nu o sa fie complet, poate ne-ar fi ajutat continutul fisierului sa gasim eroarea. 
+                        </div>  
+                            <div>
+                                Pentru asta exista <pre class="inline"><code>std::flush</code></pre>, care este un manipulator pentru operatii de output (definit in &lt;ostream&gt;), ceva gen <pre class="inline"><code>std::setw()</code></pre>. Daca scrii <pre class="inline"><code>g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; flush;</code></pre> fortezi bufferul sa fie scris in fisier, indiferent daca e plin sau nu. Deci este scris <pre class="inline"><code>&quot;Hello world!&quot;</code></pre> in fisier si dupa avem eroarea, deci la final avem in fisier string-ul. Acum, sa fortezi scrierea bufferului in fisier daca nu e plin nu este deloc eficient, tocmai de asta exista bufferul, ca sa scrii cat mai mult deodata in fisier deci trebuie folosit doar cand ai nevoie.
+                            </div>
+                            <div>
+                                Ce treaba are asta cu <pre class="inline"><code>endl</code></pre>? Poate sti ca <pre class="inline"><code>g &lt;&lt; endl</code></pre> trece la urmatoarea linie, e ca si cum ai scrie <pre class="inline"><code>g &lt;&lt; &quot;\n&quot;;</code></pre> <b>dar pe langa asta face si un flush!</b>, deci e echivalent cu <pre class="inline"><code>g &lt;&lt; &#039;\n&#039; &lt;&lt; flush;</code></pre> (apropo, <pre class="inline"><code>cout &lt;&lt; &quot;\n&quot;;</code></pre> e la fel cu <pre class="inline"><code>cout &lt;&lt; &#039;\n&#039;;</code></pre> doar ca <pre class="inline"><code>&quot;\n&quot;</code></pre> e un sir de caractere si <pre class="inline"><code>&#039;\n&#039;</code></pre> e un caracter, deci mai bine folosesti un caracter)
+                            </div>
+                            <div>
+                                Daca scrii multe linii in fisier si folosesti la fiecare <pre class="inline"><code>endl</code></pre>, o sa ruleaze mult mai incet decat daca nu ai folosi <pre class="inline"><code>endl</code></pre> si ai pune <pre class="inline"><code>&#039;\n&#039;</code></pre> pentru linie noua.
+                                <pre class="block"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+using namespace std;
+
+void printWithEndl() {
+    ofstream g(&quot;out.out&quot;);
+    for (int i = 0; i &lt; 100000; ++i) {
+        g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; endl;
+    }
+}
+
+void printNoEndl() {
+    ofstream g(&quot;out.out&quot;);
+    for (int i = 0; i &lt; 100000; ++i) {
+        g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; '\n';
+    }
+}
+
+int main()
+{
+    printWithEndl();   // 300 ms
+
+    printNoEndl();     // 18 ms
+    return 0;
+}</code></pre>              
+                            Functiile astea de mai sus printeaza 100000 de linii intr-un fisier. Functia care foloseste <pre class="inline"><code>endl</code></pre> a durat 300ms si cea care nu foloseste a durat 18ms (am facut un test rapid pe calculatorul meu). Diferenta este mai mare de 10 ori (daca marim numarul de linii la 1 milion, diferenta e si mai drastica, 3000ms vs 130ms )
+                            </div>
+                            <div>
+                                Deci, daca vrei ca programul tau sa ruleze mai rapid, nu mai folosi <pre class="inline"><code>endl</code></pre>.
+                            </div>
+                        </div>
                     </article>
                 </div>
             </section>

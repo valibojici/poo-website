@@ -38,6 +38,7 @@ def getProblem(file):
 			problem = re.search('#BEGIN_PROBLEM(.*)#END_PROBLEM', text, flags=re.S).group(1).strip()
 			if len(problem) == 0:
 				raise AttributeError()
+			problem = f'<pre class="block"><code>{escapeHTML(problem)}</code></pre>'
 		except AttributeError as e:
 			ans = input('WARNING: Missing problem. Continue? (y/n)')
 			if ans == 'n':
