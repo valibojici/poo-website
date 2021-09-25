@@ -44,8 +44,8 @@ function formatAndHighlight(){
                 $cpyBtn.html('<i class="bi bi-clipboard-check"></i>');
                 $cpyBtn.addClass('green');
                 setTimeout(() => {
-                    $cpyBtn.html('<a><i class=\"bi bi-clipboard me-2\"></i> Copy</a>');
                     $cpyBtn.removeClass('green');
+                    $cpyBtn.html('<a><i class=\"bi bi-clipboard me-2\"></i> Copy</a>');
                 }, 1000);
             })
             .catch((err)=>{
