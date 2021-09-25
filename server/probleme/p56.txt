@@ -1,0 +1,61 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+protected:
+    int x;
+
+public:
+    B(int y = 5) : x(y) {}
+    virtual B f(B ob) { return x + ob.x + 1; }
+    void afis() { cout << x; }
+};
+
+class D : public B {
+public:
+    D(int i = -15) : B(i - 1) {
+        x++;
+    }
+    B f(B ob) { return x - 2; }
+};
+int main()
+{
+    B *p1 = new D, *p2 = new B, *p3 = new B(p1->f(*p2));
+    p3->afis();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza: 
+</div>
+<output>
+-17
+</output>
+<div>
+La <inline>B* p1 = new D</inline> se creeaza un obiect de tip <inline>D</inline>, se apeleaza constructorii in ordinea <inline>B</inline>, <inline>D</inline>. In lista de initializare a constructorului din <inline>D</inline> este apelat constructorul din <inline>B</inline> cu valorea -16 (<var>i</var> este -15 pentru ca in main nu s-a transmis vreun argument constructorului). Constructorul din <inline>B</inline> seteaza <var>x</var> la -16 si dupa se continua cu constructorul din <inline>D</inline> care mareste pe <var>x</var> cu 1 deci <var>x</var> din obiectul la care arata <var>p1</var> este -15.
+</div>
+<div>
+<inline>B* p2 = new B</inline> se apeleaza constructorul din clasa <inline>B</inline> cu parametrul implicit <inline>5</inline>, deci <var>x</var>-ul din obiectul la care arata <var>p2</var> este 5.
+</div>
+<div>
+Functia <inline>B f(B ob)</inline> este <inline>virtual</inline> si este <b>redefinita</b> in clasa derivata (daca nu era degeaba era virtual). Asta inseamna ca daca ai un pointer de tip <inline>B*</inline> care arata spre un obiect de tip <inline>D</inline> (upcast) si apelezi functia <inline>f</inline>, chiar daca pointerul este de tip <inline>B*</inline> nu se va apela functia din <inline>B</inline> ci functia din <inline>D</inline>.
+</div>
+<div>
+La <inline>p1->f(*p2)</inline> se va apela functia <inline>f</inline> din clasa <inline>D</inline> (pentru ca <var>p1</var> arata spre un obiect de tip <inline>D</inline> si functia <inline>f</inline> este virtuala). Functia <inline>B f(B ob) { return x - 2; }</inline> primeste ca parametru obiectul la care arata <var>p2</var> (si nu face nimic cu el) si returneaza valoarea lui <var>x</var> din obiectul la care arata <var>p1</var>, adica -15, minus 2 adica -17. Acum functia functia trebuie sa intoarca un obiect temporar de tip <inline>B</inline>, nu <inline>int</inline>, deci se va apela constructorul din <inline>B</inline> si se construieste un obiect de tip <inline>B</inline> cu <var>x</var> egal cu -17.
+</div>
+<div>
+<inline>B* p3 = new B(p1->f(*p2))</inline> inseamna <inline>B* p3 = new B(temp)</inline>, unde <var>temp</var> este obiectul temporar de tip <inline>B</inline>, intors de metoda <inline>f</inline>. Se apeleaza constructorul de copiere (care e generat automat pentru ca nu e definit) si acum pointerul <var>p3</var> arata spre un obiect de tip <inline>B</inline> cu <var>x</var>-ul egal cu -17.
+</div>
+<div>
+La <inline>p3->afis();</inline>, <var>p3</var> este de tip <inline>B*</inline>, se apeleaza metoda <inline>afis</inline> (care nu e virtuala, daca ar fi fost virtuala si redefinita in clasa <inline>D</inline> tot cea din clasa <inline>B</inline> e apelata ca obiectul la care arata <var>p3</var> este de tip <inline>B</inline> nu <inline>D</inline>). Functia <inline>afis</inline> afiseaza pe ecran valoarea lui <var>x</var> adica -17.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, inheritance, virtual, pointers, upcast
+#END_TAGS

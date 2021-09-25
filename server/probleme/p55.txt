@@ -1,0 +1,77 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int functie(int x, int y) {
+    return x * y;
+}
+
+template<class T, class U>
+T functie(T x, U y) {
+    return x + y;
+}
+
+int functie(int x, int* y) {
+    return *y + x;
+}
+
+int main()
+{
+    int* a = new int(10), b(4);
+
+    cout << functie(a, b);
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza o adresa de memorie, un numar natural (in baza 16 probabil) care o sa difere de fiecare data cand rulezi programul:
+</div>
+<output>
+000001F9297D2DD0
+</output>
+<block>
+int* a;    // a este pointer la int
+int *a;    // a este pointer la int
+int * a;   // a este pointer la int
+
+/////////////////////////
+
+int* a, b; 	// | 
+int *a, b;	// |---- a este pointer la int, b este int !!
+int * a, b;	// |
+
+// liniile de mai sus sunt echivalente cu
+int* a;
+int b;
+
+/////////////////////////
+
+int *a, *b; // a,b pointeri la int
+int* a,* b; // a,b pointeri la int
+</block>
+<div>
+La linia <inline>int* a = new int(10), b(4);</inline> avem un pointer la <inline>int</inline>, <var>a</var>, si un <inline>int</inline>, <var>b</var>.
+</div>
+<div>
+<var>a</var> arata spre un <inline>int</inline> cu valorea 10, <var>b</var> are valoarea 4 ( poti initializa un <inline>int</inline>, <inline>float</inline>, <inline>string</inline> etc. folosind <inline>()</inline> ).
+</div>
+<div>
+La linia <inline>cout << functie(a, b);</inline> se apeleaza functia <inline>functie</inline> cu un <inline>int*</inline> un <inline>int</inline> ca argumente. Prima functie <inline>int functie(int x, int y)</inline> nu se potriveste pentru ca primeste 2 <inline>int</inline>. Nici ultima functie nu se potriveste pentru ca primeste un <inline>int</inline> si un <inline>int*</inline> (noi avem <inline>int*</inline> si <inline>int</inline>). Deci ramane functia template <inline>T functie(T x, U y)</inline> unde <inline>T</inline> devine <inline>int*</inline> si <inline>U</inline> devine <inline>int</inline>. Deci avem functia:
+</div>
+<block>
+int* functie(int* x, int y) {
+    return x + y;
+}
+</block>
+<div>
+Functia returneaza un pointer. Un pointer este pur si simplu un <inline>unsigned long long</inline>, un numar natural care reprezinta un loc efectiv din memorie (in bytes). Ce valoare are pointerul? Cand se aduna un pointer cu un <inline>int</inline>, de exemplu <var>y</var>, pointerul isi va mari valoarea (sau micsora, daca y < 0) cu y * [dimensiunea tipului pointerului]. In cazul asta dimensiunea unui <inline>int</inline> este 4 bytes. Deci daca in main pointerul <var>a</var> avea valorea 1000, in baza 10, (arata spre ceva din memorie care se afla la adresa 1000) si <var>b</var> este 4, atunci cand se apeleaza functia <inline>functie(a, b)</inline>, se returneaza un pointer cu valoarea 1000 + 4 * 4 adica 1016 (in baza 10).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, template, function overloading, pointers 
+#END_TAGS

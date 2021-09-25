@@ -66,7 +66,7 @@ class Derived : public Base {
 };
 </block>
 <div>
-Problema e la <inline>other.camere</inline>, <var>other</var> e de tip <inline>Locuinta</inline> nu <inline>Casa</inline>. Cum tu este in clasa <inline>Casa</inline> si <var>other</var> nu e de tip <inline>Casa</inline>, nu ai acces la <var>other.camere</var> (care e <inline>protected</inline> in clasa <inline>Locuinta</inline>).
+Problema e la <inline>other.camere</inline>, <var>other</var> e de tip <inline>Locuinta</inline>, nu <inline>Casa</inline>. Cum tu esti in clasa <inline>Casa</inline> si <var>other</var> nu e de tip <inline>Casa</inline>, nu ai acces la <var>other.camere</var> (care e <inline>protected</inline> in clasa <inline>Locuinta</inline>). Ai acess la <var>camere</var>, cand esti in clasa <inline>Casa</inline>, doar prin ceva de tip <inline>Casa</inline>, nu <inline>Locuinta</inline>.
 Ca programul sa fie corect, poti modifica functia <inline>Locuinta upgrade(Locuinta other)</inline> din clasa <inline>Casa</inline> in <inline>Locuinta upgrade(Casa other)</inline>, acum primeste un obiect de tip <inline>Casa</inline> si poti accesa variabila <var>camere</var>.
 </div>
 <div>

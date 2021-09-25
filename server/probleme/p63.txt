@@ -1,0 +1,73 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+protected:
+    int x;
+public:
+    B(int i = 1) : x(i) {}
+    
+    void f(int x) { cout << x << "!"; }
+};
+
+void surpriza(B& ob, int val) {
+    ob.f(val * val);
+}
+
+class D : B {
+public:
+    D() {
+        surpriza(*this, 5 + x);
+    }
+};
+
+int main()
+{
+    D ob;
+    surpriza(ob, 3);
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 27: <inline>surpriza(ob, 3);</inline>
+</div>
+<error>
+conversion to inaccessible base class "B" is not allowed
+</error>
+<div>
+Modificatorul de acces default este <inline>private</inline> deci clasa <inline>D</inline> mosteneste <b>privat</b> clasa <inline>B</inline>. Cand mostenesti privat este secret faptul ca ai mostenit (ok nu e secret ca poti vedea codul), doar clasa derivata stie faptul ca ai derivat (deci nu poti face upcast).
+</div>
+<div>
+Problema este ca <var>ob</var> este de tip <inline>D</inline> si apelezi functia <inline>surpriza</inline> care primeste o referinta la un obiect de tip <inline>B</inline>. In mod normal ai putea face asta (pentru ca e upcast) dar clasa <inline>D</inline> mosteneste privat <inline>B</inline> deci in <var>main</var> practic &quot;nu se stie&quot; ca <inline>D</inline> mosteneste <inline>B</inline>.
+</div>
+<div>
+Ca programul sa fie corect poti mosteni <inline>public</inline>. Linia 17 trebuie schimbata in <inline>class D : public B {</inline>.
+</div>
+<div>
+Dupa modificari, la <inline>D ob;</inline> se creeaza un obiect de tip <inline>D</inline>. Se vor executa constructorii in ordinea <inline>B</inline>, <inline>D</inline>. In lista de initializare din <inline>D</inline> nu este apelat explicit constructorul din <inline>B</inline> deci el se va apela cu argumentul default (1). Constructorul din <inline>B</inline> seteaza <var>x</var>-ul la <inline>1</inline>. Continuam cu constructorul din <inline>D</inline>. El apeleaza functia <inline>surpriza</inline> cu argumentele <inline>*this</inline> si <inline>5 + x</inline>.
+</div>
+<div>
+<inline>this</inline> este un pointer la obiectul care apeleaza metoda (in cazul asta pointer la obiectul curent <var>ob</var> din main). Functia <inline>surpriza</inline> primeste o referinta ca parametru deci pointerul asta trebuie dereferentiat cu <inline>*</inline>. Acum, pentru ca suntem intr-o metoda din clasa <inline>D</inline> inseamna ca &quot;stim&quot; ca <inline>D</inline> mosteneste <inline>B</inline>. Deci, cand se apeleaza functia <inline>surpriza</inline>, merge transmis obiectul curent (<inline>*this</inline>) de tip <inline>D</inline> la o referinta la clasa de baza <inline>B</inline> (adica upcast). Puteam face asta si daca mosteneam privat.
+</div>
+<div>
+<inline>5 + x</inline> inseamna 5+1 adica 6. <var>x</var> este 1 de mai sus.
+</div>
+<div>
+Deci se apeleaza <inline>supriza</inline> cu obiectul curent si numarul 6. Functia <inline>surpriza</inline> apeleaza metoda <inline>f</inline> a parametrului transmis prin referinta (adica obiectul <var>ob</var> din main). Metoda <inline>f</inline> primeste <inline>6</inline> ca parametru si afiseaza <inline>"36!"</inline>.
+</div>
+<div>
+Acum am terminat cu constructorul pentru <var>ob</var>. La <inline>surpriza(ob, 3);</inline> se apeleaza functia <inline>surpriza</inline>. Aici trebuie sa mostenim public, altfel nu merge pentru ca facem upcast. In functia <inline>surpriza</inline> se apeleaza metoda <inline>f</inline> a obiectului transmis prin referinta (adica <var>ob</var>). Metoda <inline>f</inline> este apelata cu 3*3 adica 9, si ea afiseaza pe ecran <inline>"9!"</inline>. La final se afiseaza:
+</div>
+<output>
+36!9!
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, inheritance, upcast, private inheritance
+#END_TAGS

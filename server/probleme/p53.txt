@@ -1,0 +1,52 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Angajat {
+protected:
+    int salariu;
+public:
+    Angajat(int _salariu) : salariu(_salariu){}
+};
+
+class Sef : Angajat {
+public:
+    Sef() : Angajat(1000) {}
+    Sef(Sef& o) { salariu = 2 * o.salariu; }
+    int get() const { return salariu; }
+};
+
+int main()
+{
+    Sef a, b(a);
+    cout << b.get();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 14: <inline>Sef(Sef& o) { salariu = 2 * o.salariu; }</inline>
+</div>
+<error>
+no default constructor exists for class "Angajat"
+</error>
+<div>
+Cum spune si eroarea nu exista un constructor default pentru clasa <inline>Angajat</inline>. Primul constructor din clasa <inline>Sef</inline> e ok, <inline>Sef() : Angajat(1000) {}</inline>, cand creezi un obiect nu uita si de clasa de baza, trebuie cumva apelat constructorul din clasa de baza (in lista de initializare a constructorului din clasa derivata). Daca nu il apelezi tu, il va apela compilatorul, dar nu il va apela cu nicio valoare deci se asteapta sa gaseasca un constructor fara parametrii (sau cu toti parametrii default). 
+</div>
+<div>
+Linia 14: <inline>Sef(Sef& o) { salariu = 2 * o.salariu; }</inline> este completata de compilator cu <inline>Sef(Sef& o) : Angajat() { salariu = 2 * o.salariu; }</inline>, dar constructorul <inline>Angajat()</inline> nu exista (avem doar <inline>Angajat(int)</inline>). Ca programul sa fie corect trebuie schimbata linia 8 in <inline>Angajat(int _salariu = 0) : salariu(_salariu){}</inline>. Acum se poate apela constructorul din clasa <inline>Angajat</inline> si fara argumente.
+</div>
+<div>
+Clasa <inline>Sef</inline> mosteneste privat clasa <inline>Angajat</inline>, doar clasa <inline>Angajat</inline> stie ca este clasa derivata, in rest e secret pentru toata lumea. Deci in main nu ar merge un upcast (gen <inline>Angajat* p = new Sef();</inline>).
+</div>
+<div>
+<inline>Sef a, b(a);</inline> creaza un obiect de tip <inline>Sef</inline>, <var>a</var>, care va avea <var>salariu</var> egal cu 1000. Constructorul din clasa <inline>Angajat</inline> este executat primul cu valoarea primita in lista de initializare a constructorului din <inline>Sef</inline>. <var>b</var> este creat cu constructorul de copiere din clasa <inline>Sef</inline>, care ii seteaza <var>salariu</var>-ul la dublul lui <var>a</var> adica 2000. La sfarsit functia <inline>get</inline> returneaza <var>salariu</var> din <var>b</var> adica <inline>2000</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, copy constructor, inheritance, private inheritance
+#END_TAGS

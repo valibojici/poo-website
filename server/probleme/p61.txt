@@ -1,0 +1,51 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+    static int x;
+
+public:
+    A(int i = 2) { x = i; }
+
+    int getX() { return x; }
+    int& setX(int i) { x = i; }
+
+    A operator=(A other) {
+        setX(other.getX());
+        return other;
+    }
+};
+int A::x = 5;
+
+int main()
+{
+    A a(50), b;
+    cout << (b = a).getX();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+2
+</output>
+<div>
+S-ar putea ca unele compilatoare sa se planga ca functia <inline>int& setX(int i)</inline> nu returneaza nimic dar nu este neaparat o eroare.
+</div>
+<div>
+La <inline>A a(50), b;</inline> se apeleaza constructorul pentru <var>a</var> cu valorea <inline>50</inline>, si variabila statica <var>x</var> ia valorea 50. Pentru <var>b</var> se apeleaza constructorul cu parametrul implicit (2) si <var>x</var> ia valorea 2. La linia <inline>cout << (b = a).getX();</inline> se apeleaza mai intai operatorul <inline>=</inline> (<var>b</var> apeleaza si <var>a</var> este argumentul).
+</div>
+<div>
+<var>a</var> se transmite prin valoare in functie (<inline>A operator=(A other)</inline>) deci <var>other</var> e o copie al lui <var>a</var>. <inline>setX(other.getX());</inline> seteaza <var>x</var>-ul la valorea returnata de <inline>other.getX()</inline> (pentru ca <var>x</var> este <inline>static</inline> se returneaza tot 2). Acum <var>x</var>-ul ramane tot 2. Functia <inline>operator=</inline> returneaza un obiect temporar, o copie (nu referinta la obiectul curent, cum se face de obicei) a lui <var>other</var> care e neschimbat (care e o copie al lui <var>a</var> din main). Revenind in main, <inline>(b = a)</inline> este un obiect temporar (adica ce returneaza <inline>operator=</inline>) cu <var>x</var>-ul egal cu 2 (oricum <var>x</var> nu depinde de vreun obiect, pentru ca e <inline>static</inline> corespunde intregii clase). Deci <inline>getX()</inline> intoarce <inline>2</inline> (valorea lui <var>x</var>) si asta se afiseaza.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, static, operator overloading
+#END_TAGS

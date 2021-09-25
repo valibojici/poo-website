@@ -1,0 +1,55 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+struct MyStruct {
+    int foo;
+public:
+    int get() const { return foo; }
+    int set(int newFoo) {
+        int temp = foo;
+        foo = newFoo;
+        return temp;
+    }
+};
+
+
+int main()
+{
+    MyStruct* s = new MyStruct[200];
+    for (int i = 0; i < 100; ++i) {
+        s[i].set(i * 2);
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        cout << s[i].get() << ' ';
+    }
+
+    delete[] s;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+0 2 4 6 8 10 12 14 16 18
+</output>
+<div>
+Intr-un <inline>struct</inline> modificatorul de acces implicit este <inline>public</inline>, deci tot din struct-ul <inline>MyStruct</inline> este <inline>public</inline>.
+</div>
+<div>
+<inline>MyStruct* s = new MyStruct[200];</inline> sunt create 200 de obiecte cu <inline>new</inline>. Pentru ca nu am definit vreun constructor, <var>foo</var> din fiecare obiect va avea o valoare random care era in memorie. In primul <inline>for</inline>, se seteaza <var>foo</var>-ul din primele 100 de obiecte la valoarea <inline>i*2</inline>. Chiar daca metoda <inline>set</inline> intoarce ceva, nu trebuie neaparat sa folosim valoarea returnata. La al doilea <inline>for</inline>, se apeleaza metoda <inline>get</inline> pentru primele 10 obiecte, care intoarce valorea lui <var>foo</var> pentru fiecare obiect.
+</div>
+<div>
+Metoda <inline>get</inline> este <inline>const</inline>, deci nu poate modifica starea obiectului (adica date membre) si nici nu se pot apela in interiorul ei alte functii care nu sunt <inline>const</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, dynamic memory allocation, struct
+#END_TAGS

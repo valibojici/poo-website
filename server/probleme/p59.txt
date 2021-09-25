@@ -1,0 +1,95 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+ 
+class B {
+protected:
+    static int i;
+    int x;
+public:
+    B(int _x = 5) : x(_x) { i++; }
+    ~B() { i--; }
+    int f() const { return x; }
+    static int count() { return i; }
+};
+int B::i;
+class D : public B {
+public:
+    D() { i++; }
+    ~D() { i--; }
+    int f1(B ob) const { return 2 * f(); }
+};
+
+void f(B* p1) { 
+    cout << p1->count() + 1 << ",";
+}
+
+int main()
+{
+    B* p = new B[20];
+    f(p);
+    delete[] p;
+    p = new D;
+    cout << p->f1(p) << ",";
+    delete p;
+    cout << D::count();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 32: <inline>cout << p->f1(p) << ",";</inline>.
+</div>
+<error>
+class "B" has no member "f1"
+</error>
+<div>
+Pointerul <var>p</var> este de tip <inline>B*</inline>. In clasa <inline>B</inline> nu exista metoda <inline>f1</inline> deci nu poti apela functia <inline>f1</inline> cu pointerul <var>p</var>.
+</div>
+<div>
+Ca programul sa fie corect sunt mai multe variante:
+</div>
+<div>
+<b>1)</b> Poti modifica linia 32 in <inline>cout << p->f() << ",";</inline>, acum se apeleaza metoda <inline>f</inline>, care nu primeste niciun argument, din clasa <inline>B</inline>. Chiar daca functia <inline>f</inline> din <inline>B</inline> este <inline>const</inline> si pointerul <var>p</var> arata spre ceva neconst nu conteaza, faptul ca functia e <inline>const</inline> ne asigura ca nu se modifica obiectul.
+</div>
+<div>
+<b>2)</b> Poti modifica linia 32 in <inline>cout << p->count() << ",";</inline> sau <inline>cout << B::count() << ",";</inline> sau <inline>cout << D::count() << ",";</inline>. Metoda <inline>count</inline> din clasa <inline>B</inline> este <inline>static</inline>, asta inseamna ca metoda nu corespunde unui obiect ci intregii clase. Totusi poti apela o metoda <inline>static</inline> cu un obiect/pointer (<inline>p->count()</inline>). Pentru ca corespunde intregii clase poti apela si asa <inline>B::count()</inline> iar pentru ca clasa <inline>D</inline> mosteneste clasa <inline>B</inline> si motoda <inline>count</inline> din <inline>B</inline> este <inline>protected</inline> o poti accesa si prin clasa derivata (<inline>D::count()</inline>).
+</div>
+<div>
+<b>3)</b> Poti modifica linia 32 in <inline>cout << ((D*)p)->f1(*p) << ",";</inline> (asta e cea mai complicata varianta). Ok deci metoda <inline>f1</inline> este in clasa <inline>D</inline> si <var>p</var> este de tip <inline>B*</inline>. De la linia de mai sus stim sigur ca <var>p</var> arata spre un obiect de tip <inline>D</inline> (upcast). Asadar putem face un downcast, in loc de <inline>p</inline> avem <inline>(D*)p</inline>. Acum mai trebuie niste paranteze: <inline>((D*)p)->f1(p)</inline>, dar daca ne uitam la metoda <inline>f1</inline> din <inline>D</inline>, primeste ca parametru un obiect de tip <inline>B</inline>. Noi avem aici pointerul <var>p</var> ca argument, deci trebuie dereferentiat mai intai (cu <inline>*</inline>) si ajungem la <inline>cout << ((D*)p)->f1(*p) << ",";</inline>. <var>p</var> arata spre un obiect de tip <inline>D</inline> dar totusi se poate apela metoda care accepta ceva de tip <inline>B</inline> pentru ca <inline>D</inline> mosteneste <inline>B</inline> (asta se numeste <a href="https://www.geeksforgeeks.org/object-slicing-in-c/">slicing</a>). <b class="text-warning">Cand se apeleaza metoda <inline>f1</inline>, se transmite obiectul la care arata <var>p</var> prin valoare, deci se copiaza, asadar se foloseste constructorul de copiere ca sa se creeze obiectul temporar <var>ob</var>, iar cand se iese din functie se apeleaza destructorul din <inline>B</inline> pentru <var>ob</var></b>.
+</div>
+<div>
+Dupa modificari, la <inline>B* p = new B[20];</inline> se creeaza 20 de obiecte de tip <inline>B</inline> si un pointer care arata spre ele (spre primul element, de fapt) Pentru fiecare element din array se apeleaza constructorul din <inline>B</inline> (fara argumente, deci ramane cel implict adica 5). Fiecare element are <var>x</var>-ul setat la <inline>5</inline> si in fiecare constructor se mareste variabila statica <var>i</var> cu 1 deci la sfarsit e <inline>20</inline>. (<var>i</var> e definita in afara clasei, asa trebuie pentru variabile statice, si pentru ca e definita global e initializata cu 0).
+</div>
+<div>
+La linia <inline>f(p);</inline> se apeleaza functia <inline>void f(B* p1)</inline> avand ca argument pointerul <var>p</var>. In functie, la <inline>p1->count()</inline>, se apeleaza metoda <inline>count</inline> care intoarce valorea lui <var>i</var> (<inline>20</inline>) si se afiseaza 20+1 adica <inline>21,</inline>.
+</div>
+<div>
+Dupa se sterge array-ul alocat dinamic, pentru fiecare element se apeleaza destructorul din <inline>B</inline> (ne uitam la tipul pointer-ului, daca destructorul era <inline>virtual</inline> atunci ne uitam si la tipul obiectelor la care arata <var>p</var>). Fiecare destructor scade 1 din <var>i</var>, deci la final <var>i</var> e 0.
+</div>
+<div>
+La <inline>p = new D;</inline> se creeaza un obiect de tip <inline>D</inline>. Se apeleaza constructorii in ordinea <inline>B</inline>, <inline>D</inline>. In lista de initializare a constructorului din <inline>D</inline> nu se apeleaza cel din <inline>B</inline> cu vreo valoare, deci ramane argumentul default (5), deci <inline>x</inline>-ul este <inline>5</inline>. Constructorul din <inline>B</inline> mareste si pe <var>i</var> la <inline>1</inline>. Continuam cu constructorul din <inline>D</inline> care mareste si el pe <var>i</var> la <inline>2</inline>.
+</div>
+<div>
+In functie de modificari la linia 32:
+<br>
+<inline>p->f()</inline> intoarce valoarea lui <var>x</var>, din obiectul la care arata <var>p</var>, adica <inline>5</inline>.
+<br>
+<inline>p->count()</inline> (sau <inline>B::count()</inline> sau <inline>C::count()</inline>) intoarce valoarea lui <var>i</var> adica <inline>2</inline>.
+<br>
+<inline>((D*)p)->f1(*p)</inline> intoarce valoarea lui <var>x</var>, din obiectul la care arata <var>p</var>, inmultit cu 2 adica 5*2 deci <inline>10</inline>. <b>Atentie aici, ca sa se creeze obiectul temporar <var>ob</var> (parametrul metodei <inline>f1</inline>) se apeleaza constructorul de copiere deci <var>i</var> nu se modifica, in schimb cand se iese din functie se apeleaza destructorul pentru <var>ob</var> si <var>i</var> scade cu 1</b>.
+</div>
+<div>
+La <inline>delete p;</inline> pentru ca <var>p</var> este pointer de tip <inline>B*</inline> si destructorul din <inline>B</inline> NU este <inline>virtual</inline>, NU se apeleaza destructorul din <inline>D</inline> (chiar daca <var>p</var> arata spre ceva de tip <inline>D</inline>). Destructorul din <inline>B</inline> scade pe <var>i</var> cu 1 si <var>i</var> devine <inline>1</inline> (<b>sau <inline>0</inline>!! daca la linia 32 ai <inline>((D*)p)->f1(*p)</inline>, pentru ca se mai apeleaza destructorul din <inline>B</inline> si in metoda <inline>f1</inline> pentru parametrul <var>ob</var></b>).
+</div>
+<div>
+La <inline>cout << D::count();</inline>, metoda <inline>count</inline> returneaza valorea lui <var>i</var> adica <inline>1</inline> (<b>sau <inline>0</inline>!! daca la linia 32 ai <inline>((D*)p)->f1(*p)</inline>, pentru ca se mai apeleaza destructorul din <inline>B</inline> si in metoda <inline>f1</inline> pentru parametrul <var>ob</var></b>).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, inheritance, destructor, constructor, static, pointers, dynamic memory allocation
+#END_TAGS

@@ -1,0 +1,133 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+protected:
+    int x;
+public:
+    A(int a = 10) { x = a; }
+};
+
+class B : virtual public A {
+public:
+    B(int a = 20) { x = a; }
+};
+
+class C : virtual public A {
+public:
+    C(int a = 30) { x = a; }
+};
+
+class D : virtual public A {
+public:
+    D(int a = 40) { x = a; }
+};
+
+class E : public B, public D, public C {
+private:
+    int y;
+public:
+    E(int i, int j)
+        : D(i), B(i) 
+    {
+        y = i * j - 2;
+    }
+
+    int getY()const { return y; }
+    int getX() const { return x; }
+    E(const E& other) { y = other.x + other.y - 10; }
+};
+int main()
+{
+    E a(3, 7), b = a;
+    cout << b.getY() << ' ' << b.getX();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+39 30
+</output>
+<div>
+Clasele <inline>B</inline>, <inline>C</inline>, <inline>D</inline> mostenesc virtual clasa <inline>A</inline>. Asta inseamna ca in clasa <inline>E</inline>, care mosteneste clasele <inline>B</inline>, <inline>C</inline>, <inline>D</inline>, are o singura copie a clasei <inline>A</inline>. Deci un obiect de tip <inline>E</inline> are o singura variabila <var>x</var> si o variabila <var>y</var>.
+</div>
+<div>
+Cand ai mostenire virtuala si creezi un obiect de tip <inline>E</inline> in cazul asta, mai intai se initializeaza subobiectele din clasele de baza virtuale (in cazul asta <inline>A</inline>) deci mai intai constructorul din <inline>A</inline> se apeleaza. Asta inseamna ca constructorii din clasele <inline>B</inline>, <inline>C</inline>, <inline>D</inline> nu apeleaza constructorul din <inline>A</inline>. Este treaba clasei cea mai derivata sa apeleze constructorii din clasa de baza virtuala (adica <inline>A</inline>). Vezi <a href="https://en.cppreference.com/w/cpp/language/derived_class#Virtual_base_classes">aici</a> mai multe.
+</div>
+<block>
+struct B {
+    int n;
+    B(int x) : n(x) {}
+};
+
+struct X : virtual B { 
+	X() : B(1) {} 
+};
+
+struct Y : virtual B { 
+	Y() : B(2) {} 
+};
+struct AA : X, Y     { 
+	AA() : B(3), X(), Y() {}
+};
+// constructorul default din AA apeleaza constructorii din X si Y
+// dar acei constructori NU mai apeleaza constructorul din B
+// pentru ca B este clasa de baza virtuala
+// constructorul din AA trebuie sa apeleze cumva constructorul din B 
+// (ori o faci tu, ori compilatorul automat)
+
+AA a; // a.n == 3
+
+// in cazul asta daca nu apelezi tu constructorul din B in constructorul din AA
+// o sa fie apelat constructorul default(fara parametrii) din B care nu exista, deci eroare.
+
+
+
+
+X x; // x.n == 1
+// in cazul asta constructorul din X apeleaza constructorul din B
+
+</block>
+<div>
+La <inline>E a(3, 7)</inline> se creeaza un obiect de tip <inline>E</inline>. Desi constructorul din <inline>E</inline> arata asa: <inline>E(int i, int j) : D(i), B(i)</inline> mai intai se apeleaza constructorul din <inline>A</inline>, dupa, in ordinea in care s-a mostenit adica <inline>B</inline>, <inline>D</inline>, <inline>C</inline> (pentru ca <inline>class E : public B, public D, public C </inline>). Deci constructorul din E arata teoretic asa: <inline>E(int i, int j) : A(), B(i), D(i), C()</inline>.
+</div>
+<div>
+Ne ducem in constructorul din <inline>A</inline> care seteaza <var>x</var> la 10. Continuam cu constructorul din <inline>B</inline> (care nu-l mai apeleaza pe cel din <inline>A</inline>) care este apelat cu valoarea 3 (pt ca <var>i</var> e 3) si seteaza <var>x</var> la 3. Continuam cu constructorul din D care face acelasi lucru ca cel din <inline>B</inline>. Acum ajungem la constructorul din <inline>C</inline> care nu primeste vreun argument deci ramane parametrul default 30 si seteaza <var>x</var> la 30. 
+</div>
+<div>
+In final se executa si constructorul din <inline>E</inline> care seteaza <var>y</var> la 19 (<var>i</var> e 3, <var>j</var> e 7, deci 3*7-2 adica 19). Deci obiectul <var>a</var> din main are <var>x</var>-ul 30 si <var>y</var>-ul 19.
+</div>
+<div>
+La <inline>b = a</inline> nu se apeleaza operatorul de atribuire ci constructorul de copiere
+</div>
+<block>
+E a;
+
+E b = a; 
+// echivalent cu
+E b(a);
+
+// dar nu cu urmatorea chestie
+
+E b;   // constructor default
+b = a; // si aici operator=
+</block>
+<div>
+Avem definit constructorul de copiere din <inline>E</inline> , <inline>E(const E& other) { y = other.x + other.y - 10; }</inline> nu uita ca si asta e un constructor deci trebuie apelati si constructorii din celelate clase (aici sunt apelati automat) deci practic avem:
+<inline>E(const E& other) : A(), B(), D(), C() { y = other.x + other.y - 10; }</inline>. Se executa constructorii in ordinea <inline>A</inline>, <inline>B</inline>, <inline>D</inline>, <inline>C</inline>, la final cel din <inline>C</inline> seteaza <var>x</var>-ul la 30. Se continua cu constructorul de copiere care seteaza <var>y</var> la 30+19-10 adica 39 (<var>other</var> este <var>a</var> din main care are <var>x</var>-ul 30 si <var>y</var>-ul 19). Deci obiectul <var>b</var> din main are <var>x</var>-ul 30 si <var>y</var>-ul 39.
+</div>
+<div>
+<inline>b.getY()</inline> si <inline>b.getX()</inline> returneaza valorea lui <var>y</var> respectiv <var>x</var> din obiectul <var>b</var>, adica 39 si 30.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+hard, correct, multiple inheritance, constructor, virtual inheritance
+#END_TAGS

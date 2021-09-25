@@ -1,0 +1,69 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+public:
+    virtual void f(int x) {
+        cout << "Suntem in B: " << x << endl;
+    }
+};
+
+class D : public B{
+public:
+    void f(double x) {
+        cout << "Suntem in D: " << x << endl;
+    }
+};
+
+class DD : public D {
+public:
+    void f(int x) {
+        cout << "Suntem in DD: " << x << endl;
+    }
+};
+
+int main()
+{
+    D b;
+    DD c;
+
+    B& ref1 = c;
+    D& ref2 = c;
+    B& ref3 = b;
+
+    ref1.f(12);
+    ref2.f(5);
+    ref3.f(9);
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza: 
+</div>
+<output>
+Suntem in DD: 12
+Suntem in D: 5
+Suntem in B: 9
+</output>
+<div>
+In primul rand cand supradefinesti o functie care este <inline>virtual</inline> trebuie sa: ai acelasi nume, ai acelasi numar parametri, tipurile parametriilor sa fie in aceeasi ordine, <b>acelasi tip returnat</b> (cu niste exceptii) si daca e cazul sa fie si <inline>const</inline> sau <inline>volatile</inline> (daca functia din clasa de baza e <inline>const</inline> sau <inline>volatile</inline>). Tipul returnat trebuie sa fie <b>identic</b> (daca metodele nu intorc pointeri sau referinte) sau &quot;covariant&quot;. Ce inseamna &quot;covariant&quot;? Are legatura cu pointeri si referinte, adica ce intoarce functia supradefinita sa poata fi folosit in aceleasi moduri ca ce intoarce metoda clasa de baza. (de exemplu daca metoda virtuala din clasa de baza <inline>Base</inline> intoarce un pointer de tip <inline>Base*</inline> atunci metoda supradefinita din clasa derivata <inline>Derived</inline> poate returna un pointer de tip <inline>Derived*</inline> in loc de un pointer de tip <inline>Base*</inline>. Acelasi lucru se intampla si cu referinte) Vezi <a href="https://www.learncpp.com/cpp-tutorial/the-override-and-final-specifiers-and-covariant-return-types/">aici</a> (da scroll mai jos la &quot;covariant return type&quot;). 
+</div>
+<div>
+Revenind la problema, metoda <inline>void f(double x)</inline> din clasa <inline>D</inline> nu supradefineste metoda virtuala din clasa de baza. De fapt o ascunde (chiar asa se numeste in situatia asta). Clasa <inline>D</inline> mosteneste metoda virtuala <inline>f</inline> din clasa de baza. Clasa <inline>DD</inline> mosteneste clasa <inline>B</inline> (pentru ca <inline>DD</inline> mosteneste <inline>D</inline> si <inline>D</inline> mosteneste <inline>B</inline>) dar in clasa <inline>DD</inline> metoda <inline>f</inline> (din clasa <inline>B</inline>, mostenita de <inline>D</inline>) este supradefinita. Asta inseamna ca la linia <inline>ref1.f(12);</inline> mergem in clasa <inline>B</inline> (pentru ca <var>ref1</var> este de tip <inline>B&</inline>) vedem ca metoda <inline>f</inline> este <inline>virtual</inline> asa ca ne uitam mai exact la ce obiect se refera <var>ref1</var>. Se refera la <var>c</var> care este de tip <inline>DD</inline>, in clasa <inline>DD</inline> este supradefinita metoda deci inseamna ca cea de acolo se va apela. Deci la <inline>ref1.f(12);</inline> se apeleaza metoda din clasa <inline>DD</inline>.
+</div>
+<div>
+<var>ref2</var> este o referinta de tip <inline>D&</inline>. La <inline>ref2.f(5);</inline> mergem in clasa <inline>D</inline> si acolo avem functia asta <inline>void f(double x)</inline> care nu e virtuala. Se face o conversie la <inline>double</inline> si ramanem cu metoda asta pentru ca o ascunde pe cea virtuala. Deci la <inline>ref2.f(5);</inline> se apeleaza metoda din clasa <inline>D</inline>.
+</div>
+<div>
+<var>ref3</var> este o referinta de tip <inline>B&</inline>. La <inline>ref3.f(9);</inline> ne uitam in clasa <inline>B</inline> la metoda <inline>f</inline> care este <inline>virtual</inline>, deci ne uitam la obiectul la care <var>ref3</var>	se refera. <var>ref3</var> se refera la un obiect de tip <inline>D</inline>. In clasa <inline>D</inline> nu este redefinita metoda <inline>void f(int x)</inline>, acolo este metoda <inline>void f(double x)</inline> care seamana dar nu e la fel. Deci ramanem cu metoda din <inline>B</inline>. Asadar la <inline>ref3.f(9);</inline> se apeleaza prima metoda.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, inheritance, correct, references, upcast, virtual, function overloading
+#END_TAGS

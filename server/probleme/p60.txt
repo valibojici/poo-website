@@ -1,0 +1,70 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+int f(int x) {
+	return ++x;
+}
+
+int f(int& x, int y)
+{
+	if (x % 2 == 0 && y % 3 == 0)
+		throw x;
+	return y - x;
+}
+
+float f(int& y) {
+	cout << "!" << y << "!" << endl;
+	return (float)y / 2;
+}
+
+int main()
+{
+	int x;
+	try {
+		x = 7;
+		if (x % 2 == 0) {
+			x = f(x, 5);
+			cout << "Imi place " << x;
+		}
+		else {
+			x = f(x);
+			cout << "Nu prea imi place " << x;
+		}
+	}
+	catch (int i) {
+		cout << "Nu imi place numarul " << i << endl;
+	}
+	return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 31: <inline>x = f(x);</inline>
+</div>
+<error>
+more than one instance of overloaded function "f" matches the argument list
+</error>
+<div>
+Functia <inline>f</inline> este supraincarcata. Cand supraincarci o functie nu se tine cont de tipul returnat, doar de tipul, numarul si ordinea (daca ai parametrii de mai multe tipuri) parametriilor. In cazul asta avem <inline>f(x)</inline>, <var>x</var> este o variabila in memorie, deci ii putem lua adresa cu <inline>&</inline>. Concluzia? Pentru <inline>f(x)</inline> se potriveste si <inline>int f(int x)</inline> si <inline>float f(int& x)</inline>.
+</div>
+<div>
+Ca sa fie corect poti modifica a doua functie sa primeasca un <inline>float</inline> in loc de <inline>int&</inline> ca parametru (<inline>float f(float y)</inline>)
+</div>
+<div>
+Dupa modificare, intram in block-ul de <inline>try</inline>, <var>x</var> ia valorea <inline>7</inline>, nu se executa <inline>if</inline> pentru ca 7 e impar si ajungem in <inline>else</inline>. Acolo <var>x</var> ia valorea returnata de <inline>f(x)</inline>. Se apeleaza prima functie (doar ea se potriveste) care returneaza <inline>8</inline> (in functie parametrul <var>x</var> e 7, iar <inline>++x</inline> inseamna ca mai intai adaugi 1 la <var>x</var> si dupa continui, in cazul asta se intoarce noua valoare). Functia nu a aruncat nimic deci continuam cu ce este in <inline>else</inline> si se afiseaza.
+</div>
+<output>
+Nu prea imi place 8
+</output>
+<div>
+Pentru ca functia <inline>f</inline> nu a aruncat nimic, nu se mai executa blocul <inline>catch</inline> (din main).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, try catch, incorrect, function overloading
+#END_TAGS

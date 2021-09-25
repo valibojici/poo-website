@@ -1,0 +1,75 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <typeinfo>
+using namespace std;
+
+class A {
+    int x;
+public:
+    A(int _x) : x(_x + 1) {}
+    int getX() const { return x; }
+};
+
+class B : public A {
+    int y;
+public:
+    B(int _y = 0) : A(10) {
+        y = _y + x;
+    }
+    int getY() const { return y; }
+};
+ 
+int main()
+{
+    const A* p = new B[10];
+    cout << p->getX() << endl;
+
+    if (typeid((A*)p).name() == "B*") {
+        cout << ((B*)p)->getY();
+    }
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 16: <inline>y = _y + x;</inline>.
+</div>
+<error>
+member "A::x" (declared at line 6) is inaccessible
+</error>
+<div>
+Intr-o clasa modificatorul de acces default este <inline>private</inline>. 
+Clasa <inline>B</inline> mosteneste clasa <inline>A</inline> iar <var>x</var> din clasa <inline>A</inline> este <inline>private</inline> deci este accesibil doar in clasa <inline>A</inline>. La linia 16 incerci sa accesezi <var>x</var>, care este <inline>private</inline> in clasa de baza, de aici eroarea.
+</div>
+<div>
+Ca programul sa fie corect il poti inlocui pe <var>x</var> din linia 16 <inline>y = _y + x;</inline> cu metoda <inline>getX()</inline> care returneaza valorea lui <var>x</var>. Linia 16 devine: <inline>y = _y + getX();</inline>.
+</div>
+<div>
+Alta varianta este sa il faci pe <var>x</var> <inline>protected</inline> in clasa de baza (acum au acces si clasele derivate). Clasa <inline>A</inline> ar arata asa:
+</div>
+<block>
+class A {
+protected: // <---
+    int x;
+public:
+    A(int _x) : x(_x + 1) {}
+    int getX() const { return x; }
+};
+</block>
+<div>
+Dupa modificari, la linia <inline>const A* p = new B[10];</inline> se creeaza un array cu 10 elemente de tip <inline>B</inline>. Pentru fiecare se apeleaza constructorii in ordinea <inline>A</inline>, <inline>B</inline>. In lista de initializare a constructorului din <inline>B</inline> este apelat cel din <inline>A</inline> cu valorea 10, deci <var>x</var>-ul pentru fiecare obiect este 10+1 adica <inline>11</inline>. Continuam cu constructorul din <inline>B</inline>, care nu a primit vreun argument, deci ramane cel default (0) si <var>y</var> este setat la 0 + 11 adica <inline>11</inline>. Pointerul <var>p</var> este un pointer la obiect constant (nu pointer constant), asta inseamna nu putem modifica obiectele folosind pointerul <var>p</var> (deci nu se pot apela metode care nu sunt <inline>const</inline>).
+</div>
+<div>
+Pointerul <var>p</var> arata spre adresa primului element din array, deci <inline>p->getX()</inline> este practic <inline>p[0].getX()</inline>, functia <inline>getX()</inline> este <inline>const</inline> deci se poate apela (pentru ca <var>p</var> e pointer la ceva <inline>const</inline>). La <inline>cout << p->getX() << endl;</inline> se afiseaza <inline>11</inline> (pentru ca <var>x</var>-ul din toate obiectele e 11).
+</div>
+<div>
+Pointerul <var>p</var> este de tip <inline>A*</inline> deja, deci nu are sens vreun cast la <inline>A*</inline>. <inline>typeid((A*)p).name()</inline> e la fel ca <inline>typeid(p).name();</inline>. <inline>typeid</inline> returneaza un obiect de tip <inline>type_info</inline> ce reprezinta informatii despre tipul de date, are si o metoda <inline>name()</inline> care returneaza numele tipului de date dar depinde de compilator numele exact. Tipul lui <var>p</var> este <inline>A*</inline> (ne intereseaza pointerul, nu obiectul la care arata pentru ca nu dereferentiem pointerul) deci in numele returnat de <inline>typeid(p).name()</inline> nu are de ce sa apara <inline>"B*"</inline>. In plus sirurile de caractere nu se compara cu <inline>==</inline>, asa compari doar pointerii deci ar trebui sa fie exact acelasi sir de caractere (in memorie), nu 2 siruri de caractere cu acelasi continut ca sa se execute if-ul. <b>Daca vrei sa compari 2 siruri de caractere folosesti functia <inline>strcmp</inline>, nu <inline>==</inline>.</b>. (pe visual studio, typeid(p).name() intoarce <inline>"class A * __ptr64"</inline>)
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, inheritance, pointers, const
+#END_TAGS

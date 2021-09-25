@@ -1,0 +1,72 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+protected:
+    int x;
+
+public:
+    B(int i = 5) { x = i; }
+};
+class D : B {
+public:
+    D() : B(4) {}
+    D(D& b) { x = b.x - 9; }
+    void afisare() { cout << x; }
+};
+int main()
+{
+    D b1, b2(b1);
+    b2.afisare();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+-5
+</output>
+<div>
+Modificatorul de acces default este <inline>private</inline> deci clasa <inline>D</inline> mosteneste <b>privat</b> clasa <inline>B</inline>. Cand mostenesti privat este secret faptul ca ai mostenit (ok nu e secret ca poti vedea codul), doar clasa derivata stie faptul ca ai derivat (deci nu poti face upcast).
+</div>
+<div>
+Membrii <inline>protected</inline> dintr-o clasa de baza poti fi accesati intr-o clasa derivata doar de obiecte (sau pointeri) de tipul clasei derivate. 
+</div>
+<block>
+class Base {
+protected:
+    int x;
+};
+
+class Derived : public Base {
+    void f(Base ob) { cout << ob.x; }         // eroare, accesezi x-ul prin ceva de tip Base
+    void f(Base* ob) { cout << ob->x; }       // eroare
+    void f(const Base& ob) { cout << ob.x; }  // eroare
+
+    void f(Derived ob) { cout << ob.x; }          // ok, ob e Derived si ai acces la x
+    void f(Derived* ob) { cout << ob->x; }        // ok
+    void f(const Derived& ob) { cout << ob.x; }   // ok
+
+    void g() { x = 100; }  // ok, ai acces la x-ul pentru obiectul curent
+};
+</block>
+<div>
+La <inline>D b1, b2(b1);</inline> se creeaza 2 obiecte de tip <inline>D</inline>, pentru ambele constructorii se vor executa in ordinea <inline>B</inline>, <inline>D</inline>. Pentru obiectul <var>b1</var>, in lista de initializare din constructorul din <inline>D</inline> se apeleaza ma intai constructorul din <inline>B</inline> cu valorea <inline>4</inline>. <var>x</var>-ul din <var>b1</var> devine 4, dupa se continua cu constructorul din <inline>D</inline> care nu mai face nimic.
+</div>
+<div>
+Pentru obiectul <var>b2</var> se va apela constructorul de copiere, care primeste ca parametru obiectul <var>ob1</var>. Pentru ca si el este un constructor mai intai trebuie apelat si constructorul din <inline>B</inline>. In lista de initializare din constructorul de copiere din <inline>D</inline> nu se apeleaza explicit constructorul din <inline>B</inline> deci se va apela cu valorea implicita 5. Deocamdata <var>x</var>-ul din <var>ob2</var> e 5. Continuam cu constructorul de copiere din <inline>D</inline>. Parametrul <var>b</var> este o referinta la <var>ob1</var> (un alt nume practic, acelasi obiect). Avem acces la <var>x</var> pentru obiectul curent (pentru ca <var>x</var> e <inline>protected</inline>) si avem acess la <inline>b.x</inline> pentru ca <var>b</var> este o referinta de tip <inline>D&</inline>. <inline>x = b.x - 9</inline> seteaza <var>x</var> la 4-9 adica <inline>-5</inline>. (<var>x</var> din <var>b1</var> e 4).
+</div>
+<div>
+<inline>b2.afisare()</inline> afiseaza pe ecran valorea lui <var>x</var> din <var>b2</var> adica <inline>-5</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, inheritance, protected, copy constructor, private inheritance
+#END_TAGS
