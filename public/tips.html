@@ -32,7 +32,7 @@
     <!-- navbar -->
     <nav id='navbar-container' class="navbar navbar-expand-lg navbar-dark bg-dark text-light py-2">
         <div class="container">
-            <a class="navbar-brand" href="#">&Icirc;nvață POO</a>
+            <a class="navbar-brand" href="./index.html">&Icirc;nvață POO</a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbar">
@@ -180,7 +180,7 @@ public:
 int main() {
     MyClass a;
     double x = a;   // se apeleza prima functie vezi mai jos de ce
-    cout << x;      // se afiseaza 5.5
+    cout &lt;&lt; x;      // se afiseaza 5.5
 }
                                     </code></pre>
                                 </li>
@@ -334,7 +334,7 @@ int main()
                                 Ce treaba are asta cu <pre class="inline"><code>endl</code></pre>? Poate sti ca <pre class="inline"><code>g &lt;&lt; endl</code></pre> trece la urmatoarea linie, e ca si cum ai scrie <pre class="inline"><code>g &lt;&lt; &quot;\n&quot;;</code></pre> <b>dar pe langa asta face si un flush!</b>, deci e echivalent cu <pre class="inline"><code>g &lt;&lt; &#039;\n&#039; &lt;&lt; flush;</code></pre> (apropo, <pre class="inline"><code>cout &lt;&lt; &quot;\n&quot;;</code></pre> e la fel cu <pre class="inline"><code>cout &lt;&lt; &#039;\n&#039;;</code></pre> doar ca <pre class="inline"><code>&quot;\n&quot;</code></pre> e un sir de caractere si <pre class="inline"><code>&#039;\n&#039;</code></pre> e un caracter, deci mai bine folosesti un caracter)
                             </div>
                             <div>
-                                Daca scrii multe linii in fisier si folosesti la fiecare <pre class="inline"><code>endl</code></pre>, o sa ruleaze mult mai incet decat daca nu ai folosi <pre class="inline"><code>endl</code></pre> si ai pune <pre class="inline"><code>&#039;\n&#039;</code></pre> pentru linie noua.
+                                Daca scrii multe linii in fisier si folosesti la fiecare <pre class="inline"><code>endl</code></pre>, o sa ruleze mult mai incet decat daca nu ai folosi <pre class="inline"><code>endl</code></pre> si ai pune <pre class="inline"><code>&#039;\n&#039;</code></pre> pentru linie noua.
                                 <pre class="block"><code>#include &lt;iostream&gt;
 #include &lt;fstream&gt;
 using namespace std;
