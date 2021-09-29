@@ -1,5 +1,5 @@
 # Redirects from what the browser requests to what we serve
-/index.html              /acasa
-/problem.html  		/probleme
-/tips.html              /tips
-/404.html				/page-not-found
+https://invatapoo.netlify.app /
+https://invatapoo.netlify.app /
+http://invatapoo.netlify.com /
+https://invatapoo.netlify.com /
