@@ -97,75 +97,85 @@
         <div class="content col col-md-9 col-xl-10 px-2 px-sm-3 px-md-4 px-xll-0">
             
             <!-- overloading overriding -->
-            <section id="overloading-overriding" class="bg-altlight pt-5 mb-5">
+            <section id="overloading-overriding" class="bg-altlight pt-5 my-5">
                 <div class="container">
                     <h1 class="display-3">Supraincarcare (overloading) & supradefinire (overriding)</h1>
         
-                    <article id="function-overloading" class="mt-4">
+                    <article id="function-overloading" class="mt-5">
                         <h3 class='my-2 ps-2 rounded'>Supraincarcare functii</h3>
                         <div class="article-content lead">
                             <div>
-                                In C++ putem avea mai multe functii cu acelasi nume dar trebuie ca parametrii ori sa fie de tipuri diferite, ori sa difere numarul de parametrii, ori parametrii sa fie in alta ordine (ma refer la tipul lor de ex. <pre class="inline"><code>int, int, float</code></pre> si <pre class="inline"><code>float, int, int</code></pre> nu la denumire, asta nu conteaza). De exemplu:
-                                <pre class="block"><code class="language-cpp">void f(int x) {}            // numar diferit de parametrii fata de functiile de mai jos
-void f(int x, float y) {}   // difera ordinea tipurilor parametriilor fata de functia de mai jos
-void f(float x, int y) {}</code></pre>
+                                In C++ putem avea mai multe functii cu acelasi nume dar trebuie ca parametrii ori sa fie de tipuri diferite, ori sa difere numarul de parametrii, ori parametrii sa fie in alta ordine (ma refer la tipul lor de ex. <div class="inline-code">int, int, float</div> si <div class="inline-code">float, int, int</div> nu la denumire, asta nu conteaza). De exemplu:
+                                <div class="block-code">           
+                                    void f(int x) {}            // numar diferit de parametrii fata de functiile de mai jos
+                                    void f(int x, float y) {}   // difera ordinea tipurilor parametriilor fata de functia de mai jos
+                                    void f(float x, int y) {}
+                                </div>
                             </div>
                             <div>
                                 Totusi ai grija la parametrii cu valori implicite, de exemplu mai jos avem eroare pentru ca apelul de functie este ambiguu, nu se stie care functie sa se aleaga.
-                                <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
-using namespace std;
+                                <div class="block-code">
+                                    #include &lt;iostream&gt;
+                                    using namespace std;
 
-void f(int x) {}
-void f(int x, int y = 4) {}
+                                    void f(int x) {}
+                                    void f(int x, int y = 4) {}
 
-int main() {
-    f(5); // eroare aici
-}</code></pre>
+                                    int main() {
+                                        f(5); // eroare aici
+                                    }
+                                </div>
                             </div>
                         <div>
                             Tehnic vorbind functiile trebuie sa aiba signaturi diferite. Signatura se refera la numele functiei, numarul, ordinea si tipul parametrilor.
                         </div>
                         <div>
-                            Daca avem ceva de genul:
-                            <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
-using namespace std;
+                            <div>Daca avem ceva de genul:</div>
+                            <div class="block-code">
+                                #include &lt;iostream&gt;
+                                using namespace std;
 
-void f(int x, int y) {}
-void f(double x, int y) {}
+                                void f(int x, int y) {}
+                                void f(double x, int y) {}
 
-int main() {
-    f(2, 2.3);
-}</code></pre>
-                    Cum se alege ce functie se apeleaza? Compilatorul se uita pe rand la fiecare argument si creaza o multime de functii candidat pentru fiecare argument, adica tipul argumentului (cand apelezi functia) se poate converti (cumva) in tipul parametrului (in definitia functiei). Pentru fiecare argument se creeaza o multime de functii care se potrivesc cel mai bine (chiar daca exista multe functii canditat unele fac mai multa &quot;treaba&quot; decat altele sa converteasca, de aceea se aleg cele care se potrivesc cel mai bine). Din multimile astea de functii care se potrivesc cel mai bine pentru fiecare argument se face o intersectie si functia rezultata este cea care se apeleaza. Daca intersectia e vida sau contine mai mult de 1 functie avem eroare de compilare.
+                                int main() {
+                                    f(2, 2.3);
+                                }
+                            </div>
+                            <div>Cum se alege ce functie se apeleaza? Compilatorul se uita pe rand la fiecare argument si creaza o multime de functii candidat pentru fiecare argument, adica tipul argumentului (cand apelezi functia) se poate converti (cumva) in tipul parametrului (in definitia functiei). Pentru fiecare argument se creeaza o multime de functii care se potrivesc cel mai bine (chiar daca exista multe functii canditat unele fac mai multa &quot;treaba&quot; decat altele sa converteasca, de aceea se aleg cele care se potrivesc cel mai bine). Din multimile astea de functii care se potrivesc cel mai bine pentru fiecare argument se face o intersectie si functia rezultata este cea care se apeleaza. Daca intersectia e vida sau contine mai mult de 1 functie avem eroare de compilare.</div>
                         </div>
 
                         <div>
-                            De exemplu:
-                            <pre class="block"><code class="language-cpp">#include &lt;iostream&gt;
-using namespace std;
+                            <div>De exemplu:</div>
+                            <div class="block-code">
+                                #include &lt;iostream&gt;
+                                using namespace std;
 
-class MyClass {
-    // o clasa goala pentru exemplu
-};
+                                class MyClass {
+                                    // o clasa goala pentru exemplu
+                                };
 
-void f(MyClass x, long long y) {}   // functia 1
-void f(long long x, MyClass y) {}   // functia 2
-void f(MyClass x, MyClass y) {}     // functia 3
+                                void f(MyClass x, long long y) {}   // functia 1
+                                void f(long long x, MyClass y) {}   // functia 2
+                                void f(MyClass x, MyClass y) {}     // functia 3
 
-int main() {
-    int x = 4;
-    MyClass y;
+                                int main() {
+                                    int x = 4;
+                                    MyClass y;
 
-    f(x, y);
-    f(x, x);
-}</code></pre>
-                            Sa ne uitam la linia 16: <pre class="inline"><code>f(x, y);</code></pre>. Mai intai la primul argument de tip <pre class="inline"><code>MyClass</code></pre>, multimea functiilor candidat = {functia 1, functia 2},multimea functiilor care ce potrivesc cel mai bine = {functia 1, functia 2}. Acum sa ne uitam la al doilea argument de tip <pre class="inline"><code>int</code></pre>, multimea functiilor candidat = multimea functiilor care se potrivesc cel mai bine = {functia 1} (pentru ca se poate converti <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>long long</code></pre> ).
+                                    f(x, y);
+                                    f(x, x);
+                                }
+                            </div>
+                            <div>
+                                Sa ne uitam la linia 16: <div class="inline-code">f(x, y);</div>. Mai intai la primul argument de tip <div class="inline-code">MyClass</div>, multimea functiilor candidat = {functia 1, functia 2},multimea functiilor care ce potrivesc cel mai bine = {functia 1, functia 2}. Acum sa ne uitam la al doilea argument de tip <div class="inline-code">int</div>, multimea functiilor candidat = multimea functiilor care se potrivesc cel mai bine = {functia 1} (pentru ca se poate converti <div class="inline-code">int</div> in <div class="inline-code">long long</div> ).
+                            </div>
                         </div>
                         <div>
-                            {functia 1, functia 2} ∩ {functia 1} = {functia 1}. Asta inseamna ca in final pentru <pre class="inline"><code>f(x, y);</code></pre> se apeleaza functia 1.
+                            {functia 1, functia 2} ∩ {functia 1} = {functia 1}. Asta inseamna ca in final pentru <div class="inline-code">f(x, y);</div> se apeleaza functia 1.
                         </div>
                         <div>
-                            Daca ne uitam la linia 17: <pre class="inline"><code>f(x, x);</code></pre>, pentru primul argument multimea functiilor care se potrivesc cel mai bine = {functia 2}, pentru al doilea argument multimea functiilor care se potrivesc cel mai bine = {functia 1}, iar {functia 2} ∩ {functia 1} = Ø si deci eroare.
+                            Daca ne uitam la linia 17: <div class="inline-code">f(x, x);</div>, pentru primul argument multimea functiilor care se potrivesc cel mai bine = {functia 2}, pentru al doilea argument multimea functiilor care se potrivesc cel mai bine = {functia 1}, iar {functia 2} ∩ {functia 1} = Ø si deci eroare.
                         </div>
 
                         <div>
@@ -173,18 +183,19 @@ int main() {
                             <ol class="">
                                 <li>E cel putin un argument in F1 a carui conversie implicita este mai buna decat conversia implicita pentru acel argument in F2</li>
                                 <li>Sau daca nu e asa, dar doar in cazul conversiilor definite de tine (gen operatorul de cast intr-o clasa), daca conversia implicita de la tipul returnat de F1 la tipul destinatie este mai buna decat conversia implicita de la tipul returnat de F2 la tipul destinatie.
-                                    <pre class="block"><code>class MyClass {
-public:
-    operator float() { return 5.5; }
-    operator int() { return 1; }
-};
+                                    <div class="block-code">
+                                        class MyClass {
+                                        public:
+                                            operator float() { return 5.5; }
+                                            operator int() { return 1; }
+                                        };
 
-int main() {
-    MyClass a;
-    double x = a;   // se apeleza prima functie vezi mai jos de ce
-    cout &lt;&lt; x;      // se afiseaza 5.5
-}
-                                    </code></pre>
+                                        int main() {
+                                            MyClass a;
+                                            double x = a;   // se apeleza prima functie vezi mai jos de ce
+                                            cout &lt;&lt; x;      // se afiseaza 5.5
+                                        }
+                                    </div>
                                 </li>
                                 <li>Sau daca nu e asa, F1 este non-template iar F2 este template sau ambele sunt template dar F1 este mai specializata (dar despre template vorbesc separat).</li>
                             </ol>
@@ -196,33 +207,35 @@ int main() {
                                 <li class="mt-4">
                                     <h5>Exact match</h5>
                                     <div>Nu trebuie sa se faca nicio &quot;conversie&quot; sau daca se face se considera exact match.
-                                        <pre class="block"><code>void f(int& x);
-void f(double x);
-int x = 42;
-f(x); // argument type is int; exact match with int&
+                                        <div class="block-code">
+                                            void f(int& x);
+                                            void f(double x);
+                                            int x = 42;
+                                            f(x); // argument type is int; exact match with int&
 
-/////////////////////////////////////////
+                                            /////////////////////////////////////////
 
-void g(int* p);
-void g(void* p);
+                                            void g(int* p);
+                                            void g(void* p);
 
-int a[100];
-g(a); // calls f(int*); exact match with array-to-pointer conversion</code></pre>
+                                            int a[100];
+                                            g(a); // calls f(int*); exact match with array-to-pointer conversion
+                                    </div>
                                     </div>
                                 </li>
                                 <li class="mt-4">
                                     <h5>Promotion</h5>
-                                    <div>Aici intra <i>integral promotion</i> si <i>floating-point promotion</i>. Promotia e un tip special de conversie pentru tipurile de date built-in (<pre class="inline"><code>int</code></pre>, <pre class="inline"><code>float</code></pre> etc.) si este garantat ca nu schimba valoarea. (adica tipul de date la care se converteste poate reprezenta exact orice valoare a tipului de date de la care se converteste)</div>
+                                    <div>Aici intra <i>integral promotion</i> si <i>floating-point promotion</i>. Promotia e un tip special de conversie pentru tipurile de date built-in (<div class="inline-code">int</div>, <div class="inline-code">float</div> etc.) si este garantat ca nu schimba valoarea. (adica tipul de date la care se converteste poate reprezenta exact orice valoare a tipului de date de la care se converteste)</div>
                                     <div class="text-decoration-underline">Integral promotion</div>
                                     <ul>
-                                        <li><pre class="inline"><code>signed char</code></pre> sau <pre class="inline"><code>signed short</code></pre> se pot converti la <pre class="inline"><code>int</code></pre></li>
-                                        <li><pre class="inline"><code>unsigned char</code></pre> sau <pre class="inline"><code>unsigned short</code></pre> se pot converti la <pre class="inline"><code>int</code></pre> daca <pre class="inline"><code>int</code></pre> poate retine toate valorile sau la <pre class="inline"><code>unsigned int</code></pre> daca nu poate. (e posibil ca short/char si int sa aiba acelasi nr. de biti pe un calculator si de aceea nu poti din unsigned short/char in int) </li>
-                                        <li><pre class="inline"><code>char</code></pre> se poate converti la <pre class="inline"><code>int</code></pre> sau <pre class="inline"><code>unsigned int</code></pre> (depinde daca prin <pre class="inline"><code>char</code></pre> te referi la <pre class="inline"><code>signed char</code></pre> sau <pre class="inline"><code>unsigned char</code></pre>)</li>
-                                        <li><pre class="inline"><code>bool</code></pre> se poate converti la <pre class="inline"><code>int</code></pre>, <pre class="inline"><code>false</code></pre> devine <pre class="inline"><code>0</code></pre> iar <pre class="inline"><code>true</code></pre> devine <pre class="inline"><code>1</code></pre></li>
+                                        <li><div class="inline-code">signed char</div> sau <div class="inline-code">signed short</div> se pot converti la <div class="inline-code">int</div></li>
+                                        <li><div class="inline-code">unsigned char</div> sau <div class="inline-code">unsigned short</div> se pot converti la <div class="inline-code">int</div> daca <div class="inline-code">int</div> poate retine toate valorile sau la <div class="inline-code">unsigned int</div> daca nu poate. (e posibil ca short/char si int sa aiba acelasi nr. de biti pe un calculator si de aceea nu poti din unsigned short/char in int) </li>
+                                        <li><div class="inline-code">char</div> se poate converti la <div class="inline-code">int</div> sau <div class="inline-code">unsigned int</div> (depinde daca prin <div class="inline-code">char</div> te referi la <div class="inline-code">signed char</div> sau <div class="inline-code">unsigned char</div>)</li>
+                                        <li><div class="inline-code">bool</div> se poate converti la <div class="inline-code">int</div>, <div class="inline-code">false</div> devine <div class="inline-code">0</div> iar <div class="inline-code">true</div> devine <div class="inline-code">1</div></li>
                                     </ul>
                                     <div class="text-decoration-underline">Floating-point promotion</div>
                                     <ul>
-                                        <li>Se refera doar la conversia de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>double</code></pre>.</li>
+                                        <li>Se refera doar la conversia de la <div class="inline-code">float</div> la <div class="inline-code">double</div>.</li>
                                     </ul>
                                 </li>
                                 <li class="mt-4">
@@ -232,33 +245,37 @@ g(a); // calls f(int*); exact match with array-to-pointer conversion</code></pre
                                     </div>
                                     <div class="text-decoration-underline">Integral conversion</div>
                                     <ul>
-                                        <li>aici intra conversii dintre 2 tipuri de date ce reprezinta nr. intregi dar <b>nu</b> e promotion, de exemplu din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>long</code></pre> sau din <pre class="inline"><code>unsigned short</code></pre> in <pre class="inline"><code>short</code></pre> </li>
+                                        <li>aici intra conversii dintre 2 tipuri de date ce reprezinta nr. intregi dar <b>nu</b> e promotion, de exemplu din <div class="inline-code">int</div> in <div class="inline-code">long</div> sau din <div class="inline-code">unsigned short</div> in <div class="inline-code">short</div> </li>
                                     </ul>
                                     <div class="text-decoration-underline">Floating-point conversion</div>
                                     <ul>
-                                        <li>aici intra conversii dintre 2 tipuri de date ce reprezinta nr. cu virgula dar <b>nu</b> e promotion, de exemplu din <pre class="inline"><code>double</code></pre> in <pre class="inline"><code>float</code></pre> sau din <pre class="inline"><code>float</code></pre> in <pre class="inline"><code>long double</code></pre>
+                                        <li>aici intra conversii dintre 2 tipuri de date ce reprezinta nr. cu virgula dar <b>nu</b> e promotion, de exemplu din <div class="inline-code">double</div> in <div class="inline-code">float</div> sau din <div class="inline-code">float</div> in <div class="inline-code">long double</div>
                                         <div>
-                                            <pre class="block"><code>void f(double);
-void f(long double);
-f(0.0f);</code></pre>
-                                            Se apeleaza prima functie pentru ca promotia (de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>double</code></pre>) este mai buna decat conversia (de la <pre class="inline"><code>float</code></pre> la  <pre class="inline"><code>long double</code></pre>)
+                                            <div class="block-code">
+                                                void f(double);
+                                                void f(long double);
+                                                f(0.0f);
+                                            </div>
+                                            Se apeleaza prima functie pentru ca promotia (de la <div class="inline-code">float</div> la <div class="inline-code">double</div>) este mai buna decat conversia (de la <div class="inline-code">float</div> la  <div class="inline-code">long double</div>)
                                         </div>
                                         </li>
                                     </ul>
                                     <div class="text-decoration-underline">Floating-integral conversion</div>
                                     <ul>
-                                        <li>aici intra conversii dintre un tip de date ce reprezinta nr. cu virgula si un tip de date care reprezinta nr. intregi de exemplu din <pre class="inline"><code>double</code></pre> in <pre class="inline"><code>int</code></pre> sau din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>float</code></pre>
+                                        <li>aici intra conversii dintre un tip de date ce reprezinta nr. cu virgula si un tip de date care reprezinta nr. intregi de exemplu din <div class="inline-code">double</div> in <div class="inline-code">int</div> sau din <div class="inline-code">int</div> in <div class="inline-code">float</div>
                                         <div>
-                                            <pre class="block"><code>void f(int);
-void f(long double);
-f(0.0f);</code></pre>
-                                            Eroare de compilare, apelul este ambiguu, avem 2 conversii (de la <pre class="inline"><code>float</code></pre> la <pre class="inline"><code>int</code></pre> si de la <pre class="inline"><code>float</code></pre> la  <pre class="inline"><code>long double</code></pre>  )
+                                            <div class="block-code">
+                                                void f(int);
+                                                void f(long double);
+                                                f(0.0f);
+                                            </div>
+                                            Eroare de compilare, apelul este ambiguu, avem 2 conversii (de la <div class="inline-code">float</div> la <div class="inline-code">int</div> si de la <div class="inline-code">float</div> la  <div class="inline-code">long double</div>  )
                                         </div>
                                         </li>
                                     </ul>
                                     <div class="text-decoration-underline">Bool conversion</div>
                                     <ul>
-                                        <li>de exemplu din <pre class="inline"><code>int</code></pre> in <pre class="inline"><code>bool</code></pre> sau din <pre class="inline"><code>float</code></pre> in <pre class="inline"><code>bool</code></pre>. (de ex. <pre class="inline"><code>bool x = 5; // true</code></pre> )
+                                        <li>de exemplu din <div class="inline-code">int</div> in <div class="inline-code">bool</div> sau din <div class="inline-code">float</div> in <div class="inline-code">bool</div>. (de ex. <div class="inline-code">bool x = 5; // true</div> )
                                         </li>
                                     </ul>
                                 </li>
@@ -279,12 +296,22 @@ f(0.0f);</code></pre>
                     </div>
                     </article>
         
-                    <article id="operator-overloading" class='mt-4'>
+                    <article id="operator-overloading" class='mt-5'>
                         <h3 class='my-2 ps-2 rounded'>Supraincarcare operatori</h3>
-                        <div class="article-content lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum maiores ipsa atque deserunt repellendus. Iure cumque cum pariatur id! Dolorem quasi beatae doloremque corrupti ex quae rerum nesciunt veniam laudantium exercitationem, vitae, praesentium veritatis magni eius ipsum molestiae illum expedita, corporis ullam ipsa dicta reprehenderit voluptatibus. Quod perspiciatis unde ea ex possimus commodi, laboriosam reiciendis similique animi saepe. Unde ex recusandae deserunt, quam totam neque corporis reiciendis doloribus beatae harum adipisci similique voluptate omnis consectetur cumque? Voluptate error sapiente esse sint obcaecati nulla consequuntur commodi? Dicta eveniet dolore dolorem quisquam, minus reiciendis modi expedita voluptates consequuntur excepturi debitis ut blanditiis similique consequatur quos neque minima repellendus vero! Deserunt pariatur soluta maxime ab facilis est, a vero culpa cum, sapiente iure adipisci. Dicta adipisci molestias assumenda distinctio aliquam cumque sapiente aspernatur nostrum in dignissimos consectetur sit sed est ipsam, corporis libero nesciunt nobis! Explicabo unde esse ipsam blanditiis fugiat, repudiandae reiciendis libero voluptates harum soluta. Asperiores voluptate amet culpa distinctio sint. Minima saepe perferendis doloribus maiores tenetur corrupti hic at rerum architecto sequi amet voluptas, sapiente nihil, id sunt quidem consequatur! Reiciendis dolorem, natus ipsam repellat quibusdam voluptas tempora eligendi nam repudiandae maxime asperiores voluptates aperiam quo aut ullam? A ea dicta obcaecati cumque consequuntur eum mollitia doloremque possimus facilis sequi fuga, placeat ab sapiente qui ducimus iure nam, id tempora reprehenderit ullam accusamus necessitatibus provident et! Maxime saepe fuga laudantium unde veritatis, voluptatem explicabo necessitatibus aliquid quo natus ea hic asperiores sit esse quam consectetur quidem. Illum fugiat fugit quaerat voluptate nemo exercitationem quis? Obcaecati labore illum necessitatibus natus assumenda, libero dolorum similique hic nobis, quibusdam quasi, sed quisquam magni tempore. Natus saepe quae velit hic, unde a ducimus modi, autem soluta dolorum quis ipsa temporibus alias in! Magnam quia distinctio maxime fugiat eum aperiam ipsam adipisci quasi, quo facere molestias ipsa sed quas aut nobis! Temporibus animi natus voluptatum, perspiciatis amet aspernatur alias illum perferendis quas repudiandae odit minus dolore accusamus vel pariatur dignissimos modi, quaerat quod! Dolorum harum mollitia repellat iure. Natus amet minus neque similique sint officia aut quod, eveniet ratione, animi, numquam unde dignissimos iusto. Beatae adipisci ab, similique omnis voluptatum sequi. Qui, molestiae! Facere nam dolorem, nisi facilis quam excepturi laborum placeat repellat, itaque neque aliquam totam sequi amet adipisci et sed impedit doloribus corrupti possimus deserunt ratione. Consequatur ipsum inventore laboriosam? Magnam, ea magni. Veniam quam aliquam doloribus inventore distinctio autem, consequatur obcaecati cumque sunt ipsam. Non, aut consectetur? Odit numquam voluptatibus deserunt voluptates cum provident id aliquid sequi. Obcaecati quisquam maxime esse, quasi quae iste voluptas? Optio nobis nam maxime corrupti quo est expedita sequi, amet ipsum non totam, numquam veniam! Neque iusto molestiae, quae aut rerum eveniet perspiciatis, voluptate quibusdam veniam aliquam labore quia praesentium possimus fuga quam sunt error repudiandae asperiores dolorem sed totam! Nam, obcaecati corrupti doloremque tempore natus minima sunt consequatur expedita magnam, odit excepturi quam ducimus, et atque beatae facere ipsum! Quidem quo, ab perferendis ratione distinctio animi, ipsam, suscipit fuga laudantium qui alias omnis ut libero debitis?</div>
+                        <div class="article-content lead">
+                            <ol class="">
+                                <li>Majoritatea operatorilor din C++ pot fi supraincarcati (ori ca functii membre intr-o clasa ori ca functii prieten, insa unii pot fi DOAR functii membre).</li>
+                                <li>Nu poti fi supraincarcati: <div class="inline-code">.  .*  ::  ?: sizeof</div> (da, <div class="inline-code">sizeof</div> e un operator, nu functie).</li>
+                                <li>Nu poti modifica precedenta operatorilor sau numarul de argumente pe care le primesc.</li>
+                                <li><b>Toti operatorii care pot fi supraincarcati NU pot avea parametrii default, exceptie face <div class="inline-code">()</div></b> (operatorul &apos;apel de functie&apos;).</li>
+                                <li><b>Toti operatorii supraincarcati intr-o clasa de baza sunt mosteniti de clasa derivata, <span class='text-danger'>cu exceptia</span> <div class="inline-code">=</div></b> (operatorul de atribuire).</li>
+                                <li><b>Operatorii <div class="inline-code">=</div> <div class="inline-code">()</div> <div class="inline-code">[]</div> <div class="inline-code">-></div> trebuie declarati ca functii membre ale unei clase (nu merge sa fie functii prieten).</b> </li>
+                            </ol>
+                            <div>Mai multe informatii despre supraincarcarea operatorilor <a href="http://isocpp.org/wiki/faq/operator-overloading">sunt aici</a>.</div>
+                        </div>
                     </article>
         
-                    <article id="function-overriding" class='mt-4'>
+                    <article id="function-overriding" class='mt-5'>
                         <h3 class='my-2 ps-2 rounded'>Supradefinire functii</h3>
                         <div class="article-content lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, eius provident quos molestiae repellendus eos quibusdam deserunt! Dicta temporibus mollitia voluptate eveniet saepe repellendus debitis praesentium officia vel nam? Commodi assumenda, culpa animi suscipit eveniet labore et, ex error eos voluptatibus nemo cupiditate nihil quasi voluptatum quisquam id quidem at mollitia amet voluptates unde facere provident. Maxime quis voluptatibus, excepturi obcaecati perferendis voluptate. Obcaecati, iste commodi. Quasi ducimus nostrum quae veniam assumenda optio excepturi libero. Odit laborum deserunt voluptates impedit aperiam soluta ut fugiat atque nobis asperiores laboriosam natus culpa aliquam ipsa consequuntur possimus, rerum praesentium iste voluptatum non modi repudiandae aut quia quod. Voluptatem ipsa quo provident exercitationem tempora consectetur veritatis. Ea unde, adipisci deleniti, quo quod laudantium, in incidunt illum eum labore explicabo vero. Non distinctio ullam, repellat impedit cupiditate error aperiam libero quibusdam saepe nostrum ad ea dicta, praesentium sint in iste aspernatur fugiat veniam repudiandae id! Deserunt at nemo deleniti minima minus commodi est asperiores nam odio labore dolorem iusto vel pariatur, modi aut quis amet veritatis rem culpa molestiae, illo repellendus? Quod rerum vero dicta ab voluptatem obcaecati exercitationem. Ut ipsam voluptatem animi. Pariatur sunt quibusdam repudiandae culpa aliquid, quos, asperiores hic minima ipsam optio esse eum nesciunt voluptatum placeat corrupti nisi quo commodi quod ab nam illo minus facilis assumenda? Perspiciatis vero voluptates voluptas rerum optio similique, illum odit suscipit quo eaque cum quas possimus officiis, impedit, eos consectetur. Voluptates ipsam ab eaque a. In quis, alias eligendi minima dolorum recusandae numquam cumque accusantium, labore perferendis sit, incidunt dolores inventore iure modi soluta ab! Ab velit odit modi deserunt consequatur, voluptatum eum quaerat cum tempore, unde delectus in. Vero facilis officia ipsum aliquam rem similique, accusantium quo? Reprehenderit incidunt doloremque aliquam animi beatae illo voluptates, odio officiis corporis eos expedita quia quis natus debitis. Dolor nulla inventore iusto itaque nesciunt ab architecto nisi rerum sapiente exercitationem assumenda, commodi repudiandae, voluptatem aut rem molestias expedita! Laborum illum quibusdam architecto dolores facilis fugiat adipisci dicta? Aut deleniti a minus officia ad eum optio unde voluptatum dolore! Rerum sed quibusdam maxime minima praesentium nisi magnam nam, eos culpa fugit, perferendis quasi voluptates expedita illum deleniti error animi unde. Debitis labore aliquam rerum repellat voluptates accusantium hic aliquid suscipit cumque, at excepturi sequi consequatur ex nesciunt. Harum non cupiditate numquam quas nulla, nisi earum cumque delectus aspernatur soluta quos perspiciatis tempora qui eveniet molestiae, odio asperiores error eius eum doloribus nostrum quaerat? Iure, non ipsa. Id iusto cumque architecto fuga consequatur doloribus labore dolor beatae repellat ipsum quae eaque at vitae, veniam, enim pariatur quibusdam aliquid vero incidunt. Ducimus soluta non quidem odio quo. Iure accusantium vel assumenda ratione cum modi provident voluptatum, fuga labore debitis vero eveniet consequatur minus voluptas totam dicta explicabo dolorem dignissimos iste maxime laudantium distinctio similique minima rerum! Perferendis, amet quaerat doloremque quis omnis necessitatibus rem, quod excepturi eveniet ex inventore voluptatibus delectus aspernatur sequi fuga vel doloribus, officia corrupti ducimus iure. Impedit quia omnis itaque doloremque temporibus veritatis, quae est consequuntur aspernatur!</div>
                     </article>
@@ -295,77 +322,83 @@ f(0.0f);</code></pre>
             <section id="endl" class="bg-altlight pt-5 mb-5">
                 <div class="container">
                     <h1 class="display-2">Ce face <code>endl</code>?</h1>
-                    <article id="s3-a1" class='mt-4'>
+                    <article id="s3-a1" class='mt-5'>
                         <div class="article-content lead">
                             <div>
-                            Sa scrii intr-un fisier dureaza, pentru ca acel fisier nu este stocat in RAM. Dureaza pana se creeaza o conexiune la harddisk sau ssd ca sa accesezi ce e pe el, asa ca in loc sa scrii cate un byte (caracter) pe rand intr-un fisier, mai bine pui mai multi intr-un loc temporar (buffer) si cand se umple, pui totul in fisier deodata. Asta se intampla si cand scrii ceva intr-un fisier (sau cand citesti) folosind <pre class="inline"><code>fstream</code></pre>.
-                        <pre class="block"><code>#include &lt;iostream&gt;
-#include &lt;fstream&gt;
+                            Sa scrii intr-un fisier dureaza, pentru ca acel fisier nu este stocat in RAM. Dureaza pana se creeaza o conexiune la harddisk sau ssd ca sa accesezi ce e pe el, asa ca in loc sa scrii cate un byte (caracter) pe rand intr-un fisier, mai bine pui mai multi intr-un loc temporar (buffer) si cand se umple, pui totul in fisier deodata. Asta se intampla si cand scrii ceva intr-un fisier (sau cand citesti) folosind <div class="inline-code">fstream</div>.
+                        <div class="block-code">
+                            #include &lt;iostream&gt;
+                            #include &lt;fstream&gt;
 
-using namespace std;
+                            using namespace std;
 
-int main()
-{
-    ofstream g(&quot;out.txt&quot;);
-    
-    g &lt;&lt; &quot;Hello world!&quot;;
+                            int main()
+                            {
+                                ofstream g(&quot;out.txt&quot;);
+                                
+                                g &lt;&lt; &quot;Hello world!&quot;;
 
-    return 0;
-}</code></pre>
-                        Aici <pre class="inline"><code>&quot;Hello world!&quot;</code></pre> se pune intr-un buffer, un fel de array cu cateva mii de caractere, si cand se umple, continutul lui e pus in fisier (tot deodata). Asta se intampla si cand se apeleaza destructorul pentru obiectul <var>g</var> (pentru ca <var>g</var> este un obiect de tip <pre class="inline"><code>ofstream</code></pre>). Acest lucru se face pentru a se goli bufferul in caz ca s-a scris ceva si nu s-a umplut bufferul. In cazul asta bufferul nu e plin, dar la sfarsitul functiei <var>main</var>, se distruge obiectul <var>g</var> si se scrie in fisier ce mai avea in buffer. Acum daca am avea o eroare dupa <pre class="inline"><code>g &lt;&lt; &quot;Hello world!&quot;;</code></pre>, programul s-ar termina brusc si in fisier nu am mai avea nimic, pentru ca nici bufferul nu s-a umplut, nici destructorul nu a fost apelat.
-                        <pre class="block"><code>#include &lt;iostream&gt;
-#include &lt;fstream&gt;
+                                return 0;
+                            }
+                        </div>
+                        Aici <div class="inline-code">&quot;Hello world!&quot;</div> se pune intr-un buffer, un fel de array cu cateva mii de caractere, si cand se umple, continutul lui e pus in fisier (tot deodata). Asta se intampla si cand se apeleaza destructorul pentru obiectul <var>g</var> (pentru ca <var>g</var> este un obiect de tip <div class="inline-code">ofstream</div>). Acest lucru se face pentru a se goli bufferul in caz ca s-a scris ceva si nu s-a umplut bufferul. In cazul asta bufferul nu e plin, dar la sfarsitul functiei <var>main</var>, se distruge obiectul <var>g</var> si se scrie in fisier ce mai avea in buffer. Acum daca am avea o eroare dupa <div class="inline-code">g &lt;&lt; &quot;Hello world!&quot;;</div>, programul s-ar termina brusc si in fisier nu am mai avea nimic, pentru ca nici bufferul nu s-a umplut, nici destructorul nu a fost apelat.
+                        <div class="block-code">
+                            #include &lt;iostream&gt;
+                            #include &lt;fstream&gt;
 
-using namespace std;
+                            using namespace std;
 
-int main()
-{
-    ofstream g(&quot;out.txt&quot;);
-    
-    g &lt;&lt; &quot;Hello world!&quot;;
-    int x = 0;
-    cout &lt;&lt; 1 / x; // eroare aici
-    return 0;
-}</code></pre>  
-                        Acum o sa avem o eroare la linia 12, ca impartim la 0. Eroarea asta nu e prinsa si programul se opreste. Fisierul ramane gol (chiar daca avea ceva in el la inceput, cand creezi un obiect de tip <pre class="inline"><code>ofstream</code></pre>, daca nu mai dai alte argumente constructorului, se sterge continutul mai intai). Ok dar daca avem un fisier special unde scriem niste date din program sa tinem evidenta de ceva. Daca avem eroare si nu este prinsa, fisierul nu o sa fie complet, poate ne-ar fi ajutat continutul fisierului sa gasim eroarea. 
+                            int main()
+                            {
+                                ofstream g(&quot;out.txt&quot;);
+                                
+                                g &lt;&lt; &quot;Hello world!&quot;;
+                                int x = 0;
+                                cout &lt;&lt; 1 / x; // eroare aici
+                                return 0;
+                            }
+                        </div>  
+                        Acum o sa avem o eroare la linia 12, ca impartim la 0. Eroarea asta nu e prinsa si programul se opreste. Fisierul ramane gol (chiar daca avea ceva in el la inceput, cand creezi un obiect de tip <div class="inline-code">ofstream</div>, daca nu mai dai alte argumente constructorului, se sterge continutul mai intai). Ok dar daca avem un fisier special unde scriem niste date din program sa tinem evidenta de ceva. Daca avem eroare si nu este prinsa, fisierul nu o sa fie complet, poate ne-ar fi ajutat continutul fisierului sa gasim eroarea. 
                         </div>  
                             <div>
-                                Pentru asta exista <pre class="inline"><code>std::flush</code></pre>, care este un manipulator pentru operatii de output (definit in &lt;ostream&gt;), ceva gen <pre class="inline"><code>std::setw()</code></pre>. Daca scrii <pre class="inline"><code>g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; flush;</code></pre> fortezi bufferul sa fie scris in fisier, indiferent daca e plin sau nu. Deci este scris <pre class="inline"><code>&quot;Hello world!&quot;</code></pre> in fisier si dupa avem eroarea, deci la final avem in fisier string-ul. Acum, sa fortezi scrierea bufferului in fisier daca nu e plin nu este deloc eficient, tocmai de asta exista bufferul, ca sa scrii cat mai mult deodata in fisier deci trebuie folosit doar cand ai nevoie.
+                                Pentru asta exista <div class="inline-code">std::flush</div>, care este un manipulator pentru operatii de output (definit in &lt;ostream&gt;), ceva gen <div class="inline-code">std::setw()</div>. Daca scrii <div class="inline-code">g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; flush;</div> fortezi bufferul sa fie scris in fisier, indiferent daca e plin sau nu. Deci este scris <div class="inline-code">&quot;Hello world!&quot;</div> in fisier si dupa avem eroarea, deci la final avem in fisier string-ul. Acum, sa fortezi scrierea bufferului in fisier daca nu e plin nu este deloc eficient, tocmai de asta exista bufferul, ca sa scrii cat mai mult deodata in fisier deci trebuie folosit doar cand ai nevoie.
                             </div>
                             <div>
-                                Ce treaba are asta cu <pre class="inline"><code>endl</code></pre>? Poate sti ca <pre class="inline"><code>g &lt;&lt; endl</code></pre> trece la urmatoarea linie, e ca si cum ai scrie <pre class="inline"><code>g &lt;&lt; &quot;\n&quot;;</code></pre> <b>dar pe langa asta face si un flush!</b>, deci e echivalent cu <pre class="inline"><code>g &lt;&lt; &#039;\n&#039; &lt;&lt; flush;</code></pre> (apropo, <pre class="inline"><code>cout &lt;&lt; &quot;\n&quot;;</code></pre> e la fel cu <pre class="inline"><code>cout &lt;&lt; &#039;\n&#039;;</code></pre> doar ca <pre class="inline"><code>&quot;\n&quot;</code></pre> e un sir de caractere si <pre class="inline"><code>&#039;\n&#039;</code></pre> e un caracter, deci mai bine folosesti un caracter)
+                                Ce treaba are asta cu <div class="inline-code">endl</div>? Poate sti ca <div class="inline-code">g &lt;&lt; endl</div> trece la urmatoarea linie, e ca si cum ai scrie <div class="inline-code">g &lt;&lt; &quot;\n&quot;;</div> <b>dar pe langa asta face si un flush!</b>, deci e echivalent cu <div class="inline-code">g &lt;&lt; &#039;\n&#039; &lt;&lt; flush;</div> (apropo, <div class="inline-code">cout &lt;&lt; &quot;\n&quot;;</div> e la fel cu <div class="inline-code">cout &lt;&lt; &#039;\n&#039;;</div> doar ca <div class="inline-code">&quot;\n&quot;</div> e un sir de caractere si <div class="inline-code">&#039;\n&#039;</div> e un caracter, deci mai bine folosesti un caracter)
                             </div>
                             <div>
-                                Daca scrii multe linii in fisier si folosesti la fiecare <pre class="inline"><code>endl</code></pre>, o sa ruleze mult mai incet decat daca nu ai folosi <pre class="inline"><code>endl</code></pre> si ai pune <pre class="inline"><code>&#039;\n&#039;</code></pre> pentru linie noua.
-                                <pre class="block"><code>#include &lt;iostream&gt;
-#include &lt;fstream&gt;
-using namespace std;
+                                Daca scrii multe linii in fisier si folosesti la fiecare <div class="inline-code">endl</div>, o sa ruleze mult mai incet decat daca nu ai folosi <div class="inline-code">endl</div> si ai pune <div class="inline-code">&#039;\n&#039;</div> pentru linie noua.
+                                <div class="block-code">
+                                    #include &lt;iostream&gt;
+                                    #include &lt;fstream&gt;
+                                    using namespace std;
 
-void printWithEndl() {
-    ofstream g(&quot;out.out&quot;);
-    for (int i = 0; i &lt; 100000; ++i) {
-        g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; endl;
-    }
-}
+                                    void printWithEndl() {
+                                        ofstream g(&quot;out.out&quot;);
+                                        for (int i = 0; i &lt; 100000; ++i) {
+                                            g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; endl;
+                                        }
+                                    }
 
-void printNoEndl() {
-    ofstream g(&quot;out.out&quot;);
-    for (int i = 0; i &lt; 100000; ++i) {
-        g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; '\n';
-    }
-}
+                                    void printNoEndl() {
+                                        ofstream g(&quot;out.out&quot;);
+                                        for (int i = 0; i &lt; 100000; ++i) {
+                                            g &lt;&lt; &quot;Hello world!&quot; &lt;&lt; '\n';
+                                        }
+                                    }
 
-int main()
-{
-    printWithEndl();   // 300 ms
+                                    int main()
+                                    {
+                                        printWithEndl();   // 300 ms
 
-    printNoEndl();     // 18 ms
-    return 0;
-}</code></pre>              
-                            Functiile astea de mai sus printeaza 100000 de linii intr-un fisier. Functia care foloseste <pre class="inline"><code>endl</code></pre> a durat 300ms si cea care nu foloseste a durat 18ms (am facut un test rapid pe calculatorul meu). Diferenta este mai mare de 10 ori (daca marim numarul de linii la 1 milion, diferenta e si mai drastica, 3000ms vs 130ms )
+                                        printNoEndl();     // 18 ms
+                                        return 0;
+                                    }
+                                </div>              
+                            Functiile astea de mai sus printeaza 100000 de linii intr-un fisier. Functia care foloseste <div class="inline-code">endl</div> a durat 300ms si cea care nu foloseste a durat 18ms (am facut un test rapid pe calculatorul meu). Diferenta este mai mare de 10 ori (daca marim numarul de linii la 1 milion, diferenta e si mai drastica, 3000ms vs 130ms )
                             </div>
                             <div>
-                                Deci, daca vrei ca programul tau sa ruleze mai rapid, nu mai folosi <pre class="inline"><code>endl</code></pre>.
+                                Deci, daca vrei ca programul tau sa ruleze mai rapid, nu mai folosi <div class="inline-code">endl</div>.
                             </div>
                         </div>
                     </article>
