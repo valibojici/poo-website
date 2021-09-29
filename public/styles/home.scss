@@ -89,3 +89,9 @@ section{
         inset 0px 0px 10px  hsla(0, 0%, 100%, 0.5)
     }
 }
+
+@media screen and (max-width: 768px) {
+    section{
+        min-height: 100vh;
+    }
+}
