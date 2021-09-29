@@ -76,3 +76,17 @@ function formatAndHighlight(){
 
     $('pre code').get().forEach(elem => hljs.highlightElement(elem));
 }
+
+$('div.inline-code').replaceWith( function(){
+    return $('<pre/>').addClass('inline').append($('<code/>').html($(this).html()));
+});
+
+$('div.block-code').replaceWith( function(){
+    console.log($(this).html());
+    let code = $(this).html().replace(/(^\s*\r?\n)/g, "").replace(/(\r?\n\s+$)/g, "");
+    console.log(code);
+    let spacePos = code.search(/\S/);
+    console.log(code.split('\n'), spacePos);
+    code = code.split('\n').map((line) => line.slice(spacePos)).join('\n');
+    return $('<pre/>').addClass('block').append($('<code/>').html(code));
+});
