@@ -1,0 +1,67 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+protected:
+    int x;
+public:
+    A(int _x = 1) : x(_x) {}
+    virtual int f() const { return x + 1; }
+};
+
+class B : public A {
+    int y;
+public:
+    B(int _y = 2) : y(_y) {}
+    int f() const { return x + y; }
+};
+
+class C : public B {
+public:
+    C() : B(3) {}
+    int f() const { return x + 100; }
+};
+
+int main()
+{
+    B* p = new C[100];
+    cout << p->f();
+
+    delete[] p;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+101
+</output>
+<div>
+Metodele care sunt <inline>virtual</inline> in clasa de baza si sunt supradefinite in clasa derivata sunt <inline>virtual</inline> <a href="https://stackoverflow.com/a/58042469">si in clasa derivata</a>, chiar daca nu scrii cuvantul <inline>virtual</inline> (intra si destructorii aici)
+</div>
+<div>
+La <inline>B* p = new C[100];</inline> se creeaza 100 obiecte de tip <inline>C</inline>. Constructorii se executa in ordinea <inline>A</inline>, <inline>B</inline>, <inline>C</inline>. In cazul asta constructorul default din <inline>C</inline> il apeleaza pe cel din <inline>B</inline> cu valorea 3. Cel din <inline>B</inline> nu il apeleaza explicit pe cel din <inline>A</inline> (il apeleaza compilatorul automat) deci constructorul din <inline>A</inline> ramane cu parametrul default 1 (deci <var>x</var>-ul e 1 pentru toate obiectele). Continuam cu constructorul din <inline>B</inline> (nu uita ca a fost apelat mai sus cu valoarea 3). El seteaza <var>y</var>-ul la <inline>3</inline>. Continuam cu constructorul din <inline>C</inline> care nu mai face nimic.
+</div>
+<div>
+Deci toate cele 100 de obiecte au <var>x</var>-ul 1 si <var>y</var>-ul 3. Pointerul <var>p</var> arata spre primul element din array-ul cu 100 de obiecte.
+</div>
+<div>
+Metoda <inline>f</inline> din clasa <inline>B</inline> este virtuala (chiar daca nu apare cuvantul <inline>virtual</inline>, pentru ca supradefineste o metoda care e virtuala).
+</div>
+<div>
+La <inline>cout << p->f();</inline>, pentru ca pointerul <var>p</var> este de tip <inline>B*</inline>, ne uitam in clasa <inline>B</inline> la functia <inline>f</inline> care e virtuala. Pointerul arata spre ceva de tip <inline>C</inline> deci vedem daca acolo e supradefinita metoda <inline>f</inline>. Este supradefinita si intoarce <inline>x + 100</inline> (avem acces la <var>x</var> pentru ca e <inline>protected</inline>) adica 101.
+</div>
+<div>
+La <inline>delete[] p;</inline> se vor apela pentru fiecare obiect (din 100) destructorii din <inline>B</inline> si <inline>A</inline> (in ordinea asta, invers fata de constructori), nu din clasa <inline>C</inline> deoarece destructorii din <inline>B</inline> sau din <inline>A</inline> nu sunt <inline>virtual</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, inheritance, virtual, upcast, dynamic memory allocation
+#END_TAGS

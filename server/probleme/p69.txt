@@ -1,0 +1,70 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+template<class X, class Y>
+X f(X x, Y y)
+{
+    return x + y;
+}
+int* f(int* x, int y)
+{
+    return x - y;
+}
+int main()
+{
+    int* a = new int(200), * b = a;
+ 
+    cout << *f(a, b);
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 7: <inline>return x + y;</inline>
+</div>
+<error>
+'+': cannot add two pointers
+</error>
+<div>
+La <inline>int* a = new int(200), *b = a;</inline> se aloca spatiu pentru un <inline>int</inline> cu valoarea 200 si doi pointeri <var>a</var> si <var>b</var> care arata spre el.
+</div>
+<div>
+Se apeleaza functia <inline>f</inline> cu <var>a</var> si <var>b</var> care sunt de tip <inline>int*</inline>. Nu se potriveste functia non-template <inline>int* f(int* x, int y)</inline> pentru ca primeste un <inline>int*</inline> si un <inline>int</inline> ca parametrii asa ca ramanem cu functia template unde <inline>X</inline> si <inline>Y</inline> sunt ambele <inline>int*</inline>. Deci avem functia:
+</div>
+<block>
+int* f(int* x, int* y)
+{
+    return x + y;
+}
+</block>
+<div>
+Aici avem eroarea pentru ca nu se pot aduna 2 pointeri.
+</div>
+<div>
+Ca programul sa fie corect as modifica linia 15 in <inline>int* a = new int(200), b = 0;</inline>. Acum avem pointerul <var>a</var> si variabila (care nu e pointer) <var>b</var> cu valorea 0. Cand se apeleaza functia <inline>f</inline> aici <inline>cout << *f(a, b);</inline>, <var>a</var> este de tip <inline>int*</inline> si <var>b</var> e de tip <inline>int</inline>. Se potriveste exact cu functia non-template deci ea e aleasa.
+</div>
+<block>
+int* f(int* x, int y)
+{
+    return x - y;
+    // aici intervine aritmetica cu pointeri, x+y e un pointer
+    // care o sa arate cu y*4 bytes spre stanga (sau spre dreapta daca y < 0)
+    // pentru ca 4 bytes e dimensiunea unui int si p este de tip int*
+    // deci x-y o sa arate spre o zona de memorie nefolosita (sau folosita, eroare la runtime)
+}
+</block>
+<div>
+De asta am ales <var>b</var> sa fie 0, pentru ca functia practic nu modifica la ce adresa arata pointerul <inline>p</inline> (o sa returneze acelasi pointer). Deci <inline>f(a,b)</inline> returneaza pointerul <var>a</var> si cu <inline>*</inline> se dereferentiaza ca sa accesam obiectul/valorea care se afla in memorie la adresa la care arata pointerul (adica 200).
+</div>
+<div>
+Daca <var>b</var> nu ar fi 0, atunci functia <inline>f</inline> ar returna un pointer care arata spre o zona de memorie care e posibil sa nu ne apartina si putem avea eroare la runtime (e undefined behaviour).
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, pointers, template, function overloading
+#END_TAGS

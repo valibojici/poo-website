@@ -1,0 +1,52 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class Cerc {
+    double raza;
+public:
+    Cerc(double r = 5.0) { raza = r; }
+    void afis() const { cout << "Raza este " << raza << endl; }
+    void schimba(double r) { raza = r; }
+};
+
+Cerc construieste(double x) { return 2 * x; }
+
+void verifica(Cerc c)
+{
+    c.afis();
+    c.schimba(2.0);
+    c.afis();
+}
+
+int main()
+{
+    verifica(construieste(1.5));
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+Raza este 3
+Raza este 2
+</output>
+<div>
+Functia <inline>construieste</inline> primeste un <inline>double</inline> ca parametru si intoarce un obiect de tip <inline>Cerc</inline>. Pentru ca aici intoarce de fapt <inline>2 * x</inline>, unde <var>x</var> este parametrul, se apeleaza constructorul din clasa <inline>Cerc</inline> si se va creea un obiect temporar care se va returna.
+</div>
+<div>
+La <inline>verifica(construieste(1.5));</inline> se apeleaza functia <inline>verifica</inline> cu obiectul temporar returnat de <inline>construieste</inline> (care ara <var>raza</var> egal cu 3). Parametrul este transmis prin valoare deci se copiaza. (probabil nu se va apela constructorul de copiere pentru ca se va face o optimizare, in loc sa se creeze obiectul temporar si dupa sa fie copiat in <var>c</var>, se va construi obiectul direct in <var>c</var>) Chestia asta se numeste <a href="https://www.fluentcpp.com/2016/11/28/return-value-optimizations/">return value optimizations</a>.
+</div>
+<div>
+In functia <inline>verifica</inline> este apelata metoda <inline>afis</inline> (care e <inline>const</inline> deci nu are voie sa modifice obiectul). Dupa metoda <inline>schimba</inline> schimba <var>raza</var> in <inline>2.0</inline>. La final se mai apeleaza inca o data metoda <inline>afis</inline>.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, constructor
+#END_TAGS

@@ -1,0 +1,63 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class B {
+    int i;
+
+public:
+    B() { i = 1; }
+    virtual int get_i() { return i; }
+};
+class D : public B {
+    int j;
+
+public:
+    D() { j = 2; }
+    int get_i() { return B::get_i() + j; }
+};
+int main()
+{
+    const int i = cin.get();
+    if (i % 3) {
+        D o;
+    }
+    else {
+        B o;
+    }
+    cout << o.get_i();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 27: <inline>cout << o.get_i();</inline>
+</div>
+<error>
+identifier "o" is undefined
+</error>
+<div>
+Eroarea spune ca practic nu exista obiectul <var>o</var> in main. Este adevarat ca in block-urile de <inline>if</inline> si <inline>else</inline> se creeaza niste obiecte cu numele <var>o</var> dar sunt accesibile doar in interiorul block-ului, nu in exterior (se creeaza local iar cand se iese din block se apeleaza destructorii)
+</div>
+<div>
+Ca programul sa fie corect trebuie stearsa linia 27: <inline>cout << o.get_i()</inline>.
+</div>
+<div>
+<inline>cin.get()</inline> citeste un singur caracter si il intoarce (codul ASCII). Pentru ca <var>i</var> este <inline>int</inline> va retine codul ASCII al caracterului.
+</div>
+<div>
+Metoda <inline>get_i</inline> din clasa <inline>B</inline> este <inline>virtual</inline>, asta inseamna ca poate fi supradefinita in clasa derivata si putem folosi varianta din clasa derivata cu un pointer/referinta la clasa de baza (upcast). Daca in clasa <inline>D</inline> in metoda <inline>get_i</inline> supradefinita (sau in afara clasei) vrei sa folosesti metoda din clasa de baza, trebuie sa o apelezi explicit folosind numele clasei si operatorul de scop <inline>::</inline> ( adica <inline>B::get_i()</inline> )
+</div>
+<block>
+B* p = new D; 	// obiect de tip D, cu i == 1 si j == 2
+p->get_i(); 	// metoda din D, intoarce 1 + 2 == 3
+p->B::get_i();  // metoda din B, intoarce 1
+</block>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, inheritance, virtual
+#END_TAGS

@@ -1,0 +1,57 @@
+#BEGIN_PROBLEM
+#include <iostream>
+#include <typeinfo>
+#include <cstring>
+using namespace std;
+
+class A {
+    const int x;
+public:
+
+    A(int y = 10) : x(y) {}
+    int getX() const { return x; }
+};
+
+class B : public A {
+    int y;
+public:
+    B() { y = 20; }
+    int getY() const { return y; }
+};
+
+int main()
+{
+    A* p = new B;
+    cout << p->getX();
+    if (strcmp( typeid((A*)p).name(), "class B * __ptr64") == 0)
+        cout << ((B*)p)->getY();
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+10
+</output>
+<div>
+La <inline>A* p = new B;</inline> se executa constructorii in ordinea <inline>A</inline>, <inline>B</inline>. In lista de initializare a constructorului din <inline>B</inline> nu este apelat constructorul din <inline>A</inline> cu o valoare, deci se apeleaza (automat) ca parametrul implicit 10. Se seteaza <var>x</var> la 10 (<var>x</var> e <inline>const int</inline> deci trebuie initializat in lista de initializare a constructorului, nu merge facut asta in corpul constructorului), dupa se continua cu constructorul din <inline>B</inline>, care seteaza <var>y</var> la 20.
+</div>
+<div>
+La <inline>cout << p->getX();</inline> se apeleaza functia <inline>getX()</inline> din <inline>A</inline> (care e <inline>const</inline> deci nu poate modifica starea obiectului, gen variabile sau sa apeleze functii neconst, dar oricum nu face asta) si se afiseaza <inline>10</inline>.
+</div>
+<div>
+<var>p</var> este de tip <inline>A*</inline> deja deci nu are sens vreun cast la <inline>A*</inline>, deci <inline>typeid((A*)p).name()</inline> e la fel ca <inline>typeid(p).name();</inline>. <inline>typeid</inline> returneaza un obiect de tip <inline>type_info</inline> ce reprezinta informatii despre tipul de date, are si o metoda <inline>name()</inline> care returneaza numele tipului de date dar depinde de compilator numele exact. Tipul lui <var>p</var> este <inline>A*</inline> (ne intereseaza pointerul, nu obiectul la care arata) deci in numele returnat de <inline>typeid(p).name()</inline> nu are de ce sa apara <inline>"B*"</inline>. (pe visual studio, typeid(p).name() intoarce <inline>"class A * __ptr64"</inline>)
+</div>
+<div>
+Functia <inline>strcmp</inline> primeste ca parametrii 2 siruri de caractere si compara pe rand fiecare caracter. Daca returneaza <inline>0</inline> inseamna ca sirurile sunt la fel. Daca returneaza ceva mai mic ca <inline>0</inline> inseamna ca primul caracter unde nu se potrivesc sirurile este mai &quot;mic&quot; in primul sir decat in al doilea (adica primul sir e alfabetic inainte de al doilea). Daca returneaza ceva mai mare ca <inline>0</inline> e invers.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, typeinfo, RTTI, inheritance, access modifiers
+#END_TAGS

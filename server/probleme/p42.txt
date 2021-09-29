@@ -43,7 +43,7 @@ Clasa <inline>B</inline> mosteneste <b>privat</b> clasa <inline>A</inline>, pent
 Ca sa fie corect, trebuie sa mostenesti public, deci linia 13 sa devina <inline>class B : public A {</inline>.
 </div>
 <div>
-Dupa modificari, la <inline>A* p = new B;</inline> se apeleaza constructorii in ordinea <inline>A</inline>, <inline>B</inline>. In lista de initializare a constructorului din <inline>B</inline> nu este apelat constructorul din <inline>A</inline> cu o valoare, deci se apeleaza ca parametrul implicit 10. Se seteaza <var>x</var> la 10 (<var>x</var> e <inline>const int</inline> deci trebuie initializat in lista de initializare a constructorului, nu merge facut asta in corpul constructorului), dupa se continua cu constructorul din <inline>B</inline>, care seteaza <var>y</var> la 20.
+Dupa modificari, la <inline>A* p = new B;</inline> se executa constructorii in ordinea <inline>A</inline>, <inline>B</inline>. In lista de initializare a constructorului din <inline>B</inline> nu este apelat constructorul din <inline>A</inline> cu o valoare, deci se apeleaza ca parametrul implicit 10. Se seteaza <var>x</var> la 10 (<var>x</var> e <inline>const int</inline> deci trebuie initializat in lista de initializare a constructorului, nu merge facut asta in corpul constructorului), dupa se continua cu constructorul din <inline>B</inline>, care seteaza <var>y</var> la 20.
 </div>
 <div>
 La <inline>cout << p->getX();</inline> se apeleaza functia <inline>getX()</inline> din <inline>A</inline> (care e <inline>const</inline> deci nu poate modifica starea obiectului, gen variabile sau sa apeleze functii neconst, dar oricum nu face asta) si se afiseaza <inline>10</inline>.
