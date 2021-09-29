@@ -11,10 +11,10 @@ function changeButtonsSize(media) {
         $('#solution').removeClass('lead');
 
         addRemoveClass('.next-btn', 'btn-success', 'btn-outline-success');
-        addRemoveClass('.prev-btn', 'btn-warning', 'btn-outline-warning');
+        addRemoveClass('.prev-btn', 'btn-danger', 'btn-outline-danger');
         addRemoveClass('#copy-btn', 'btn-altlight', 'btn-outline-altlight');
         addRemoveClass('#correct-btn', 'btn-success', 'btn-outline-success');
-        addRemoveClass('#incorrect-btn', 'btn-warning', 'btn-outline-warning');
+        addRemoveClass('#incorrect-btn', 'btn-danger', 'btn-outline-danger');
 
 
     } else {
@@ -23,10 +23,10 @@ function changeButtonsSize(media) {
         $('#solution').addClass('lead');
 
         addRemoveClass('.next-btn', 'btn-outline-success', 'btn-success');
-        addRemoveClass('.prev-btn', 'btn-outline-warning', 'btn-warning');
+        addRemoveClass('.prev-btn', 'btn-outline-danger', 'btn-danger');
         addRemoveClass('#copy-btn', 'btn-outline-altlight', 'btn-altlight');
         addRemoveClass('#correct-btn', 'btn-outline-success', 'btn-success');
-        addRemoveClass('#incorrect-btn', 'btn-outline-warning', 'btn-warning');
+        addRemoveClass('#incorrect-btn', 'btn-outline-danger', 'btn-danger');
     }
 }
 
