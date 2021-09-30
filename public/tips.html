@@ -311,17 +311,266 @@
                                 <li>Majoritatea operatorilor din C++ pot fi supraincarcati (ori ca functii membre intr-o clasa ori ca functii prieten, insa unii pot fi DOAR functii membre).</li>
                                 <li>Nu poti fi supraincarcati: <div class="inline-code">.  .*  ::  ?: sizeof</div> (da, <div class="inline-code">sizeof</div> e un operator, nu functie).</li>
                                 <li>Nu poti modifica precedenta operatorilor sau numarul de argumente pe care le primesc.</li>
-                                <li><b>Toti operatorii care pot fi supraincarcati NU pot avea parametrii default, exceptie face <div class="inline-code">()</div></b> (operatorul &apos;apel de functie&apos;).</li>
-                                <li><b>Toti operatorii supraincarcati intr-o clasa de baza sunt mosteniti de clasa derivata, <span class='text-danger'>cu exceptia</span> <div class="inline-code">=</div></b> (operatorul de atribuire).</li>
-                                <li><b>Operatorii <div class="inline-code">=</div> <div class="inline-code">()</div> <div class="inline-code">[]</div> <div class="inline-code">-></div> trebuie declarati ca functii membre ale unei clase (nu merge sa fie functii prieten).</b> </li>
+                                <li><b>Toti operatorii care pot fi supraincarcati NU pot avea parametrii default, exceptie face</b><div class="inline-code">()</div> (operatorul &apos;apel de functie&apos;).</li>
+                                <li><b>Toti operatorii supraincarcati intr-o clasa de baza sunt mosteniti de clasa derivata,<span class='text-danger'>cu exceptia</span></b>  <div class="inline-code">=</div> (operatorul de atribuire).</li>
+                                <li><b>Operatorii</b> <div class="inline-code">=</div> <div class="inline-code">()</div> <div class="inline-code">[]</div> <div class="inline-code">-></div><b> trebuie declarati ca functii membre ale unei clase (nu merge sa fie functii prieten).</b> </li>
                             </ol>
                             <div>Mai multe informatii despre supraincarcarea operatorilor <a href="http://isocpp.org/wiki/faq/operator-overloading">sunt aici</a>.</div>
                         </div>
                     </article>
         
+                    <!-- supradefinire functii -->
                     <article id="function-overriding" class='mt-5'>
                         <h3 class='my-2 ps-2 rounded'>Supradefinire functii</h3>
-                        <div class="article-content lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, eius provident quos molestiae repellendus eos quibusdam deserunt! Dicta temporibus mollitia voluptate eveniet saepe repellendus debitis praesentium officia vel nam? Commodi assumenda, culpa animi suscipit eveniet labore et, ex error eos voluptatibus nemo cupiditate nihil quasi voluptatum quisquam id quidem at mollitia amet voluptates unde facere provident. Maxime quis voluptatibus, excepturi obcaecati perferendis voluptate. Obcaecati, iste commodi. Quasi ducimus nostrum quae veniam assumenda optio excepturi libero. Odit laborum deserunt voluptates impedit aperiam soluta ut fugiat atque nobis asperiores laboriosam natus culpa aliquam ipsa consequuntur possimus, rerum praesentium iste voluptatum non modi repudiandae aut quia quod. Voluptatem ipsa quo provident exercitationem tempora consectetur veritatis. Ea unde, adipisci deleniti, quo quod laudantium, in incidunt illum eum labore explicabo vero. Non distinctio ullam, repellat impedit cupiditate error aperiam libero quibusdam saepe nostrum ad ea dicta, praesentium sint in iste aspernatur fugiat veniam repudiandae id! Deserunt at nemo deleniti minima minus commodi est asperiores nam odio labore dolorem iusto vel pariatur, modi aut quis amet veritatis rem culpa molestiae, illo repellendus? Quod rerum vero dicta ab voluptatem obcaecati exercitationem. Ut ipsam voluptatem animi. Pariatur sunt quibusdam repudiandae culpa aliquid, quos, asperiores hic minima ipsam optio esse eum nesciunt voluptatum placeat corrupti nisi quo commodi quod ab nam illo minus facilis assumenda? Perspiciatis vero voluptates voluptas rerum optio similique, illum odit suscipit quo eaque cum quas possimus officiis, impedit, eos consectetur. Voluptates ipsam ab eaque a. In quis, alias eligendi minima dolorum recusandae numquam cumque accusantium, labore perferendis sit, incidunt dolores inventore iure modi soluta ab! Ab velit odit modi deserunt consequatur, voluptatum eum quaerat cum tempore, unde delectus in. Vero facilis officia ipsum aliquam rem similique, accusantium quo? Reprehenderit incidunt doloremque aliquam animi beatae illo voluptates, odio officiis corporis eos expedita quia quis natus debitis. Dolor nulla inventore iusto itaque nesciunt ab architecto nisi rerum sapiente exercitationem assumenda, commodi repudiandae, voluptatem aut rem molestias expedita! Laborum illum quibusdam architecto dolores facilis fugiat adipisci dicta? Aut deleniti a minus officia ad eum optio unde voluptatum dolore! Rerum sed quibusdam maxime minima praesentium nisi magnam nam, eos culpa fugit, perferendis quasi voluptates expedita illum deleniti error animi unde. Debitis labore aliquam rerum repellat voluptates accusantium hic aliquid suscipit cumque, at excepturi sequi consequatur ex nesciunt. Harum non cupiditate numquam quas nulla, nisi earum cumque delectus aspernatur soluta quos perspiciatis tempora qui eveniet molestiae, odio asperiores error eius eum doloribus nostrum quaerat? Iure, non ipsa. Id iusto cumque architecto fuga consequatur doloribus labore dolor beatae repellat ipsum quae eaque at vitae, veniam, enim pariatur quibusdam aliquid vero incidunt. Ducimus soluta non quidem odio quo. Iure accusantium vel assumenda ratione cum modi provident voluptatum, fuga labore debitis vero eveniet consequatur minus voluptas totam dicta explicabo dolorem dignissimos iste maxime laudantium distinctio similique minima rerum! Perferendis, amet quaerat doloremque quis omnis necessitatibus rem, quod excepturi eveniet ex inventore voluptatibus delectus aspernatur sequi fuga vel doloribus, officia corrupti ducimus iure. Impedit quia omnis itaque doloremque temporibus veritatis, quae est consequuntur aspernatur!</div>
+                        <div class="article-content lead">
+                            <div>Supradefinirea de functii, folosind <div class="inline-code">virtual</div>, are legatura cu polimorfismul la runtime. Daca o metoda din clasa de baza este virtuala si este redefinita intr-o clasa derivata, o putem apela folosindu-ne de un pointer/referinta la clasa de baza (care arata spre un obiect de tipul clasei derivate). In mod normal, daca metoda nu ar fi virtuala, nu am putea face asta deoarece compilatorul s-ar uita doar la tipul pointerului/referintei (nu il intereseaza daca am facut upcast)</div>
+                            
+                            <div>
+                                Cand supradefinesti o functie (care e virtuala in clasa de baza) in clasa derivata <b>trebuie sa fie exact la fel, cu tot cu tipul returnat</b> (o diferenta fata de supraincarcarea functiilor). Totusi pentru tipul returnat exista o <b>exceptie</b>: cand intorci pointeri/referinte. Metoda supradefinita din clasa derivata poate intoarce ceva mai &quot;specializat&quot; (daca metoda din clasa de baza intorcea B*, cea din clasa derivata poate intoarce D*, unde D mosteneste B). La ce ne trebuie asta? De obicei asta se foloseste la un design pattern care se numeste &quot;prototype&quot; sau &quot;clone&quot;.
+                            </div>
+
+                            <div><b>Metodele statice nu pot fi virtuale (pentru ca nu corespund unui obiect ci intregii clase)</b>.</div>
+                            
+                            <div class="block-code">
+                                #include &lt;iostream&gt;
+                                using namespace std;
+
+                                class Base {
+                                public:
+                                    // f nu este virtuala, g si h sunt virtuale
+                                    void f() { cout &lt;&lt; &quot;Base f()&quot; &lt;&lt; endl; }
+                                    virtual void g() { cout &lt;&lt; &quot;Base g()&quot; &lt;&lt; endl; }
+                                    virtual void h() { cout &lt;&lt; &quot;Base h()&quot; &lt;&lt; endl; }
+                                };
+
+                                class Derived : public Base {
+                                public:
+                                    void f() { cout &lt;&lt; &quot;Derived f()&quot; &lt;&lt; endl; }
+                                    void g() { cout &lt;&lt; &quot;Derived g()&quot; &lt;&lt; endl; }
+                                    // g este virtuala si aici chiar daca nu apare virtual !
+                                };
+
+                                int main()
+                                {
+                                    Base* p1 = new Base;
+                                    Base* p2 = new Derived; // upcast
+
+                                    p1-&gt;f(); // Base f()
+                                    // ne uitam la tipul lui p1 care este Base*, metoda f din clasa Base nu este virtuala, deci ea se executa
+
+                                    p2-&gt;f(); // Base f()
+                                    // ne uitam la tipul lui p2 care este Base*, metoda f din clasa Base nu este virtuala, deci ea se executa
+
+                                    p1-&gt;g(); // Base g()
+                                    // ne uitam la tipul lui p1 care este Base*, metoda g din clasa Base este virtuala
+                                    // ne uitam acum la tipul obiectului la care arata p1, adica ceva de tip Base
+                                    // deci metoda g din clasa Base se executa
+
+                                    p2-&gt;g(); // Derived g()
+                                    // ne uitam la tipul lui p2 care este Base*, metoda g din clasa Base este virtuala
+                                    // ne uitam acum la tipul obiectului la care arata p2, adica ceva de tip Derived
+                                    // in clasa Derived este supradefinita metoda g, deci ea se apeleaza.
+                                    
+                                    p1-&gt;h(); // Base h()
+                                    // p1 este de tip Base*, metoda h din Base este virtuala
+                                    // ne uitam la tipul obiectului la care arata p1, adica Base, deci se executa metoda din Base.
+
+                                    p2-&gt;h(); // 
+                                    // p2 este de tip Base*, metoda h din Base este virtuala
+                                    // ne uitam la tipul obiectului la care arata p2, adica Derived
+                                    // in Derived nu este supradefinita metoda h, deci se executa metoda din Base (care e mostenita practic in clasa Derived).
+                                    return 0;
+                                }
+                            </div>
+                            
+                            <div>Daca nu lucrezi cu pointeri sau referinte nu adauga nimic in plus faptul ca o functie e virtuala.</div>
+                            <div>Ce faci daca ai metode virtuale dar totusi vrei sa apelezi numai metoda din clasa de baza de exemplu? Folosesti operatorul de scop si numele clasei. Te poti duce doar in sus in ierarhia de clase, nu in jos.</div>
+                            <!-- <div class="block-code">
+                                // avem clasele de mai sus
+                                Base* p = new Derived; // upcast
+
+                                p-&gt;Base::g();     // Base g()
+                                p-&gt;g();           // Derived g()
+
+                                p-&gt;Derived::g();  // eroare
+                            </div> -->
+
+                            <div class="block-code">
+                                class SuperBase {
+                                public:
+                                    virtual void g() { cout &lt;&lt; &quot;SuperBase g()&quot;; }
+                                };
+                                
+                                class Base : public SuperBase{
+                                public:
+                                    virtual void g() { cout &lt;&lt; &quot;Base g()&quot; &lt;&lt; endl; }
+                                    // g este deja virtual, nu este necesar sa scrii iar virtual
+                                };
+                                
+                                class Derived : public Base {
+                                public:
+                                    void g() { cout &lt;&lt; &quot;Derived g()&quot; &lt;&lt; endl; }
+                                    // g este virtuala si aici chiar daca nu apare virtual !
+                                };
+
+                                int main(){
+                                    Base *p = new Derived;  // upcast
+                                    
+                                    p-&gt;g();  // Derived g() (polimorfism la runtime)
+                                    p-&gt;Base::g();  // Base g()
+                                    
+                                    p-&gt;SuperBase::g();  // Superbase g()
+                                    // p este de tip Base*, Base mosteneste SuperBase deci putem merge in &quot;sus&quot; in ierarhie
+                                    
+                                    p-&gt;Derived::g(); // EROARE
+                                    // nu putem merge in &quot;jos&quot; in ierarhie
+                                }
+                            </div>
+
+                            <div class="mt-5">
+                               Metoda virtuala din clasa de baza nu trebuie sa fie accesibila sau vizibila neaparat ca sa fie supradefinita. Poate fi <div class="inline-code">private</div> de exemplu. <b class="text-danger">Pe langa asta se ignora faptul ca o metoda e virtuala in constructori</b>.
+                            </div>
+
+                            <div class="block-code">
+                                class B {
+                                private:
+                                    virtual void f() { cout &lt;&lt; &quot;B&quot;; }
+                                    // f e private
+                                public:
+                                    B() { f(); } 
+                                    // in constructor se apeleaza metoda f de mai sus, nu se tine cont de virtual !
+                                    // de ce? pentru ca am apela metoda f din clasa derivata inainte sa terminam de construit ce avem in clasa de baza
+
+                                    void do_f() { f(); }
+                                    // aici se apeleaza ori metoda f din clasa de baza ori cea din clasa derivata
+                                    // in functie de obiectul curent
+                                };
+                                
+                                class D : public B {
+                                    void f() { cout &lt;&lt; &quot;D&quot;; }
+                                };
+                                
+                                
+                                int main()
+                                {
+                                    D ob;
+                                    B&amp; ref = ob;
+                                
+                                    ref.do_f(); // D
+                                }
+                            </div>
+
+                            <div class="mt-5">Ai grija ca atunci cand ai mostenire multipla, daca clasele care mostenesc virtual supradefinesc o functie, trebuie supradefinita si in clasa &quot;nepot&quot; pentru ca altfel ar exista 2 supradefiniri in clasa cea mai derivata si n-ar fi ok.</div>
+                            <div class="block-code">
+                                class Base {
+                                public:
+                                    virtual int f() const { return 5; } 
+                                    // metoda e const deci trebuie sa fie const si cand supradefinesti !!
+                                };
+                                
+                                class Derived_1 : public virtual Base {
+                                public:
+                                    int f() const { return 10; } 
+                                };
+                                
+                                class Derived_2 : public virtual Base {
+                                public:
+                                    int f() const { return 20; }
+                                };
+                                
+                                class MM : public Derived_1, public Derived_2{
+                                public:
+                                    int f() const { return 50; }
+                                    // daca lipseste metoda f aici, ai eroare
+                                    // ai avea aici si metoda f din Derived_1 si metoda f din Derived_2
+                                    // care supradefinesc metoda f din Base deci nu se stie care e varianta finala
+                                };
+                                
+                                int main()
+                                {
+                                    Base *p = new MM;
+                                    cout &lt;&lt; p-&gt;f() // 50;
+                                
+                                    return 0;
+                                }
+                            </div>
+
+                            <div class="mt-5">Daca functia din clasa derivata arata altfel (acelasi nume, lista de parametrii diferita), nu o mai supradefineste pe cea din clasa de baza, o ascunde.</div>
+                            <div class="block-code">
+                                class SuperBase {
+                                public:
+                                    virtual void f() { cout &lt;&lt; &quot;SuperBase&quot; &lt;&lt; endl; }
+                                };
+                                
+                                class Base : public SuperBase {
+                                public:
+                                    void f(int) { cout &lt;&lt; &quot;Base&quot; &lt;&lt; endl; }
+                                    // asta nu supradefineste, o ascunde pe cea din SuperBase
+                                };
+                                
+                                class Derived : public Base {
+                                public:
+                                    void f() { cout &lt;&lt; &quot;Derived&quot; &lt;&lt; endl; }
+                                    // supradefineste metoda din SuperBase
+                                    // metoda de aici o ascunde si pe cea din Base
+                                };
+                                
+                                int main()
+                                {
+                                    SuperBase* p1 = new SuperBase;
+                                    SuperBase* p2 = new Base;
+                                    SuperBase* p3 = new Derived;
+                                    
+                                    p1-&gt;f(); // SuperBase
+                                    p2-&gt;f(); // SuperBase (pt ca in Base nu se supradefineste)
+                                    p3-&gt;f(); // Derived (pt ca in Derived se supradefineste)
+                                    
+                                    Derived ob;
+                                    ob.f(); // Derived
+                                    // ob.f(2); // eroare, f(int) din Base nu e vizibila
+                                    ob.Base::f(2); // acum e ok, se apeleaza explicit
+                                    
+                                    
+                                    Base* p4 = new Base;
+                                    Base* p5 = new Derived;
+                                    
+                                    // p4-&gt;f(); // eroare, in Base avem doar f(int)
+                                    // p5-&gt;f(); // eroare, in Base avem doar f(int)
+                                    
+                                    p4-&gt;SuperBase::f(); // SuperBase
+                                    p5-&gt;SuperBase::f(); // SuperBase (cand apelezi asa explicit nu se tine cont de virtual)
+                                
+                                    return 0;
+                                }
+                            </div>
+
+                            <div class="mt-5">Putem avea destructori virtuali. Asta se face cand vrei sa stergi un obiect de tipul clasei derivate printr-un pointer de tipul clasei de baza. Destructorii sunt automat supradefiniti (pentru ca fiecare clasa). Daca clasa derivata nu aloca memorie pe heap, nu este necesar sa mai fie virtual.</div>
+                            <div class="block-code">
+                                class B {
+                                public:
+                                    virtual ~B() { cout &lt;&lt; &quot;~B&quot;; }
+                                };
+                                
+                                class D : public B {
+                                    int* v;
+                                public:
+                                    D() { v = new int[100]; }
+                                    ~D() { delete[] v; cout &lt;&lt; &quot;~D&quot;; }
+                                };
+                                    
+                                
+                                int main()
+                                {
+                                    B* p = new D;
+                                    delete p;  // ~D~B
+                                    // daca destructorul din B nu ar fi virtual, nu s-ar executa destructorul din D
+                                    // la delete p, pentru ca p este de tip B* (se comporta ca o metoda normala)
+                                    return 0;
+                                }
+                            </div>
+
+                            <div>Mai multe detalii despre functii virtuale <a href="https://docs.microsoft.com/en-us/cpp/cpp/virtual-functions?view=msvc-160">aici (de la Microsoft)</a> si <a href="https://en.cppreference.com/w/cpp/language/virtual">aici (de la cppreference)</a></div>
+                        </div>
                     </article>
                 </div>
             </section>
@@ -331,6 +580,7 @@
                 <div class="container">
                     <h1 class="display-2">Ce face <code>endl</code>?</h1>
                     <article id="s3-a1" class='mt-5'>
+                        <h3 class='my-2 ps-2 rounded'>Fisiere si std::flush</h3>
                         <div class="article-content lead">
                             <div>
                             Sa scrii intr-un fisier dureaza, pentru ca acel fisier nu este stocat in RAM. Dureaza pana se creeaza o conexiune la harddisk sau ssd ca sa accesezi ce e pe el, asa ca in loc sa scrii cate un byte (caracter) pe rand intr-un fisier, mai bine pui mai multi intr-un loc temporar (buffer) si cand se umple, pui totul in fisier deodata. Asta se intampla si cand scrii ceva intr-un fisier (sau cand citesti) folosind <div class="inline-code">fstream</div>.
