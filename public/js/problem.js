@@ -71,8 +71,8 @@ $('#search').on('submit', e=>{
 
 async function getProblems() {
     // get all problems from github repo
-     let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/problems.json');
-    // let data = await fetch('http://localhost:3000/get', {method: 'get'});
+    //  let data = await fetch('https://raw.githubusercontent.com/valibojici/poo-website/main/assets/problems.json');
+    let data = await fetch('http://localhost:3000/get', {method: 'get'});
     data = await data.json();
 
     data = data.content;
