@@ -14,7 +14,7 @@ app.use(compression());
 
 app.get('/get', (req, res) => {
   res.header("Content-Type",'application/json');
-  res.send(JSON.parse(fs.readFileSync('output.json')));
+  res.send(JSON.parse(fs.readFileSync('problems.json')));
 });
 
 app.listen(port, () => {

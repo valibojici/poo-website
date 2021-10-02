@@ -1,0 +1,73 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+    int x;
+public:
+    A(int _x) : x(_x) {}
+    int getX() const { return x; }
+};
+
+class B {
+    A a;
+    int y;
+public:
+    B(int _y, A _a) { y = _y, a = _a; }
+    int f() const { return y + a.getX(); }
+};
+ 
+
+int main()
+{
+    A ob1(10);
+    B ob2(20, ob1);
+    cout << ob1.getX() << endl;
+    cout << ob2.f() << endl;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul nu functioneaza corect, avem eroare de compilare la linia 15: <inline>B(int _y, A _a) { y = _y, a = _a; }</inline>
+</div>
+<error>
+no default constructor exists for class "A"	
+</error>
+<div>
+Clasa <inline>A</inline> nu are constructor default. Cand initializezi variabile in corpul constructorului, ele sunt deja create. Adica constructorul din clasa <inline>B</inline>: <inline>B(int _y, A _a) { y = _y, a = _a; }</inline> este echivalent cu <inline>B(int _y, A _a) : y(), a() { y = _y, a = _a; }</inline>. Deci mai intai, in lista de initializare, chiar daca nu scrii tu asta, se creeaza <var>y</var> care e <inline>int</inline> si <var>a</var> care e de tip <inline>A</inline>. Doar ca nu se poate creea <var>a</var> pentru ca in clasa <inline>A</inline>, constructorul trebuie sa primeasca ceva ca parametru.
+</div>
+<div>
+Ca programul sa fie corect sunt 2 variante:
+</div>
+<div>
+<b>1)</b> initializezi <var>a</var> in lista de initializare, nu in corpul constructorului (daca faci asta pune-l si pe <var>y</var> acolo, desi pentru un <inline>int</inline> nu conteaza e mai bine sa te obisnuiesti asa). Constructorul din <inline>B</inline> devine: <inline>B(int _y, A _a) : y(_y), a(_a) {}</inline>
+</div>
+<div>
+<b>2)</b> dai o valoare default pentru parametrul constructorului din <inline>A</inline>: <inline>A(int _x = 0) : x(_x) {}</inline>. Acum cand se ajunge la constructorul din <inline>B</inline>: <inline>B(int _y, A _a) { y = _y, a = _a; }</inline> se poate creea obiectul <var>a</var> si dupa, in corpul constructorului, se copiaza in el ce exista in parametrul <var>_a</var>.
+</div>
+<div>
+Dupa modificari, la <inline>A ob1(10);</inline> se creeaza un obiect de tip <inline>A</inline>, se apeleaza constructorul si <var>x</var> ia valoarea <inline>10</inline>. La <inline>B ob2(20, ob1);</inline> se creeaza un obiect <var>ob2</var> de tip <inline>B</inline>. Mai intai se vor executa constructorii pentru datele membre, adica <var>a</var> si <var>y</var> (in ordinea in care i-ai definit ca membri ai clasei). Acum in functie de modificarile de mai sus sunt 2 variante (care fac acelasi lucru practic). La <inline>B(int _y, A _a) : y(_y), a(_a) {}</inline> se creeaza obiectul <var>a</var> cu ce este in <var>_a</var> (se foloseste constructorul de copiere). La <inline>B(int _y, A _a) { y = _y, a = _a; }</inline> se creeaza mai intai obiect <var>a</var> apelandu-se constructorul din <inline>A</inline> cu parametrul implicit si dupa in corpul constructorului, ce este in <var>_a</var> se copiaza in <var>a</var> (se foloseste operatorul de atribuire). Oricum la final <var>y</var> ia valoarea <inline>20</inline> si <var>a</var> este un obiect care are <var>x</var>-ul egal cu <inline>10</inline>.
+</div>
+<div>
+<inline>ob1.getX()</inline> returneaza valorea lui <var>x</var> din <var>ob1</var> adica <inline>10</inline>. Metoda este <inline>const</inline>, asta inseamna ca nu poate modifica obiectul (deci nu se pot apela in metoda asta alte metode care nu sunt <inline>const</inline>). De obicei, un getter este <inline>const</inline> pentru ca doar intoarce ceva.
+</div>
+<div>
+<inline>ob2.f()</inline> intoarce valoarea lui <var>y</var> din <var>ob2</var> (adica <inline>20</inline>) + valorea lui <var>x</var> din obiectul <var>a</var> (care e in <var>ob2</var>). <var>x</var> este <inline>10</inline> de mai sus. Deci la final se returneaza <inline>30</inline>. Se afiseaza:
+</div>
+<output>
+10
+30
+</output>
+<div>
+Eu recomand sa initializezi mereu in lista de initializare (cand poti) ca sa se creeze obiectele direct cu ce trebuie (sa nu se mai piarda timp sa se creeeze obiecte &quot;goale&quot; ca dupa sa se copieze in ele ceva).
+</div>
+
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, incorrect, constructor, initializer list
+#END_TAGS

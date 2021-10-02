@@ -1,0 +1,81 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    A() { cout << "A"; }
+    ~A() { cout << "~A"; }
+};
+
+class B {
+public:
+    A a;
+    B() { cout << "B"; }
+    ~B() { cout << "~B"; }
+};
+
+class C : public A, public B {
+public:
+    B ob;
+    A a;
+    C() : ob(), B() { cout << "C"; }
+    ~C() { cout << "~C"; }
+};
+ 
+
+int main()
+{
+    C ob;
+    return 0;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza: 
+</div>
+<output>
+AABABAC~C~A~B~A~B~A~A
+</output>
+<div>
+Ordinea de executie a constructorilor este urmatoarea:
+<ol>
+<li> Constructorii claselor de baza virtuale in ordinea in care apar (in cazul asta nu exista) </li>
+<li> Constructorii claselor de baza ne-virtuale in ordinea in care apar (pentru <inline>C</inline> care mosteneste <inline>A</inline> si <inline>B</inline> se executa mai intai constructorii din <inline>A</inline> si <inline>B</inline>, in ordinea asta) </li>
+<li> Constructorii membrilor clasei in ordinea in care au fost declarati (pentru <inline>C</inline> care are membrii <var>ob</var> si <var>a</var> se vor executa constructorii in ordinea asta: pentru <var>ob</var> si dupa pentru <var>a</var>) </li>
+<li> La final constructorul din clasa respectiva (adica corpul constructorului) </li>
+</ol>
+Chiar daca in lista de initializare a constructorului ordinea este schimbata, se pastreaza ordinea de mai sus.
+</div>
+<div>
+Destructorii sunt executati in ordinea inversa.
+</div>
+<div>
+Se creeaza obiectul <var>ob</var> de tip <inline>C</inline>. Clasa <inline>C</inline> mosteneste clasele <inline>A</inline> si <inline>B</inline>. Mergem mai intai in clasa <inline>A</inline> care nu mosteneste nimic. <inline>A</inline> nu are nici obiecte ca date membre asa ca se executa corpul constructorului (se afiseaza <inline>"A"</inline>). Continuam cu <inline>B</inline> (pt ca <inline>C</inline> mosteneste <inline>A</inline> si <inline>B</inline>). <inline>B</inline> nu mosteneste nimic, insa are o data membra de tip <inline>A</inline>. O sa se execute constructorul pentru el mai intai (se afiseaza <inline>"A"</inline>) dupa nu mai exista date membre si se executa corpul constructorului din <inline>B</inline> (se afiseaza <inline>"B"</inline>).
+</div>
+<div>
+Am terminat cu ce mostenenste <inline>C</inline> si acum trecem la datele membre din clasa. In ordinea declararii, avem un obiect de tip <inline>B</inline> mai intai. Mergem in clasa <inline>B</inline> iar, ea nu mosteneste pe nimeni dar are ceva de tip <inline>A</inline> ca data membra. Mergem in clasa <inline>A</inline>, nu mosteneste nimic, nu are date membre, se executa corpul constructorului (se afiseaza <inline>"A"</inline>). Ne intoarcem in <inline>B</inline>, nu mai avem date membre, se executa corpul constructorului se afiseaza <inline>"B"</inline>.
+</div>
+<div>
+Revenim in clasa <inline>C</inline>, am construit prima data membra continuam cu a doua care e de tip <inline>A</inline>. La fel, clasa <inline>A</inline> nu mosteneste, nu are date membre, se executa corpul constructorului (se afiseaza <inline>"A"</inline>). Dupa ce am construit datele membre, se executa corpul constructorului din <inline>C</inline> (se afiseaza <inline>"C"</inline>).
+</div>
+<div>
+Practic in lista de initializare apar constructorii in ordinea asta, chiar daca nu-i scrii tu sunt adaugati automat:  
+</div>
+<div>
+<inline>C() : A(), B(), ob(), a() { cout << "C"; }</inline>
+</div>
+<div>
+<inline>B() : a() { cout << "B"; }</inline>
+</div>
+<div>
+Destructorii se vor apela fix in ordinea inversa.
+</div>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+correct, medium, constructor, inheritance, destructors
+#END_TAGS
