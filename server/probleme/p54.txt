@@ -33,20 +33,20 @@ int main()
 Eu nu consider ca programul asta este corect, da probabil daca il rulezi nu o sa ai probleme si se afiseaza <inline>-9</inline> dar ce se intampla aici este undefined behaviour.
 </div>
 <div>
-Avem clasa <inline>D</inline> care este derivata din <inline>B</inline>. <inline>B* p1 = new B(10);</inline> se creeaza un obiect de tip <inline>D</inline> si un pointer <var>p1</var> de tip <inline>B</inline> care arata spre el (upcast). Se apeleaza mai intai constructorul din <inline>B</inline> care seteaza variabila statica <var>x</var> la 0, dupa se continua cu constructorul din <inline>D</inline> si variabila statica <var>x</var> devine 10.
+Avem clasa <inline>D</inline> care este derivata din <inline>B</inline>. Constructorii se vor executa in ordinea <inline>B</inline>, <inline>D</inline>. La <inline>B* p1 = new D(10);</inline> se creeaza un obiect de tip <inline>D</inline> si un pointer <var>p1</var> de tip <inline>B</inline> care arata spre el (upcast). In lista de initializare din constructorul din <inline>D</inline> nu se apeleaza explicit cel din <inline>B</inline> deci cel din <inline>B</inline> se executa (cu parametrul default <inline>0</inline>) si seteaza variabila statica <var>x</var> la 0, dupa se continua cu constructorul din <inline>D</inline> (care primeste <inline>10</inline> ca parametru) si variabila statica <var>x</var> devine 10.
 </div>
 <div>
-Acum la <inline>*p1 = p1->f();</inline>, <inline>p1->f();</inline> intoarce un obiect de tip <inline>B</inline> (cu <var>x</var>-ul setat la 1-10 adica -9). Acum obiectul la care arata <var>p1</var> este de tip <inline>B</inline>. <var>x</var> este variabila statica, nu uita.
+Acum la <inline>*p1 = p1->f();</inline> , <inline>p1->f();</inline> intoarce un obiect de tip <inline>B</inline> (cu <var>x</var>-ul setat la 1-10 adica -9). Acum obiectul la care arata <var>p1</var> este de tip <inline>B</inline>. <var>x</var> este variabila statica, nu uita.
 </div>
 <div>
-Acum la <inline>((D*)p1)->print();</inline> se face un downcast <inline>(D*)p1</inline> si se apeleaza metoda <inline>f</inline> care cauzeaza undefined behaviour, pentru ca <var>p1</var> NU arata spre un obiect de tip <inline>D</inline> si functia <inline>f</inline> este in <inline>D</inline>. Ok, este adevarat ca in metoda <inline>f</inline> nu apare pointerul <inline>this</inline> deci nu este accesat obiectul, doar variabila statica <var>x</var> dar totusi asa spune standard-ul c++.
+Acum la <inline>((D*)p1)->print();</inline> se face un downcast (asa: <inline>(D*)p1</inline>), nu este ok pentru ca pointerul arata spre ceva de tip <inline>B</inline>, nu <inline>D</inline>. Se apeleaza metoda <inline>f</inline> care cauzeaza undefined behaviour, pentru ca <var>p1</var> NU arata spre un obiect de tip <inline>D</inline> si functia <inline>f</inline> este in <inline>D</inline>. Ok, este adevarat ca in metoda <inline>f</inline> nu apare pointerul <inline>this</inline> adica nu este accesat obiectul curent, doar variabila statica <var>x</var> dar totusi asa spune standard-ul c++.
 </div>
 <div>
-Eu as sterge linia <inline>((D*)p1)->print();</inline>.
+Eu as sterge linia <inline>((D*)p1)->print();</inline> ca programul sa fie corect.
 </div>
 #END_SOLUTION
 
 
 #BEGIN_TAGS
-medium, incorrect, inheritance, cast, pointers
+medium, incorrect, inheritance, cast, pointers, downcast
 #END_TAGS
