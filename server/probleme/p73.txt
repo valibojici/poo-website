@@ -1,0 +1,64 @@
+#BEGIN_PROBLEM
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    A() { cout << "A"; }
+    A(int) { cout << "A(int)"; }
+};
+
+class B : virtual public A {
+public:
+    B() : A(2) { cout << "B"; }
+};
+
+class C : public B {
+public:
+    C() { cout << "C"; }
+};
+
+int main() {
+    C c;
+}
+#END_PROBLEM
+
+
+#BEGIN_SOLUTION
+<div>
+Programul functioneaza corect, se afiseaza:
+</div>
+<output>
+ABC
+</output>
+<div>
+Ordinea de executie a constructorilor este urmatoarea:
+<ol>
+<li> Constructorii claselor de baza virtuale in ordinea in care apar </li>
+<li> Constructorii claselor de baza ne-virtuale in ordinea in care apar </li>
+<li> Constructorii membrilor clasei (nestatici) in ordinea in care au fost declarati </li>
+<li> La final constructorul din clasa respectiva (adica corpul constructorului) </li>
+</ol>
+<b>Constructorii claselor de baza virtuale (oriunde ar fi in ierarhie) sunt apelati de constructorul din clasa &quot;cea mai derivata&quot;.</b>
+</div>
+<div>
+Din faptul ca <inline>B</inline> mosteneste virtual <inline>A</inline> stim ca <inline>A</inline> e o clasa de baza virtuala. <inline>C</inline> mosteneste <inline>B</inline> deci <inline>A</inline> este o clasa de baza virtuala pentru <inline>C</inline> (nu prea are sens pentru ca n-avem mostenire multipla dar se intampla ceva interesant). Daca creezi un obiect de tip <inline>C</inline>, constructorul din <inline>C</inline> e responsabil sa-l apeleze pe cel din <inline>A</inline> (pentru ca <inline>C</inline> e cea mai derivata clasa). Constructorul din <inline>B</inline> il va apela pe cel din <inline>A</inline> doar daca creezi un obiect de tip <inline>B</inline> (pentru ca acum <inline>B</inline> e cea mai derivata clasa)
+</div>
+<div>
+In cazul asta, pentru ca este creat un obiect de tip <inline>C</inline>, constructorul din <inline>B</inline> NU mai apeleaza constructorul din <inline>A</inline> (o sa il apeleze cel din <inline>C</inline>). Constructorul din <inline>C</inline> e completat automat de compilator sa arate asa: <inline>C() : A(), B() { cout << "C"; }</inline> (se adauga constructori default daca nu adaugi tu altii)
+</div>
+<div>
+La <inline>C c;</inline> se vor executa constructorii in ordinea <inline>A</inline>, <inline>B</inline>, <inline>C</inline>. In lista de initializare a constructorului din <inline>C</inline> nu este apelat explicit constructorul din <inline>A</inline> deci se va apela automat constructorul <b>implicit</b> care afiseaza <inline>"A"</inline> pe ecran. Continuam cu constructorul pentru <inline>B</inline>, care la fel, nu apare in lista de initializare deci se apeleaza cel default. Acum in lista de initializare a constructorului din <inline>B</inline> se apeleaza cel din <inline>A</inline> dar acest fapt e ignorat pentru ca deja s-a apelat (l-a apelat constructorul din <inline>C</inline>). Constructorul din <inline>B</inline> afiseaza <inline>"B"</inline>. Dupa se continua cu constructorul din <inline>C</inline> care afiseaza <inline>"C"</inline>.
+</div>
+<div>
+Daca nu mosteneam virtual? In cazul asta constructorul din <inline>C</inline> nu mai are treaba cu cel din <inline>A</inline>. Ar arata practic asa: <inline>C() : B() { cout << "C"; }</inline>. Acum constructorul din <inline>B</inline> il apeleaza pe cel din <inline>A</inline> cu un <inline>int</inline> si la final s-ar afisa:
+</div>
+<output>
+A(int)BC
+</output>
+#END_SOLUTION
+
+
+#BEGIN_TAGS
+medium, correct, inheritance, virtual, constructor, virtual inheritance
+#END_TAGS
