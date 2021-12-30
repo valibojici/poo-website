@@ -44,10 +44,10 @@ Ordinea de executie a constructorilor este urmatoarea:
 <ol>
 <li> Constructorii claselor de baza virtuale in ordinea in care apar (in cazul asta nu exista) </li>
 <li> Constructorii claselor de baza ne-virtuale in ordinea in care apar (pentru <inline>C</inline> care mosteneste <inline>A</inline> si <inline>B</inline> se executa mai intai constructorii din <inline>A</inline> si <inline>B</inline>, in ordinea asta) </li>
-<li> Constructorii membrilor clasei in ordinea in care au fost declarati (pentru <inline>C</inline> care are membrii <var>ob</var> si <var>a</var> se vor executa constructorii in ordinea asta: pentru <var>ob</var> si dupa pentru <var>a</var>) </li>
+<li> Constructorii membrilor clasei (nestatici) in ordinea in care au fost declarati (pentru <inline>C</inline> care are membrii <var>ob</var> si <var>a</var> se vor executa constructorii in ordinea asta: pentru <var>ob</var> si dupa pentru <var>a</var>) </li>
 <li> La final constructorul din clasa respectiva (adica corpul constructorului) </li>
 </ol>
-Chiar daca in lista de initializare a constructorului ordinea este schimbata, se pastreaza ordinea de mai sus.
+Chiar daca in lista de initializare a constructorului ordinea este schimbata, se pastreaza ordinea de mai sus. <b>Constructorii claselor de baza virtuale (oriunde ar fi in ierarhie) sunt apelati de constructorul din clasa &quot;cea mai derivata&quot;.</b>
 </div>
 <div>
 Destructorii sunt executati in ordinea inversa.
@@ -77,5 +77,5 @@ Destructorii se vor apela fix in ordinea inversa.
 
 
 #BEGIN_TAGS
-correct, medium, constructor, inheritance, destructors
+correct, hard, constructor, inheritance, destructors
 #END_TAGS
